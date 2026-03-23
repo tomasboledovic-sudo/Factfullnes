@@ -1,9 +1,8 @@
-import { readFileSync } from 'fs';
+import { readData } from '../utils/paths.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import supabase from '../services/supabaseClient.js';
 
-const TOPICS_PATH = './data/topics.json';
 
 function generateToken(userId) {
     return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -131,7 +130,7 @@ export async function getProfile(req, res, next) {
             .eq('completed', true)
             .order('post_test_completed_at', { ascending: false });
 
-        const topics = JSON.parse(readFileSync(TOPICS_PATH, 'utf8'));
+        const topics = readData('topics.json');
 
         const completedTests = (sessions || []).map(s => {
             const topic = topics.find(t => t.id === s.topic_id);

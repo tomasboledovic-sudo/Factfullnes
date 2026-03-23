@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readData } from '../utils/paths.js';
 import supabase from '../services/supabaseClient.js';
 
 /**
@@ -15,7 +15,7 @@ export async function createSession(req, res, next) {
             });
         }
 
-        const topics = JSON.parse(readFileSync('./data/topics.json', 'utf8'));
+        const topics = readData('topics.json');
         const topic = topics.find(t => t.id === topicId);
 
         if (!topic) {

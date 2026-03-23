@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readData } from '../utils/paths.js';
 
 /**
  * GET /api/topics
@@ -6,7 +6,7 @@ import { readFileSync } from 'fs';
  */
 export async function getAllTopics(req, res, next) {
     try {
-        const topics = JSON.parse(readFileSync('./data/topics.json', 'utf8'));
+        const topics = readData('topics.json');
         
         res.json({
             success: true,
@@ -24,7 +24,7 @@ export async function getAllTopics(req, res, next) {
 export async function getTopicById(req, res, next) {
     try {
         const { topicId } = req.params;
-        const topics = JSON.parse(readFileSync('./data/topics.json', 'utf8'));
+        const topics = readData('topics.json');
         const topic = topics.find(t => t.id === parseInt(topicId));
 
         if (!topic) {

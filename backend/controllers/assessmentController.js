@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readData } from '../utils/paths.js';
 import { generateLearningContent, generateFinalTest } from '../services/geminiService.js';
 import supabase from '../services/supabaseClient.js';
 
@@ -49,7 +49,7 @@ export async function submitPreTest(req, res, next) {
             return res.status(409).json({ success: false, error: { code: 'INVALID_SESSION_STATUS', message: 'Session nie je v správnom stave' } });
         }
 
-        const allQuestions = JSON.parse(readFileSync('./data/preTestQuestions.json', 'utf8'));
+        const allQuestions = readData('preTestQuestions.json');
         const questions = allQuestions[session.topic_id.toString()];
         if (!questions) throw new Error('Otázky pre túto tému neboli nájdené');
 
@@ -108,7 +108,7 @@ export async function submitPreTest(req, res, next) {
 async function generateContentInBackground(sessionId, topicId, testResults) {
     try {
         console.log(`🔄 [POZADIE] Generujem učebné materiály pre session: ${sessionId}`);
-        const topics = JSON.parse(readFileSync('./data/topics.json', 'utf8'));
+        const topics = readData('topics.json');
         const topic = topics.find(t => t.id === topicId);
         if (!topic) throw new Error('Téma nebola nájdená');
 
@@ -174,7 +174,7 @@ async function generateTestInBackground(sessionId) {
         const session = await fetchSession(sessionId);
         if (!session?.generated_content) throw new Error('Session alebo učebný obsah neexistuje');
 
-        const topics = JSON.parse(readFileSync('./data/topics.json', 'utf8'));
+        const topics = readData('topics.json');
         const topic = topics.find(t => t.id === session.topic_id);
         if (!topic) throw new Error('Téma nebola nájdená');
 
@@ -269,14 +269,14 @@ export async function getPreTest(req, res, next) {
             return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
         }
 
-        const allQuestions = JSON.parse(readFileSync('./data/preTestQuestions.json', 'utf8'));
+        const allQuestions = readData('preTestQuestions.json');
         const questions = allQuestions[session.topic_id.toString()];
 
         if (!questions) {
             return res.status(404).json({ success: false, error: { code: 'QUESTIONS_NOT_FOUND', message: 'Otázky neboli nájdené' } });
         }
 
-        const topics = JSON.parse(readFileSync('./data/topics.json', 'utf8'));
+        const topics = readData('topics.json');
         const topic = topics.find(t => t.id === session.topic_id);
 
         res.json({
