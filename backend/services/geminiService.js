@@ -101,13 +101,13 @@ ${weaknessesText}
 
 POŽIADAVKY:
 - Jazyk: ${config.language}
-- Celková dĺžka textu: 250–450 slov (polovica až jedna A4)
-- Rozdeľ obsah do 2–4 tematických sekcií podľa pojmov z chýb
-- Každá sekcia = jeden konkrétny pojem alebo téma
+- Celková dĺžka textu: 600–1000 slov (3–5 minút čítania pri 200 slov/min)
+- Rozdeľ obsah do 3–5 tematických sekcií podľa pojmov z chýb
+- Každá sekcia = jeden konkrétny pojem alebo téma (150–250 slov)
 - BEZ akéhokoľvek úvodu, pozdravu alebo privítania
 - BEZ záverečného zhrnutia
 - Začni PRIAMO prvou sekciou
-- Používaj príklady z reálneho života
+- Vysvetľuj dôkladne, použi príklady z reálneho života, analógie a konkrétne situácie
 - Použi markdown: tučné písmo pre kľúčové pojmy, odrážky pre zoznamy
 
 VÝSTUP - STRICT JSON:
@@ -115,16 +115,17 @@ VÝSTUP - STRICT JSON:
   "sections": [
     {
       "heading": "Názov pojmu alebo témy",
-      "content": "Vysvetlenie s príkladmi (60–120 slov)"
+      "content": "Dôkladné vysvetlenie s príkladmi (150–250 slov)"
     }
   ]
 }
 
 PRAVIDLÁ:
-1. 2 až 4 sections, každá o inej téme
-2. Žiadny text mimo JSON
-3. Validný JSON
-4. Escape uvodzovky ako \\"
+1. 3 až 5 sections, každá o inej téme
+2. Každá sekcia musí mať aspoň 150 slov
+3. Žiadny text mimo JSON
+4. Validný JSON
+5. Escape uvodzovky ako \\"
 
 VYTVOR JSON:`;
 }
