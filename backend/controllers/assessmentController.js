@@ -2,35 +2,26 @@ import { getTopicById, getQuestionsByTopicId } from '../utils/supabaseData.js';
 import { generateLearningContent, generateFinalTest } from '../services/geminiService.js';
 import supabase from '../services/supabaseClient.js';
 
-const generationStatus = new Map();
-
-// Helper: načítaj session zo Supabase
 async function fetchSession(sessionId) {
     const { data, error } = await supabase
-        .from('sessions')
-        .select('*')
-        .eq('id', sessionId)
-        .maybeSingle();
+        .from('sessions').select('*').eq('id', sessionId).maybeSingle();
     if (error) throw error;
     return data;
 }
 
-// Helper: aktualizuj session
 async function updateSession(sessionId, fields) {
-    const { error } = await supabase
-        .from('sessions')
-        .update(fields)
-        .eq('id', sessionId);
+    const { error } = await supabase.from('sessions').update(fields).eq('id', sessionId);
     if (error) throw error;
 }
 
 /**
  * POST /api/sessions/:sessionId/pre-test/submit
+ * Evaluates answers and synchronously generates learning content.
  */
 export async function submitPreTest(req, res, next) {
     try {
         const { sessionId } = req.params;
-        const { answers, timeSpentSeconds } = req.body;
+        const { answers } = req.body;
 
         console.log(`📝 Spracovávam vstupný test pre session: ${sessionId}`);
 
@@ -42,12 +33,8 @@ export async function submitPreTest(req, res, next) {
         }
 
         const session = await fetchSession(sessionId);
-        if (!session) {
-            return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
-        }
-        if (session.status !== 'pre_assessment') {
-            return res.status(409).json({ success: false, error: { code: 'INVALID_SESSION_STATUS', message: 'Session nie je v správnom stave' } });
-        }
+        if (!session) return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
+        if (session.status !== 'pre_assessment') return res.status(409).json({ success: false, error: { code: 'INVALID_SESSION_STATUS', message: 'Session nie je v správnom stave' } });
 
         const questions = await getQuestionsByTopicId(session.topic_id);
         if (!questions?.length) throw new Error('Otázky pre túto tému neboli nájdené');
@@ -79,37 +66,9 @@ export async function submitPreTest(req, res, next) {
             status: 'generating_content'
         });
 
-        generationStatus.set(sessionId, { status: 'generating_content', startedAt: Date.now() });
-
-        res.json({
-            success: true,
-            data: {
-                sessionId,
-                preTestScore: { percentage, correctAnswers: correctCount, totalQuestions: totalCount, incorrectAnswers: totalCount - correctCount },
-                detailedResults: evaluatedAnswers,
-                contentStatus: 'generating',
-                message: 'Test vyhodnotený. Učebné materiály sa generujú.'
-            }
-        });
-
-        generateContentInBackground(sessionId, session.topic_id, {
-            score: percentage,
-            totalQuestions: totalCount,
-            correctAnswers: correctCount,
-            detailedAnswers: evaluatedAnswers
-        });
-
-    } catch (error) {
-        next(error);
-    }
-}
-
-async function generateContentInBackground(sessionId, topicId, testResults) {
-    try {
-        console.log(`🔄 [POZADIE] Generujem učebné materiály pre session: ${sessionId}`);
-        const topic = await getTopicById(topicId);
-        if (!topic) throw new Error('Téma nebola nájdená');
-
+        // Generate learning content synchronously — background tasks don't work on Vercel
+        const topic = await getTopicById(session.topic_id);
+        const testResults = { score: percentage, totalQuestions: totalCount, correctAnswers: correctCount, detailedAnswers: evaluatedAnswers };
         const generatedContent = await generateLearningContent(topic, testResults);
 
         await updateSession(sessionId, {
@@ -118,28 +77,35 @@ async function generateContentInBackground(sessionId, topicId, testResults) {
             content_generated_at: new Date().toISOString()
         });
 
-        generationStatus.set(sessionId, { status: 'content_ready', completedAt: Date.now() });
-        console.log(`✅ [POZADIE] Učebné materiály hotové pre session: ${sessionId}`);
+        console.log(`✅ Učebné materiály vygenerované pre session: ${sessionId}`);
+
+        res.json({
+            success: true,
+            data: {
+                sessionId,
+                preTestScore: { percentage, correctAnswers: correctCount, totalQuestions: totalCount, incorrectAnswers: totalCount - correctCount },
+                detailedResults: evaluatedAnswers,
+                contentStatus: 'ready',
+                message: 'Test vyhodnotený a učebné materiály sú pripravené.'
+            }
+        });
 
     } catch (error) {
-        console.error(`❌ [POZADIE] Chyba:`, error.message);
-        generationStatus.set(sessionId, { status: 'error', error: error.message });
-        try { await updateSession(sessionId, { status: 'generation_failed' }); } catch (e) {}
+        next(error);
     }
 }
 
 /**
  * POST /api/sessions/:sessionId/generate-test
+ * Generates the final test synchronously.
  */
 export async function startTestGeneration(req, res, next) {
     try {
         const { sessionId } = req.params;
-        console.log(`🎯 Spúšťam generovanie záverečného testu pre session: ${sessionId}`);
+        console.log(`🎯 Generujem záverečný test pre session: ${sessionId}`);
 
         const session = await fetchSession(sessionId);
-        if (!session) {
-            return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
-        }
+        if (!session) return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
 
         if (session.generated_content?.finalTest?.questions?.length > 0) {
             return res.json({ success: true, data: { status: 'ready', message: 'Test už existuje' } });
@@ -149,32 +115,7 @@ export async function startTestGeneration(req, res, next) {
             return res.status(400).json({ success: false, error: { code: 'NO_CONTENT', message: 'Učebné materiály ešte nie sú vygenerované' } });
         }
 
-        await updateSession(sessionId, {
-            status: session.status === 'content_ready' ? 'learning' : session.status,
-            test_generation_started_at: new Date().toISOString()
-        });
-
-        generationStatus.set(`${sessionId}_test`, { status: 'generating', startedAt: Date.now() });
-
-        res.json({ success: true, data: { status: 'generating', message: 'Záverečný test sa generuje na pozadí' } });
-
-        generateTestInBackground(sessionId);
-
-    } catch (error) {
-        next(error);
-    }
-}
-
-async function generateTestInBackground(sessionId) {
-    try {
-        console.log(`🔄 [POZADIE] Generujem záverečný test pre session: ${sessionId}`);
-
-        const session = await fetchSession(sessionId);
-        if (!session?.generated_content) throw new Error('Session alebo učebný obsah neexistuje');
-
         const topic = await getTopicById(session.topic_id);
-        if (!topic) throw new Error('Téma nebola nájdená');
-
         const preAnswers = session.pre_test_answers || [];
         const originalTestResults = {
             score: session.pre_test_score,
@@ -188,15 +129,15 @@ async function generateTestInBackground(sessionId) {
         const updatedContent = { ...session.generated_content, finalTest };
         await updateSession(sessionId, {
             generated_content: updatedContent,
+            status: 'learning',
             test_generated_at: new Date().toISOString()
         });
 
-        generationStatus.set(`${sessionId}_test`, { status: 'ready', completedAt: Date.now() });
-        console.log(`✅ [POZADIE] Záverečný test hotový pre session: ${sessionId}`);
+        console.log(`✅ Záverečný test vygenerovaný pre session: ${sessionId} (${finalTest.questions.length} otázok)`);
+        res.json({ success: true, data: { status: 'ready', questionCount: finalTest.questions.length } });
 
     } catch (error) {
-        console.error(`❌ [POZADIE] Chyba pri generovaní testu:`, error.message);
-        generationStatus.set(`${sessionId}_test`, { status: 'error', error: error.message });
+        next(error);
     }
 }
 
@@ -207,19 +148,10 @@ export async function getContentStatus(req, res, next) {
     try {
         const { sessionId } = req.params;
         const session = await fetchSession(sessionId);
+        if (!session) return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
 
-        if (!session) {
-            return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
-        }
-
-        let status = 'unknown', ready = false;
-        if (session.generated_content && session.status !== 'generating_content') {
-            status = 'ready'; ready = true;
-        } else if (session.status === 'generating_content') {
-            status = 'generating';
-        } else if (session.status === 'generation_failed') {
-            status = 'error';
-        }
+        const ready = !!(session.generated_content?.sections?.length > 0);
+        const status = ready ? 'ready' : (session.status === 'generation_failed' ? 'error' : 'generating');
 
         res.json({ success: true, data: { sessionId, status, ready, sessionStatus: session.status } });
     } catch (error) {
@@ -234,21 +166,10 @@ export async function getTestStatus(req, res, next) {
     try {
         const { sessionId } = req.params;
         const session = await fetchSession(sessionId);
-
-        if (!session) {
-            return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
-        }
+        if (!session) return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
 
         const hasTest = session.generated_content?.finalTest?.questions?.length > 0;
-        res.json({
-            success: true,
-            data: {
-                sessionId,
-                status: hasTest ? 'ready' : 'generating',
-                ready: hasTest,
-                questionCount: hasTest ? session.generated_content.finalTest.questions.length : 0
-            }
-        });
+        res.json({ success: true, data: { sessionId, status: hasTest ? 'ready' : 'generating', ready: hasTest, questionCount: hasTest ? session.generated_content.finalTest.questions.length : 0 } });
     } catch (error) {
         next(error);
     }
@@ -261,15 +182,10 @@ export async function getPreTest(req, res, next) {
     try {
         const { sessionId } = req.params;
         const session = await fetchSession(sessionId);
-
-        if (!session) {
-            return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
-        }
+        if (!session) return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
 
         const questions = await getQuestionsByTopicId(session.topic_id);
-        if (!questions?.length) {
-            return res.status(404).json({ success: false, error: { code: 'QUESTIONS_NOT_FOUND', message: 'Otázky neboli nájdené' } });
-        }
+        if (!questions?.length) return res.status(404).json({ success: false, error: { code: 'QUESTIONS_NOT_FOUND', message: 'Otázky neboli nájdené' } });
 
         const topic = await getTopicById(session.topic_id);
 
@@ -305,14 +221,10 @@ export async function submitPostTest(req, res, next) {
         console.log(`📝 Spracovávam záverečný test pre session: ${sessionId}`);
 
         const session = await fetchSession(sessionId);
-        if (!session) {
-            return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
-        }
+        if (!session) return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
 
         const finalTest = session.generated_content?.finalTest;
-        if (!finalTest?.questions) {
-            return res.status(400).json({ success: false, error: { code: 'NO_FINAL_TEST', message: 'Záverečný test neexistuje' } });
-        }
+        if (!finalTest?.questions) return res.status(400).json({ success: false, error: { code: 'NO_FINAL_TEST', message: 'Záverečný test neexistuje' } });
 
         const evaluatedAnswers = answers.map((answer, index) => {
             const question = finalTest.questions[index];

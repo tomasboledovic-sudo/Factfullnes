@@ -1,4 +1,4 @@
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 const config = {
     language: 'slovenčina',
@@ -187,14 +187,13 @@ async function callGeminiAPI(prompt, schema) {
             topK: 20,
             topP: 0.8,
             maxOutputTokens: 8192,
-            thinkingConfig: { thinkingBudget: 0 },
             responseMimeType: 'application/json',
             ...(schema ? { responseSchema: schema } : {})
         }
     };
 
     const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Gemini API timeout (45s)')), 45000)
+        setTimeout(() => reject(new Error('Gemini API timeout (55s)')), 55000)
     );
 
     const fetchPromise = fetch(url, {
