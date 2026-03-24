@@ -3,41 +3,81 @@ const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/
 const config = {
     language: 'slovenčina',
     maxContentChars: 2500,
-    finalTestQuestions: 6
+    finalTestQuestions: 8
 };
 
 // ─── Fallback content ────────────────────────────────────────────────────────
 
 function generateFallbackContent(topicData, testResults) {
     const incorrectAnswers = testResults.detailedAnswers.filter(a => !a.wasCorrect);
-    const sections = incorrectAnswers.length > 0
-        ? incorrectAnswers.slice(0, 3).map((a, i) => ({
+    const correctAnswers = testResults.detailedAnswers.filter(a => a.wasCorrect);
+
+    const sections = [];
+
+    if (incorrectAnswers.length > 0) {
+        sections.push({
             type: 'topic',
-            heading: a.questionText,
-            content: `**Správna odpoveď:** ${a.correctOption}\n\n${topicData.description}`,
-            order: i + 1
-        }))
-        : [{
+            heading: `Prehľad témy: ${topicData.title}`,
+            content: `${topicData.longDescription || topicData.description}\n\nV tejto téme sa zameriame na oblasti, kde máš priestor na zlepšenie.`,
+            order: 1
+        });
+
+        incorrectAnswers.slice(0, 3).forEach((a, i) => {
+            sections.push({
+                type: 'topic',
+                heading: `Správna odpoveď na otázku ${i + 1}`,
+                content: `**Otázka:** ${a.questionText}\n\n**Správna odpoveď:** ${a.correctOption}\n\nZapamätaj si túto odpoveď — je dôležitá pre pochopenie tejto témy.`,
+                order: i + 2
+            });
+        });
+    } else {
+        sections.push({
             type: 'topic',
             heading: topicData.title,
             content: topicData.longDescription || topicData.description,
             order: 1
-        }];
+        });
+        sections.push({
+            type: 'topic',
+            heading: 'Výborný výsledok!',
+            content: `Odpovedal si správne na všetky otázky v téme **${topicData.title}**. Pozri si kľúčové pojmy ešte raz pre pevnejšie porozumenie.`,
+            order: 2
+        });
+    }
+
     return { sections, totalDuration: sections.length * 2, keyTakeaways: sections.map(s => s.heading) };
 }
 
-function generateFallbackTest(topicData) {
-    return {
-        description: `Záverečný test na tému ${topicData.title}`,
-        questions: [
-            {
-                question: `Čo je hlavnou témou ${topicData.title}?`,
-                options: [topicData.description, 'Iná téma', 'Neviem', 'Niečo iné'],
-                correctOption: topicData.description,
-                explainsWeakness: 'Základné pochopenie témy'
-            }
-        ]
-    };
+function generateFallbackTest(topicData, testResults) {
+    const incorrectAnswers = (testResults?.detailedAnswers || []).filter(a => !a.wasCorrect);
+
+    const questions = incorrectAnswers.slice(0, 8).map((a, i) => ({
+        question: a.questionText,
+        options: shuffleOptions(a.correctOption, a.userSelectedOption),
+        correctOption: a.correctOption,
+        explainsWeakness: `Overenie pochopenia: ${a.questionText}`
+    }));
+
+    while (questions.length < 4) {
+        questions.push({
+            question: `Čo opisuje pojem "${topicData.title}"?`,
+            options: [
+                topicData.description,
+                'Proces fotosyntézy',
+                'Typ chemickej reakcie',
+                'Matematická funkcia'
+            ],
+            correctOption: topicData.description,
+            explainsWeakness: 'Základné pochopenie témy'
+        });
+    }
+
+    return { description: `Záverečný test: ${topicData.title}`, questions };
+}
+
+function shuffleOptions(correct, wrong) {
+    const options = [correct, wrong, `Iná možnosť`, `Žiadna z uvedených`];
+    return options.sort(() => Math.random() - 0.5);
 }
 
 // ─── Prompt builders ─────────────────────────────────────────────────────────
@@ -153,7 +193,7 @@ async function callGeminiAPI(prompt, schema) {
     };
 
     const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Gemini API timeout (25s)')), 25000)
+        setTimeout(() => reject(new Error('Gemini API timeout (45s)')), 45000)
     );
 
     const fetchPromise = fetch(url, {
@@ -317,5 +357,5 @@ export async function generateFinalTest(topicData, learningContent, originalTest
     }
 
     console.log('🔄 Používam fallback test...');
-    return generateFallbackTest(topicData);
+    return generateFallbackTest(topicData, originalTestResults);
 }
