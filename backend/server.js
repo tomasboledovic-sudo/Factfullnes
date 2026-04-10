@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import multer from 'multer';
 import { readFileSync } from 'fs';
 
 // Load .env in dev (Vercel injects env vars automatically in production)
@@ -25,9 +26,11 @@ import topicRoutes from './routes/topicRoutes.js';
 import sessionRoutes from './routes/sessionRoutes.js';
 import contentRoutes from './routes/contentRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import { listFiles, uploadFile, deleteFile, summarizeFile } from './controllers/filesController.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
 
 app.use(cors());
 app.use(express.json());
@@ -42,6 +45,12 @@ app.use('/api/topics', topicRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/sessions', assessmentRoutes);
 app.use('/api/sessions', contentRoutes);
+
+// File management routes
+app.get('/api/files', listFiles);
+app.post('/api/files', upload.single('file'), uploadFile);
+app.delete('/api/files/:id', deleteFile);
+app.post('/api/files/:id/summarize', summarizeFile);
 
 app.get('/api/health', (req, res) => {
     res.json({ success: true, message: 'Server is running', timestamp: new Date().toISOString() });
