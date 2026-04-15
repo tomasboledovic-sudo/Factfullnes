@@ -20,8 +20,16 @@ function HomePage() {
   const fetchTopics = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/topics`);
-      const data = await response.json();
-      
+      const ct = response.headers.get('content-type') || '';
+      const text = await response.text();
+      if (!ct.includes('application/json')) {
+        console.error('[topics] Neočakávaná odpoveď (nie JSON). Skontroluj Vercel /api a Root Directory.)', response.status, text.slice(0, 200));
+        setError(
+          `Server vrátil odpoveď ${response.status} (nie JSON). Pri jednom Vercel projekte musí byť koreň repa a fungovať /api — pozri DEPLOY.md.`
+        );
+        return;
+      }
+      const data = JSON.parse(text);
       if (data.success) {
         setTopics(data.data);
       } else {
