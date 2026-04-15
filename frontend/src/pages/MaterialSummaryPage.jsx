@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 import Navigation from '../components/Navigation';
 import './MaterialSummaryPage.css';
@@ -20,6 +21,7 @@ function fileIcon(type) {
 export default function MaterialSummaryPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { token, getAuthHeaders } = useAuth();
 
   const [file, setFile] = useState(null);
   const [loadingFile, setLoadingFile] = useState(true);
@@ -28,8 +30,12 @@ export default function MaterialSummaryPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
     fetchFile();
-  }, [id]);
+  }, [id, token]);
 
   useEffect(() => {
     if (file && !summary && !loadingSummary) {
@@ -38,10 +44,15 @@ export default function MaterialSummaryPage() {
   }, [file]);
 
   async function fetchFile() {
+    if (!token) return;
     setLoadingFile(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE_URL}/files`);
+      const res = await fetch(`${API_BASE_URL}/files`, { headers: getAuthHeaders() });
+      if (res.status === 401) {
+        navigate('/login');
+        return;
+      }
       const data = await res.json();
       if (!data.success) throw new Error(data.error?.message);
       const found = data.data.find(f => String(f.id) === String(id));
@@ -60,9 +71,20 @@ export default function MaterialSummaryPage() {
     setError(null);
     setSummary(null);
     try {
-      const res = await fetch(`${API_BASE_URL}/files/${file.id}/summarize`, { method: 'POST' });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error?.message || 'Zhrnutie sa nepodarilo vygenerovať');
+      const res = await fetch(`${API_BASE_URL}/files/${file.id}/summarize`, {
+        method: 'POST',
+        headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
+        body: '{}'
+      });
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error(`Server vrátil neplatnú odpoveď (HTTP ${res.status})`);
+      }
+      if (!res.ok || !data.success) {
+        throw new Error(data.error?.message || `Zhrnutie zlyhalo (HTTP ${res.status})`);
+      }
       setSummary(data.data.summary);
     } catch (e) {
       setError(e.message);
@@ -78,7 +100,7 @@ export default function MaterialSummaryPage() {
       <div className="summary-container">
         <div className="summary-header">
           <button className="back-btn" onClick={() => navigate('/admin')}>
-            ← Späť na Admin
+            ← Späť na nahrané súbory
           </button>
           <h1>AI Zhrnutie</h1>
         </div>
@@ -101,13 +123,18 @@ export default function MaterialSummaryPage() {
                   {formatSize(file.file_size)} · {file.file_type || 'neznámy typ'}
                 </div>
               </div>
-              <button
-                className="regenerate-btn"
-                onClick={generateSummary}
-                disabled={loadingSummary}
-              >
-                {loadingSummary ? '⏳ Generujem...' : '🔄 Znova generovať'}
-              </button>
+              <div className="file-info-actions">
+                <Link to={`/admin/materials/${id}/quiz`} className="quiz-link-btn">
+                  📝 Test z dokumentu
+                </Link>
+                <button
+                  className="regenerate-btn"
+                  onClick={generateSummary}
+                  disabled={loadingSummary}
+                >
+                  {loadingSummary ? '⏳ Generujem...' : '🔄 Znova generovať'}
+                </button>
+              </div>
             </div>
 
             {/* Error */}

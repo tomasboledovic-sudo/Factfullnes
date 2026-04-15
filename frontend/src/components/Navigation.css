@@ -107,25 +107,6 @@
   text-overflow: ellipsis;
 }
 
-.nav-admin-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.875rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #94a3b8;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  text-decoration: none;
-  transition: color 0.2s, background 0.2s;
-}
-.nav-admin-btn:hover {
-  color: #e2e8f0;
-  background: rgba(255,255,255,0.09);
-}
-
 .nav-logout-btn {
   background: transparent;
   border: none;

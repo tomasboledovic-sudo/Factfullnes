@@ -5,6 +5,14 @@ import { API_BASE_URL } from '../config';
 import Navigation from '../components/Navigation';
 import './LoginPage.css';
 
+/** Presmerovanie na /admin pre účet admin (meno alebo email pred @). */
+function isAdminUser(user) {
+  if (!user) return false;
+  const name = String(user.name || '').trim().toLowerCase();
+  const local = String(user.email || '').split('@')[0]?.trim().toLowerCase() || '';
+  return name === 'admin' || local === 'admin';
+}
+
 function LoginPage() {
   const [activeTab, setActiveTab] = useState('login');
   const [loading, setLoading] = useState(false);
@@ -31,7 +39,7 @@ function LoginPage() {
 
       if (data.success) {
         login(data.data.user, data.data.token);
-        navigate('/');
+        navigate(isAdminUser(data.data.user) ? '/admin' : '/');
       } else {
         setError(data.error?.message || 'Nepodarilo sa prihlásiť');
       }

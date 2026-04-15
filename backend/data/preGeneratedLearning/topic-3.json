@@ -1,0 +1,141 @@
+{
+  "topicId": 3,
+  "byQuestionId": {
+    "q1-pre-topic3": {
+      "heading": "Zľava v percentách",
+      "content": "**Zľava 25 %** znamená, že platíš **75 %** pôvodnej ceny: 80 × 0,75 = **60 €**. Použi vzorec **nová = pôvodná × (1 − zľava/100)**. Pri viacerých zľavách si pozri, či sa druhá počíta z už zníženej sumy — v obchodoch to býva častejšie.\n\n**Prepojenie pojmov:** Hľadaj medzi dvoma pojmami z textu jednu vetu, ktorá ich spája príčinou a následkom. Tak sa učíš sieťové myslenie namiesto izolovaných definícií. V každodennom živote si potom vieš rýchlejšie vybrať, ktoré pravidlo použiť, lebo vidíš kontext, nie len heslo z učebnice."
+    },
+    "q2-pre-topic3": {
+      "heading": "Percentá z čísla",
+      "content": "**x % z A** = (x/100) × A. Pre 15 % z 200: 0,15 × 200 = **30**. Ak výsledok nesedí, skontroluj desatinnú čiarku — 15 % nie je 0,015. Rýchly odhad: 10 % z čísla posunie čiarku o jedno miesto vľavo.\n\n**Spojenie s realitou:** Premysli si situáciu za posledný týždeň, kde sa podobná logika mohla hodiť, a zapíš jednu vetu, čo by si urobil inak s novými vedomosťami. Pri číslach si vždy over jednotky a to, či percento počítajú z celej sumy alebo z už zníženej. Takto sa vyhneš chybám, ktoré sú v reklame aj v správach zámerne matúce."
+    },
+    "q3-pre-topic3": {
+      "heading": "Postupné zľavy",
+      "content": "Najprv 20 %: 100 × 0,8 = 80. Potom 10 % z80: 80 × 0,9 = **72 €**. Nie je to súčet 20 % + 10 % = 30 % z pôvodnej, lebo druhé percento má **iný základ**. Násobíš faktory: ×0,8 ×0,9.\n\n**Motivácia a dôsledky:** Zamysli sa, prečo by ťa mohlo zaujímať práve toto pravidlo v budúcnosti — úspora peňazí, lepší spánok, menšie riziko podvodu alebo istota pri skúške. Keď vidíš zmysel, pamäť pracuje ochotnejšie. Krátky zápis „prečo mi to pomôže“ na konci sekcie často stačí na to, aby si sa k látke vrátil aj o týždeň."
+    },
+    "q4-pre-topic3": {
+      "heading": "Podiel v percentách",
+      "content": "Koľko % je a z b? Vzorec **(a/b)×100**. Tu 15/60 = 0,25 → **25 %**. Nezamení čitateľa a menovateľa — „zo60“ znamená 60 v menovateli.\n\n**Bezpečnosť a zdravý rozum:** Pri odporúčaniach týkajúcich sa zdravia, financií alebo IT platí: ak niečo znie príliš jednoducho alebo naliehavo, spomaľ. Spoj si fakt s dôveryhodným zdrojom alebo s pravidlom, ktoré si práve precvičil. V učení platí, že spoľahlivosť je dôležitejšia ako rýchlosť — lepšie pomalšie a presne ako rýchlo a skreslene."
+    },
+    "q5-pre-topic3": {
+      "heading": "Zvýšenie o percento",
+      "content": "**Zvýšenie o 20 %** = nová hodnota je **120 %** pôvodnej: 50 × 1,2 = **60 €**. Omyl býva pripočítať „20“ namiesto 20 % zo základu.\n\n**Kontrola pochopenia:** Prever si pravidlo jednoduchou skúškou: „Platí to vždy, alebo len za istých podmienok?“ Ak nájdeš výnimku, dopíš ju do poznámky — presne tam býva zdroj omylu v testoch. Krátke opakovanie zajtra, hoci len pár minút, výrazne posilní pamäť oproti jednorazovému čítaniu."
+    },
+    "q6-pre-topic3": {
+      "heading": "Zníženie a zvýšenie",
+      "content": "100 → −50 % → 50 → +50 % → **75**, nie 100. Percentá sa násobia na **aktuálnu** hodnotu, nie sčítavajú ako nulová zmena. Faktory 0,5 × 1,5 = 0,75.\n\n**Zhrnutie v jednej vete:** Skús na záver sekcie napísať jednu vetu, ktorá obsahuje hlavný pojem a jeho dôsledok bez nových informácií. Ak sa ti to nepodarí, prečítaj odsek ešte raz. Táto disciplína zvyšuje kvalitu učenia viac než pasívne podčiarkovanie, ktoré často len vyzerá ako pokrok."
+    },
+    "q7-pre-topic3": {
+      "heading": "Malé percentá",
+      "content": "5 % z 400: 400 × 0,05 = **20**. Pomôcka: 10 % je 40, polovica z toho je 20.\n\n**Štruktúra odpovede:** Keď si spätne prechádzaš chybu, rozdeľ si ju na „čo presne som zle interpretoval“ a „aký krok výpočtu alebo logiky som vynechal“. Tým sa nenaučíš len správnu voľbu A/B, ale aj postup, ktorý zopakuješ pri podobných úlohách. Pri dlhších témach si pomôž krátkym zoznamom bodov na konci dňa."
+    },
+    "q8-pre-topic3": {
+      "heading": "Dvakrát 10 %",
+      "content": "Dve zľavy 10 %: 0,9 × 0,9 = 0,81, teda **19 %** celkom, nie 20 %. Rozdiel rastie s väčšími percentami.\n\n**Praktický krok:** Vezmi si papier alebo poznámku v telefóne a rozpíš výpočet po jednom kroku — aj keď ti neskôr pôjde „naspamäť“, spočiatku ťa to ochráni pred chybami pri úpravách. Skús si tiež vymyslieť protipríklad: kedy by podobné tvrdenie neplatilo? Tak lepšie pochopíš hranice pravidla a nebudeš ho používať slepo mimo kontextu."
+    }
+  },
+  "allCorrectSections": [
+    {
+      "heading": "Percentá v praxi",
+      "content": "Máš vstupný test bez chýb. Pamätaj: percento na desatinné číslo, násobenie základu, pri viacerých zmenách **násob faktory**. Pri e-shopoch čítaj, či je zľava z pôvodnej alebo už akciovej ceny.\n\n**Prepojenie pojmov:** Hľadaj medzi dvoma pojmami z textu jednu vetu, ktorá ich spája príčinou a následkom. Tak sa učíš sieťové myslenie namiesto izolovaných definícií. V každodennom živote si potom vieš rýchlejšie vybrať, ktoré pravidlo použiť, lebo vidíš kontext, nie len heslo z učebnice."
+    },
+    {
+      "heading": "Checklist",
+      "content": "Pred platbou odhadni 10 % a 1 %; ostatné percentá často zložíš z nich.\n\n**Merateľná skúška:** Ak sa dá, over si výsledok spätným výpočtom alebo inou metódou — napríklad iným vzorcom, ktorý vedie k tomu istému. Pri pravdepodobnosti si nakresli strom možností alebo vypíš všetky výsledky, ak ich nie je veľa. Pri percentách si zvoľ konkrétne čísla a prepočítaj ich ručne aspoň raz, kým si vytvoríš návyk."
+    }
+  ],
+  "finalTest": {
+    "testFormat": "mc_4",
+    "description": "Záverečný test: percentá",
+    "questions": [
+      {
+        "question": "Koľko zaplatíš za 120 € tovar so zľavou 30 %?",
+        "options": [
+          "74 €",
+          "84 €",
+          "90 €",
+          "96 €"
+        ],
+        "correctOption": "84 €",
+        "explainsWeakness": "Platíš 70 % z 120."
+      },
+      {
+        "question": "Koľko je 12 % z 250?",
+        "options": [
+          "25",
+          "30",
+          "35",
+          "40"
+        ],
+        "correctOption": "30",
+        "explainsWeakness": "0,12 × 250."
+      },
+      {
+        "question": "Cena 200 € sa zvýši o 15 %. Nová cena?",
+        "options": [
+          "215 €",
+          "220 €",
+          "230 €",
+          "240 €"
+        ],
+        "correctOption": "230 €",
+        "explainsWeakness": "200 × 1,15."
+      },
+      {
+        "question": "45 je koľko percent z 180?",
+        "options": [
+          "20 %",
+          "25 %",
+          "30 %",
+          "35 %"
+        ],
+        "correctOption": "25 %",
+        "explainsWeakness": "45/180."
+      },
+      {
+        "question": "Na 80 € je 10 % zľava a potom 5 % z už zníženej. Finálna cena?",
+        "options": [
+          "66,4 €",
+          "68 €",
+          "68,4 €",
+          "70 €"
+        ],
+        "correctOption": "68,4 €",
+        "explainsWeakness": "80 × 0,9 × 0,95."
+      },
+      {
+        "question": "Hodnotu znížim o 40 % a výsledok zvýšim o 40 %. Som späť na štarte?",
+        "options": [
+          "Áno",
+          "Nie",
+          "Vždy",
+          "Len pri 100"
+        ],
+        "correctOption": "Nie",
+        "explainsWeakness": "0,6 × 1,4 ≠ 1."
+      },
+      {
+        "question": "Koľko je 2,5 % z 1 000?",
+        "options": [
+          "20",
+          "25",
+          "30",
+          "35"
+        ],
+        "correctOption": "25",
+        "explainsWeakness": "0,025 × 1000."
+      },
+      {
+        "question": "„Druhá položka −50 %“ pri dvoch rovnako drahých kusoch je zhruba zľava z celku:",
+        "options": [
+          "25 %",
+          "33 %",
+          "40 %",
+          "50 %"
+        ],
+        "correctOption": "25 %",
+        "explainsWeakness": "Priemer cien 100 % a 50 %."
+      }
+    ]
+  }
+}

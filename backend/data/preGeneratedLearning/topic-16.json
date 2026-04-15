@@ -1,0 +1,141 @@
+{
+  "topicId": 16,
+  "byQuestionId": {
+    "q1-pre-topic16": {
+      "heading": "Spacing",
+      "content": "**Rozložené opakovanie** poráža hromadenie v jeden večer — exponenciálne intervaly sú efektívne.\n\n**Kontrola pochopenia:** Prever si pravidlo jednoduchou skúškou: „Platí to vždy, alebo len za istých podmienok?“ Ak nájdeš výnimku, dopíš ju do poznámky — presne tam býva zdroj omylu v testoch. Krátke opakovanie zajtra, hoci len pár minút, výrazne posilní pamäť oproti jednorazovému čítaniu."
+    },
+    "q2-pre-topic16": {
+      "heading": "Retrieval",
+      "content": "**Testovanie** (vyvolávanie) je učebná metóda, nie len hodnotenie.\n\n**Merateľná skúška:** Ak sa dá, over si výsledok spätným výpočtom alebo inou metódou — napríklad iným vzorcom, ktorý vedie k tomu istému. Pri pravdepodobnosti si nakresli strom možností alebo vypíš všetky výsledky, ak ich nie je veľa. Pri percentách si zvoľ konkrétne čísla a prepočítaj ich ručne aspoň raz, kým si vytvoríš návyk."
+    },
+    "q3-pre-topic16": {
+      "heading": "Multitasking",
+      "content": "Mozog **prepína** — pri náročných úlohách klesá kvalita.\n\n**Učenie do hĺbky:** Po prečítaní si na 30 sekúnd zavri oči a zrekapituluj tri kľúčové slová z textu. Ak si na niektoré nespomenie, prečítaj odsek ešte raz a zvýrazni si ho. **Metóda „vysvetli inému“** funguje aj v tichosti: predstav si, že vysvetľuješ kamarátovi, ktorý tému nevidel — odhalíš diery v chápaní skôr, než príde záverečný test."
+    },
+    "q4-pre-topic16": {
+      "heading": "Prestávky",
+      "content": "**Pomodoro** a podobné režimy bránia vyčerpaniu pozornosti.\n\n**Spojenie s realitou:** Premysli si situáciu za posledný týždeň, kde sa podobná logika mohla hodiť, a zapíš jednu vetu, čo by si urobil inak s novými vedomosťami. Pri číslach si vždy over jednotky a to, či percento počítajú z celej sumy alebo z už zníženej. Takto sa vyhneš chybám, ktoré sú v reklame aj v správach zámerne matúce."
+    },
+    "q5-pre-topic16": {
+      "heading": "Spánok",
+      "content": "Konsolidácia pamäte prebieha aj počas **spánku**.\n\n**Prepojenie pojmov:** Hľadaj medzi dvoma pojmami z textu jednu vetu, ktorá ich spája príčinou a následkom. Tak sa učíš sieťové myslenie namiesto izolovaných definícií. V každodennom živote si potom vieš rýchlejšie vybrať, ktoré pravidlo použiť, lebo vidíš kontext, nie len heslo z učebnice.\n\n**Merateľná skúška:** Ak sa dá, over si výsledok spätným výpočtom alebo inou metódou — napríklad iným vzorcom, ktorý vedie k tomu istému. Pri pravdepodobnosti si nakresli strom možností alebo vypíš všetky výsledky, ak ich nie je veľa. Pri percentách si zvoľ konkrétne čísla a prepočítaj ich ručne aspoň raz, kým si vytvoríš návyk."
+    },
+    "q6-pre-topic16": {
+      "heading": "Interleaving",
+      "content": "Miešanie typov úloh podporuje **rozpoznávanie** vzorcov.\n\n**Praktický krok:** Vezmi si papier alebo poznámku v telefóne a rozpíš výpočet po jednom kroku — aj keď ti neskôr pôjde „naspamäť“, spočiatku ťa to ochráni pred chybami pri úpravách. Skús si tiež vymyslieť protipríklad: kedy by podobné tvrdenie neplatilo? Tak lepšie pochopíš hranice pravidla a nebudeš ho používať slepo mimo kontextu."
+    },
+    "q7-pre-topic16": {
+      "heading": "Highlight",
+      "content": "Bez **elaborácie** a testov je zvýrazňovanie ilúzia pokroku.\n\n**Učenie do hĺbky:** Po prečítaní si na 30 sekúnd zavri oči a zrekapituluj tri kľúčové slová z textu. Ak si na niektoré nespomenie, prečítaj odsek ešte raz a zvýrazni si ho. **Metóda „vysvetli inému“** funguje aj v tichosti: predstav si, že vysvetľuješ kamarátovi, ktorý tému nevidel — odhalíš diery v chápaní skôr, než príde záverečný test."
+    },
+    "q8-pre-topic16": {
+      "heading": "Metakognícia",
+      "content": "**Plánuj, sleduj, upravuj** stratégiu — uč sa učiť.\n\n**Odolnosť voči omylom:** **Ľudský** mozog má rád skratky; preto si pri náročnejších témach vyhraď pár minút na „pomalé myslenie“. Prepni telefón do režimu bez upozornení, prečítaj odsek znova a skús ho parafrázovať vlastnými slovami. Ak parafráza nesedí s originálom, ešte nechápeš — to je signál na ďalšie čítanie, nie na preskakovanie."
+    }
+  },
+  "allCorrectSections": [
+    {
+      "heading": "Efektívne návyky",
+      "content": "Skvelé výsledky. Kalendár opakovania + self-testy + spánok.\n\n**Štruktúra odpovede:** Keď si spätne prechádzaš chybu, rozdeľ si ju na „čo presne som zle interpretoval“ a „aký krok výpočtu alebo logiky som vynechal“. Tým sa nenaučíš len správnu voľbu A/B, ale aj postup, ktorý zopakuješ pri podobných úlohách. Pri dlhších témach si pomôž krátkym zoznamom bodov na konci dňa."
+    },
+    {
+      "heading": "Feynman",
+      "content": "Vysvetli tému jednoducho — odhalíš diery.\n\n**Odolnosť voči omylom:** **Ľudský** mozog má rád skratky; preto si pri náročnejších témach vyhraď pár minút na „pomalé myslenie“. Prepni telefón do režimu bez upozornení, prečítaj odsek znova a skús ho parafrázovať vlastnými slovami. Ak parafráza nesedí s originálom, ešte nechápeš — to je signál na ďalšie čítanie, nie na preskakovanie."
+    }
+  ],
+  "finalTest": {
+    "testFormat": "mc_4",
+    "description": "Záverečný test: učenie",
+    "questions": [
+      {
+        "question": "Retrieval practice je:",
+        "options": [
+          "pasívne čítanie",
+          "aktívne si vybavovanie",
+          "kopírovanie",
+          "vyhýbanie sa chybám"
+        ],
+        "correctOption": "aktívne si vybavovanie",
+        "explainsWeakness": "Definícia."
+      },
+      {
+        "question": "Distribuované vs. hromadené opakovanie:",
+        "options": [
+          "hromadené vždy lepšie",
+          "distribuované často lepšie pre trvanlivosť",
+          "rovnaké",
+          "neexistuje výskum"
+        ],
+        "correctOption": "distribuované často lepšie pre trvanlivosť",
+        "explainsWeakness": "Spacing."
+      },
+      {
+        "question": "Desirable difficulties znamenajú:",
+        "options": [
+          "učenie musí byť vždy ľahké",
+          "primeraná náročnosť môže pomôcť trvalosti",
+          "žiadne chyby",
+          "iba rýchlosť"
+        ],
+        "correctOption": "primeraná náročnosť môže pomôcť trvalosti",
+        "explainsWeakness": "Bjork."
+      },
+      {
+        "question": "Dual coding kombinuje:",
+        "options": [
+          "iba zvuk",
+          "verbálne a vizuálne reprezentácie",
+          "iba spánok",
+          "iba highlight"
+        ],
+        "correctOption": "verbálne a vizuálne reprezentácie",
+        "explainsWeakness": "Mayer/Paivio."
+      },
+      {
+        "question": "Chyby pri učení:",
+        "options": [
+          "vždy škodia",
+          "môžu byť informačné pri oprave",
+          "treba sa im vyhnúť úplne",
+          "nahrádzajú spánok"
+        ],
+        "correctOption": "môžu byť informačné pri oprave",
+        "explainsWeakness": "Errorful learning."
+      },
+      {
+        "question": "Plánovanie štúdia:",
+        "options": [
+          "iba motivácia",
+          "konkrétny čas a ciele zvyšujú dodržiavanie",
+          "náhoda",
+          "len v noci"
+        ],
+        "correctOption": "konkrétny čas a ciele zvyšujú dodržiavanie",
+        "explainsWeakness": "Implementácia."
+      },
+      {
+        "question": "Overlearning bez spacing:",
+        "options": [
+          "vždy optimálne",
+          "môže dať krátkodobú fluency, spacing je kľúčové",
+          "nahradí spánok",
+          "nepoužíva sa"
+        ],
+        "correctOption": "môže dať krátkodobú fluency, spacing je kľúčové",
+        "explainsWeakness": "Nuansy."
+      },
+      {
+        "question": "Interleaving pri cvičení:",
+        "options": [
+          "vždy zmätok bez úžitku",
+          "môže zlepšiť rozlíšenie medzi konceptmi",
+          "iba pre deti",
+          "zakázané"
+        ],
+        "correctOption": "môže zlepšiť rozlíšenie medzi konceptmi",
+        "explainsWeakness": "Rozlíšenie."
+      }
+    ]
+  }
+}

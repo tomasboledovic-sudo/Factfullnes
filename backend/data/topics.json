@@ -21,13 +21,13 @@
   },
   {
     "id": 3,
-    "title": "Protostómy",
-    "category": "Biológia",
-    "difficulty": "intermediate",
-    "description": "Objavte fascinujúcu skupinu živočíchov s jedinečným vývojom",
-    "longDescription": "Protostómy sú veľká skupina živočíchov, kde sa ústa vyvíjajú z blastoporu počas embryonálneho vývoja.",
+    "title": "Percentá a zľavy v obchode",
+    "category": "Životné zručnosti",
+    "difficulty": "beginner",
+    "description": "Zľavy, DPH a reálna cena — aby ste vedeli, čo platíte",
+    "longDescription": "Naučte sa počítať percentá pri zľavách, postupné zľavy a orientovať sa v cenách ako spotrebiteľ.",
     "estimatedDuration": 10,
-    "coverImage": "/images/topics/protostomes.jpg"
+    "coverImage": "/images/topics/pythagoras.jpg"
   },
   {
     "id": 4,
@@ -41,13 +41,13 @@
   },
   {
     "id": 5,
-    "title": "Výpočet Kalórií",
-    "category": "Výživa",
+    "title": "Pravdepodobnosť v každodennom živote",
+    "category": "Matematika",
     "difficulty": "beginner",
-    "description": "Pochopte, ako počítať kalórie a riadiť energetický príjem",
-    "longDescription": "Naučte sa základy výpočtu kalórií, makroživín a plánovania stravy podľa vašich cieľov.",
+    "description": "Šance, kocka a časté omyly pri náhodných javoch",
+    "longDescription": "Pochopte základy pravdepodobnosti, nezávislé udalosti a prečo minulosť nemení férovú kocku.",
     "estimatedDuration": 10,
-    "coverImage": "/images/topics/calories.jpg"
+    "coverImage": "/images/topics/exponents.jpg"
   },
   {
     "id": 6,
@@ -98,6 +98,75 @@
     "longDescription": "Naučte sa rozdiely medzi List, Set, Map a Vector - kedy použiť ktorú dátovú štruktúru.",
     "estimatedDuration": 10,
     "coverImage": "/images/topics/data-structures.jpg"
+  },
+  {
+    "id": 11,
+    "title": "Zdravý spánok (základy)",
+    "category": "Zdravie",
+    "difficulty": "beginner",
+    "description": "Rytmus, svetlo a návyky pre lepší oddych",
+    "longDescription": "Základy spánkovej hygieny, vplyv svetla a kofeínu a prečo má zmysel stabilný čas budíka.",
+    "estimatedDuration": 10,
+    "coverImage": "/images/topics/stretching.jpg"
+  },
+  {
+    "id": 12,
+    "title": "Ako čítať výživové tabuľky",
+    "category": "Výživa",
+    "difficulty": "beginner",
+    "description": "Energia, cukry, soľ a porcie na obale",
+    "longDescription": "Naučte sa čítať etikety potravín, porovnávať výrobky a nenechať sa zmiasť marketingom.",
+    "estimatedDuration": 10,
+    "coverImage": "/images/topics/calories.jpg"
+  },
+  {
+    "id": 13,
+    "title": "Základy investovania: riziko vs. výnos",
+    "category": "Financie",
+    "difficulty": "beginner",
+    "description": "Čo znamená riziko, diverzifikácia a inflácia",
+    "longDescription": "Orientujte sa v základných pojmoch investovania bez sľubov „bez rizika“ a pochopte časový horizont.",
+    "estimatedDuration": 10,
+    "coverImage": "/images/topics/data-structures.jpg"
+  },
+  {
+    "id": 14,
+    "title": "Digitálna bezpečnosť pre bežného človeka",
+    "category": "Technológie",
+    "difficulty": "beginner",
+    "description": "Heslá, 2FA a obrana proti phishingu",
+    "longDescription": "Praktické kroky na ochranu účtov, dát a súkromia v digitálnom svete.",
+    "estimatedDuration": 10,
+    "coverImage": "/images/topics/data-structures.jpg"
+  },
+  {
+    "id": 15,
+    "title": "Klimatické zmeny: fakty a zjednodušenia",
+    "category": "Veda",
+    "difficulty": "beginner",
+    "description": "Skleníkový efekt, klíma vs. počasie a čo vieme meraním",
+    "longDescription": "Rozlíšte základné fyzikálne fakty od zjednodušení a pochopte rozdiel medzi počasím a klímou.",
+    "estimatedDuration": 10,
+    "coverImage": "/images/topics/cell.jpg"
+  },
+  {
+    "id": 16,
+    "title": "Efektívne učenie",
+    "category": "Vzdelávanie",
+    "difficulty": "beginner",
+    "description": "Spaced repetition, testovanie a sústredenie",
+    "longDescription": "Ako sa učiť múdrejšie: rozloženie opakovania, aktívne vyvolávanie a úlohy jedna po druhej.",
+    "estimatedDuration": 10,
+    "coverImage": "/images/topics/color-theory.jpg"
+  },
+  {
+    "id": 17,
+    "title": "Základy prvej pomoci (orientačne)",
+    "category": "Zdravie",
+    "difficulty": "beginner",
+    "description": "Tiesňové číslo, KPR a kedy volať pomoc",
+    "longDescription": "Orientačné pravidlá prvej pomoci — nie náhrada certifikovaného kurzu. Kedy volať 112 a ako neškodiť.",
+    "estimatedDuration": 10,
+    "coverImage": "/images/topics/stretching.jpg"
   }
 ]
-

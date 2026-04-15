@@ -1,0 +1,141 @@
+{
+  "topicId": 7,
+  "byQuestionId": {
+    "q1-pre-topic7": {
+      "heading": "Čo je mocnina",
+      "content": "**Mocnina** vyjadruje, koľkokrát sa rovnaké číslo (základ) násobí samo sebou. Napríklad **5 na tretiu** znamená **5 × 5 × 5** — základ 5, exponent 3. Nie je to obyčajné násobenie dvoch rôznych čísel ani sčítanie. Pri učení si pamätaj: **základ** je číslo, ktoré opakuješ, **exponent** hovorí, koľkokrát. Krátke opakovanie: **2 na štvrtú** = 2×2×2×2 = 16. Ak si mocninu zamieňal s inou operáciou, skús si každý zápis najprv rozpísať ako súčin rovnakých činiteľov."
+    },
+    "q2-pre-topic7": {
+      "heading": "Zápis „dva na tretiu“",
+      "content": "**Dva na tretiu** znamená **trikrát násobiť dvojku**: 2 × 2 × 2 = 8. Nie je to 2+3 ani 2×3. Exponent **3** určuje počet násobení základu **2**. Podobne **10 na druhú** = 10×10 = 100. Pri riešení vždy spočítaj, koľko rovnakých činiteľov máš v súčine — to je presne význam mocniny."
+    },
+    "q3-pre-topic7": {
+      "heading": "Nultá mocnina",
+      "content": "Pre **ľubovoľné nenulové číslo a** platí v školskej matematike **a na nultú = 1**. Preto tvrdenie „akékoľvek číslo na 0-tú mocninu je 1“ berieme ako **pravda** pri bežných úlohách. Pomôcka: mocniny s klesajúcim exponentom súvisia s delením; zníženie exponentu o 1 často zodpovedá deleniu základom, až dôjdeme k exponentu 0 a hodnote 1."
+    },
+    "q4-pre-topic7": {
+      "heading": "Druhá mocnina čísla 5",
+      "content": "**Päť na druhú** znamená **5 × 5**, teda **25**. Nie 5×2 (to je 10) ani súčet troch pätiek. Druhá mocnina je „číslo krát samo sebou“. Skontroluj si: **3 na druhú** = 9, **4 na druhú** = 16. Pri výpočte si môžeš pod sebou zapísať súčin dvoch rovnakých činiteľov, aby si sa vyhol zámene s násobením dvojkou."
+    },
+    "q5-pre-topic7": {
+      "heading": "Základ a exponent",
+      "content": "V zápise **3 na štvrtú** je **základ** číslo **3** (čo umocňujeme) a **4** je **exponent** (koľkokrát ho násobíme). Číslo 4 teda nie je základ. Pamätaj: pri bežnom zápise je základ dole, **hore** je exponent. **3 na štvrtú** = 3×3×3×3 = 81.\n\n**Kontrola pochopenia:** Prever si pravidlo jednoduchou skúškou: „Platí to vždy, alebo len za istých podmienok?“ Ak nájdeš výnimku, dopíš ju do poznámky — presne tam býva zdroj omylu v testoch. Krátke opakovanie zajtra, hoci len pár minút, výrazne posilní pamäť oproti jednorazovému čítaniu."
+    },
+    "q6-pre-topic7": {
+      "heading": "Záporný exponent",
+      "content": "**Záporný exponent** neznamená, že výsledok musí byť záporné číslo. Znamená **prevrátenú hodnotu** k mocnine so základom a opačným exponentom: napríklad **dva na mínus tretiu** = 1/(2×2×2) = 1/8, čo je **kladné**. Výsledok môže byť záporný len v situáciách so záporným základom a vhodným exponentom. Preto tvrdenie „mocnina so záporným exponentom je vždy záporná“ je **nepravda**."
+    },
+    "q7-pre-topic7": {
+      "heading": "Číslo n v zápise „a na n“",
+      "content": "V zápise **a na n** je **n** **exponent** (niekedy **mocniteľ**) — hovorí, koľkokrát násobíme základ **a**. **Základ** je **a**, nie n. Príklad: v **10 na šiestu** je exponent 6, základ 10, hodnota 1 000 000. Pri teste si vždy označ horné číslo: to je exponent.\n\n**Motivácia a dôsledky:** Zamysli sa, prečo by ťa mohlo zaujímať práve toto pravidlo v budúcnosti — úspora peňazí, lepší spánok, menšie riziko podvodu alebo istota pri skúške. Keď vidíš zmysel, pamäť pracuje ochotnejšie. Krátky zápis „prečo mi to pomôže“ na konci sekcie často stačí na to, aby si sa k látke vrátil aj o týždeň."
+    },
+    "q8-pre-topic7": {
+      "heading": "Druhá mocnina",
+      "content": "**Druhá mocnina** čísla je **číslo umocnené na druhú**, teda **násobenie čísla samo sebou**: **x na druhú** = x × x. Nie je to násobenie dvojkou ani delenie dvojkou. Geometricky: druhá mocnina dĺžky strany dáva plochu štvorca. Príklad: **7 na druhú** = 49.\n\n**Bezpečnosť a zdravý rozum:** Pri odporúčaniach týkajúcich sa zdravia, financií alebo IT platí: ak niečo znie príliš jednoducho alebo naliehavo, spomaľ. Spoj si fakt s dôveryhodným zdrojom alebo s pravidlom, ktoré si práve precvičil. V učení platí, že spoľahlivosť je dôležitejšia ako rýchlosť — lepšie pomalšie a presne ako rýchlo a skreslene."
+    }
+  },
+  "allCorrectSections": [
+    {
+      "heading": "Opakovanie: mocniny",
+      "content": "Na vstupnom teste si nepochybil — skvelé. Stručne si upevni pojmy: **základ** je číslo v spodnej časti zápisu mocniny, **exponent** určuje počet násobení. Platí **a na nultú = 1** (pre a rôzne od 0) a **a na mínus n** = 1 deleno (**a na n**). **Druhá mocnina** je súčin čísla samého so sebou. Pri ďalšom čítaní si vyber jeden príklad (napr. 2 na tretiu a 5 na druhú) a spočítaj ho krok za krokom ako súčin, nie len z pamäte."
+    },
+    {
+      "heading": "Tip pred záverečným testom",
+      "content": "Pred kvízom si na papier zapíš napríklad **3 na štvrtú** = 3×3×3×3 a označ pri tom základ aj exponent. Ak vieš rýchlo rozpoznať túto štruktúru pri ľubovoľnom príklade, menej často zameníš mocninu za obyčajné násobenie alebo sčítanie.\n\n**Bezpečnosť a zdravý rozum:** Pri odporúčaniach týkajúcich sa zdravia, financií alebo IT platí: ak niečo znie príliš jednoducho alebo naliehavo, spomaľ. Spoj si fakt s dôveryhodným zdrojom alebo s pravidlom, ktoré si práve precvičil. V učení platí, že spoľahlivosť je dôležitejšia ako rýchlosť — lepšie pomalšie a presne ako rýchlo a skreslene."
+    }
+  ],
+  "finalTest": {
+    "testFormat": "mc_4",
+    "description": "Záverečný test: mocniny",
+    "questions": [
+      {
+        "question": "Koľko je 4 na tretiu?",
+        "options": [
+          "12",
+          "64",
+          "81",
+          "16"
+        ],
+        "correctOption": "64",
+        "explainsWeakness": "4×4×4."
+      },
+      {
+        "question": "10 na nultá (pre 10) je:",
+        "options": [
+          "0",
+          "1",
+          "10",
+          "100"
+        ],
+        "correctOption": "1",
+        "explainsWeakness": "Definícia a≠0."
+      },
+      {
+        "question": "2 na mínus druhá je:",
+        "options": [
+          "−4",
+          "1/4",
+          "4",
+          "0,5"
+        ],
+        "correctOption": "1/4",
+        "explainsWeakness": "Prevrátená hodnota."
+      },
+      {
+        "question": "Čo je väčšie: 3 na štvrtú alebo 4 na tretiu?",
+        "options": [
+          "3 na štvrtú (81)",
+          "4 na tretiu (64)",
+          "rovnaké",
+          "nedá sa"
+        ],
+        "correctOption": "3 na štvrtú (81)",
+        "explainsWeakness": "81 > 64."
+      },
+      {
+        "question": "Odmocnina z 36 je:",
+        "options": [
+          "4",
+          "6",
+          "9",
+          "12"
+        ],
+        "correctOption": "6",
+        "explainsWeakness": "6²=36."
+      },
+      {
+        "question": "(2 na druhú) na tretiu =",
+        "options": [
+          "2 na piatu",
+          "2 na šiestu",
+          "8",
+          "64"
+        ],
+        "correctOption": "2 na šiestu",
+        "explainsWeakness": "(2²)³=2⁶."
+      },
+      {
+        "question": "Záporné číslo na párny exponent dáva výsledok:",
+        "options": [
+          "vždy záporný",
+          "vždy nezáporný",
+          "vždy 0",
+          "vždy 1"
+        ],
+        "correctOption": "vždy nezáporný",
+        "explainsWeakness": "Znamienko."
+      },
+      {
+        "question": "x na druhú krát x na tretiu =",
+        "options": [
+          "x na piatu",
+          "x na šiestu",
+          "x",
+          "2x na piatu"
+        ],
+        "correctOption": "x na piatu",
+        "explainsWeakness": "Súčet exponentov."
+      }
+    ]
+  }
+}

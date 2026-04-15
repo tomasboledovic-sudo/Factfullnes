@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
 import MaterialSummaryPage from './pages/MaterialSummaryPage';
+import FileQuizPage from './pages/FileQuizPage';
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin/materials/:id" element={<MaterialSummaryPage />} />
+          <Route path="/admin/materials/:id/quiz" element={<FileQuizPage />} />
           <Route path="/session/:sessionId/pre-test" element={<PreAssessmentPage />} />
           <Route path="/session/:sessionId/learning" element={<LearningPage />} />
           <Route path="/session/:sessionId/post-test" element={<PostAssessmentPage />} />

@@ -1,0 +1,141 @@
+{
+  "topicId": 14,
+  "byQuestionId": {
+    "q1-pre-topic14": {
+      "heading": "Heslo",
+      "content": "**DĹžka a jedinečnosť** — rovnaké heslo na viacerých miestach znamená jednu únikovú udalosť = viac účtov ohrozených.\n\n**Prepojenie pojmov:** Hľadaj medzi dvoma pojmami z textu jednu vetu, ktorá ich spája príčinou a následkom. Tak sa učíš sieťové myslenie namiesto izolovaných definícií. V každodennom živote si potom vieš rýchlejšie vybrať, ktoré pravidlo použiť, lebo vidíš kontext, nie len heslo z učebnice."
+    },
+    "q2-pre-topic14": {
+      "heading": "2FA",
+      "content": "**Dvojfaktorová autentifikácia** výrazne znižuje riziko úniku hesla z útočníka.\n\n**Praktický krok:** Vezmi si papier alebo poznámku v telefóne a rozpíš výpočet po jednom kroku — aj keď ti neskôr pôjde „naspamäť“, spočiatku ťa to ochráni pred chybami pri úpravách. Skús si tiež vymyslieť protipríklad: kedy by podobné tvrdenie neplatilo? Tak lepšie pochopíš hranice pravidla a nebudeš ho používať slepo mimo kontextu."
+    },
+    "q3-pre-topic14": {
+      "heading": "Phishing",
+      "content": "Útočník **napodobňuje** dôveryhodnú stránku — overuj **doménu** a neklikaj pod tlakom.\n\n**Učenie do hĺbky:** Po prečítaní si na 30 sekúnd zavri oči a zrekapituluj tri kľúčové slová z textu. Ak si na niektoré nespomenie, prečítaj odsek ešte raz a zvýrazni si ho. **Metóda „vysvetli inému“** funguje aj v tichosti: predstav si, že vysvetľuješ kamarátovi, ktorý tému nevidel — odhalíš diery v chápaní skôr, než príde záverečný test."
+    },
+    "q4-pre-topic14": {
+      "heading": "Wi-Fi",
+      "content": "Na **verejnej sieti** môže niekto odpočúvať — citlivé operácie rieš cez mobilné dáta alebo VPN.\n\n**Odolnosť voči omylom:** **Ľudský** mozog má rád skratky; preto si pri náročnejších témach vyhraď pár minút na „pomalé myslenie“. Prepni telefón do režimu bez upozornení, prečítaj odsek znova a skús ho parafrázovať vlastnými slovami. Ak parafráza nesedí s originálom, ešte nechápeš — to je signál na ďalšie čítanie, nie na preskakovanie."
+    },
+    "q5-pre-topic14": {
+      "heading": "Aktualizácie",
+      "content": "**Záplaty** zatvárajú známe diery — odkladanie zvyšuje riziko.\n\n**Ako si to upevniť:** Napíš jednu vlastnú vetu, kde použiješ presne pravidlo z odseka vyššie — napríklad mini-príklad z nákupu, z domácnosti alebo z práce. Potom si ju prečítaj nahlas: ak znie nejasne, upresni pojmy. **Častá chyba** je spoľahnúť sa na prvý dojem bez kontroly, či percento alebo pravdepodobnosť patrí k správnemu základu. Ak si nevieš rady, vráť sa k zneniu otázky v teste a porovnaj ho so správnou odpoveďou."
+    },
+    "q6-pre-topic14": {
+      "heading": "Zálohy",
+      "content": "**Offline alebo oddelená záloha** môže zachrániť dáta pri šifrovaní útokom.\n\n**Praktický krok:** Vezmi si papier alebo poznámku v telefóne a rozpíš výpočet po jednom kroku — aj keď ti neskôr pôjde „naspamäť“, spočiatku ťa to ochráni pred chybami pri úpravách. Skús si tiež vymyslieť protipríklad: kedy by podobné tvrdenie neplatilo? Tak lepšie pochopíš hranice pravidla a nebudeš ho používať slepo mimo kontextu."
+    },
+    "q7-pre-topic14": {
+      "heading": "Sociálny inžiniering",
+      "content": "Útočník **klame** alebo budí dôveru — technická ochrana nestačí bez opatrného správania.\n\n**Štruktúra odpovede:** Keď si spätne prechádzaš chybu, rozdeľ si ju na „čo presne som zle interpretoval“ a „aký krok výpočtu alebo logiky som vynechal“. Tým sa nenaučíš len správnu voľbu A/B, ale aj postup, ktorý zopakuješ pri podobných úlohách. Pri dlhších témach si pomôž krátkym zoznamom bodov na konci dňa."
+    },
+    "q8-pre-topic14": {
+      "heading": "Password manager",
+      "content": "Generuje a ukladá **unikátne** heslá; master heslo chráň silné.\n\n**Zhrnutie v jednej vete:** Skús na záver sekcie napísať jednu vetu, ktorá obsahuje hlavný pojem a jeho dôsledok bez nových informácií. Ak sa ti to nepodarí, prečítaj odsek ešte raz. Táto disciplína zvyšuje kvalitu učenia viac než pasívne podčiarkovanie, ktoré často len vyzerá ako pokrok."
+    }
+  },
+  "allCorrectSections": [
+    {
+      "heading": "Digitálna hygiena",
+      "content": "Výborne. **Unikátne heslá + 2FA + opatrnosť pri odkazoch**.\n\n**Prepojenie pojmov:** Hľadaj medzi dvoma pojmami z textu jednu vetu, ktorá ich spája príčinou a následkom. Tak sa učíš sieťové myslenie namiesto izolovaných definícií. V každodennom živote si potom vieš rýchlejšie vybrať, ktoré pravidlo použiť, lebo vidíš kontext, nie len heslo z učebnice."
+    },
+    {
+      "heading": "Účty",
+      "content": "Zruš nepoužívané účty, aby sa zmenšila plocha útoku.\n\n**Merateľná skúška:** Ak sa dá, over si výsledok spätným výpočtom alebo inou metódou — napríklad iným vzorcom, ktorý vedie k tomu istému. Pri pravdepodobnosti si nakresli strom možností alebo vypíš všetky výsledky, ak ich nie je veľa. Pri percentách si zvoľ konkrétne čísla a prepočítaj ich ručne aspoň raz, kým si vytvoríš návyk."
+    }
+  ],
+  "finalTest": {
+    "testFormat": "mc_4",
+    "description": "Záverečný test: digitálna bezpečnosť",
+    "questions": [
+      {
+        "question": "Podozrivý SMS odkaz na platbu:",
+        "options": [
+          "kliknem",
+          "overím cez oficiálnu aplikáciu/banku",
+          "pošlem PIN",
+          "zdieľam heslo"
+        ],
+        "correctOption": "overím cez oficiálnu aplikáciu/banku",
+        "explainsWeakness": "Overenie."
+      },
+      {
+        "question": "Ransomware typicky:",
+        "options": [
+          "zálohuje dáta zadarmo",
+          "šifruje dáta a žiada výkupné",
+          "zrýchľuje PC",
+          "je antivírus"
+        ],
+        "correctOption": "šifruje dáta a žiada výkupné",
+        "explainsWeakness": "Typ útoku."
+      },
+      {
+        "question": "HTTPS v prehliadači zaručuje:",
+        "options": [
+          "legitímny obsah vždy",
+          "šifrovaný prenos",
+          "nulové riziko phishingu",
+          "iba štát"
+        ],
+        "correctOption": "šifrovaný prenos",
+        "explainsWeakness": "TLS."
+      },
+      {
+        "question": "Leak hesla z inej služby — rovnaké heslo u teba:",
+        "options": [
+          "nevadi",
+          "zmeň a nepoužívaj rovnaké",
+          "ignoruj",
+          "zdieľaj"
+        ],
+        "correctOption": "zmeň a nepoužívaj rovnaké",
+        "explainsWeakness": "Credential stuffing."
+      },
+      {
+        "question": "Phishing hovor „z banky“:",
+        "options": [
+          "poslať PIN",
+          "overiť číslo a zavolať späť oficiálnou linkou",
+          "inštalovať soft od volajúceho",
+          "vždy dôverovať"
+        ],
+        "correctOption": "overiť číslo a zavolať späť oficiálnou linkou",
+        "explainsWeakness": "Vishing."
+      },
+      {
+        "question": "Master heslo správcu hesiel:",
+        "options": [
+          "123456",
+          "silné, len u teba",
+          "na nástenke",
+          "zdieľané"
+        ],
+        "correctOption": "silné, len u teba",
+        "explainsWeakness": "Kľúč."
+      },
+      {
+        "question": "Verejný USB kľúč nájdený na parkovisku:",
+        "options": [
+          "pripojiť hneď",
+          "nepripájať — riziko malwaru",
+          "formátovať vždy stačí",
+          "bezpečné"
+        ],
+        "correctOption": "nepripájať — riziko malwaru",
+        "explainsWeakness": "USB drop."
+      },
+      {
+        "question": "2FA cez SMS je:",
+        "options": [
+          "vždy najsilnejšie",
+          "lepšie ako nič, ale môže mať slabiny",
+          "nepoužiteľné",
+          "nahradí heslo"
+        ],
+        "correctOption": "lepšie ako nič, ale môže mať slabiny",
+        "explainsWeakness": "SIM swap riziko."
+      }
+    ]
+  }
+}

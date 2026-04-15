@@ -26,6 +26,17 @@
   gap: 2rem;
 }
 
+.learning-header-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.learning-regenerate-btn {
+  font-size: 0.8125rem;
+  padding: 0.5rem 0.875rem;
+}
+
 .stat {
   display: flex;
   flex-direction: column;
@@ -195,4 +206,15 @@
   .results-actions .btn {
     width: 100%;
   }
+}
+
+.score-subline {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 0.75rem;
+  text-align: center;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
 }

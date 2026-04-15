@@ -231,69 +231,69 @@
     {
       "id": "q1-pre-topic3",
       "topicId": 3,
-      "questionText": "Čo znamená pojem protostómy?",
+      "questionText": "Tričko stojí 80 €, zľava 25 %. Koľko zaplatíš?",
       "questionType": "multiple_choice",
       "options": [
-        "Živočíchy, u ktorých sa z prvotného otvoru vyvíja ústa",
-        "Živočíchy s chrbtovou kosťou",
-        "Živočíchy, ktoré kladú vajíčka",
-        "Živočíchy s fotosyntézou"
+        "40 €",
+        "60 €",
+        "70 €",
+        "55 €"
       ],
-      "correctAnswer": 0,
+      "correctAnswer": 1,
       "order": 1
     },
     {
       "id": "q2-pre-topic3",
       "topicId": 3,
-      "questionText": "Čo sa z prvotného otvoru vyvinie u protostómov?",
+      "questionText": "Koľko je 15 % z 200?",
       "questionType": "multiple_choice",
       "options": [
-        "Ústa",
-        "Anus",
-        "Oči",
-        "Končatiny"
+        "20",
+        "25",
+        "30",
+        "35"
       ],
-      "correctAnswer": 0,
+      "correctAnswer": 2,
       "order": 2
     },
     {
       "id": "q3-pre-topic3",
       "topicId": 3,
-      "questionText": "Uveď skupiny živočíchov patriace medzi protostómy.",
+      "questionText": "Na tovar za 100 € najprv 20 % zľava, potom 10 % z už zníženej ceny. Koľko zaplatíš?",
       "questionType": "multiple_choice",
       "options": [
-        "Článkonožce, mäkkýše, kôrovce",
-        "Ryby, obojživelníky, cicavce",
-        "Vtáky, plazy, cicavce",
-        "Huby, rastliny, baktérie"
+        "70 €",
+        "72 €",
+        "75 €",
+        "68 €"
       ],
-      "correctAnswer": 0,
+      "correctAnswer": 1,
       "order": 3
     },
     {
       "id": "q4-pre-topic3",
       "topicId": 3,
-      "questionText": "Sú článkonožce protostómy alebo deuterostómy?",
+      "questionText": "Koľko percent je 15 zo 60?",
       "questionType": "multiple_choice",
       "options": [
-        "Protostómy",
-        "Deuterostómy",
-        "Oba typy",
-        "Žiadny typ"
+        "20 %",
+        "25 %",
+        "30 %",
+        "35 %"
       ],
-      "correctAnswer": 0,
+      "correctAnswer": 1,
       "order": 4
     },
     {
       "id": "q5-pre-topic3",
       "topicId": 3,
-      "questionText": "Aký je rozdiel medzi protostómami a deuterostómami?",
+      "questionText": "Cena 50 € sa zvýši o 20 %. Aká je nová cena?",
       "questionType": "multiple_choice",
       "options": [
-        "Protostómy – ústa z prvotného otvoru, deuterostómy – anus z prvotného otvoru",
-        "Protostómy kladú vajíčka, deuterostómy rodia živé mláďatá",
-        "Protostómy sú malé, deuterostómy veľké",
-        "Protostómy majú chrbticu, deuterostómy nemajú"
+        "60 €",
+        "65 €",
+        "70 €",
+        "55 €"
       ],
       "correctAnswer": 0,
       "order": 5
@@ -301,43 +301,39 @@
     {
       "id": "q6-pre-topic3",
       "topicId": 3,
-      "questionText": "Patrí človek medzi protostómy?",
-      "questionType": "multiple_choice",
+      "questionText": "Ak cenu znížime o 50 % a potom zvýšime o 50 %, vrátime sa na pôvodnú cenu.",
+      "questionType": "true_false",
       "options": [
-        "Nie, je deuterostóm",
-        "Áno",
-        "Nie, je hubovitý typ",
-        "Áno, ale len v embryonálnom štádiu"
+        "Pravda",
+        "Nepravda"
       ],
-      "correctAnswer": 0,
+      "correctAnswer": 1,
       "order": 6
     },
     {
       "id": "q7-pre-topic3",
       "topicId": 3,
-      "questionText": "Patrí dážďovka medzi protostómy?",
+      "questionText": "Koľko je 5 % z 400?",
       "questionType": "multiple_choice",
       "options": [
-        "Áno",
-        "Nie",
-        "Len niektoré druhy",
-        "Nie, patrí k deuterostómom"
+        "15",
+        "20",
+        "25",
+        "30"
       ],
-      "correctAnswer": 0,
+      "correctAnswer": 1,
       "order": 7
     },
     {
       "id": "q8-pre-topic3",
       "topicId": 3,
-      "questionText": "Prečo je embryonálny vývoj dôležitý pri delení živočíchov?",
-      "questionType": "multiple_choice",
+      "questionText": "Dve zľavy po 10 % za sebou na rovnakú cenu sú presne ako jedna zľava 20 %.",
+      "questionType": "true_false",
       "options": [
-        "Určuje, ktorý otvor sa stane ústami alebo análnym otvorom",
-        "Určuje farbu kože",
-        "Určuje počet svalov",
-        "Určuje počet očí"
+        "Pravda",
+        "Nepravda"
       ],
-      "correctAnswer": 0,
+      "correctAnswer": 1,
       "order": 8
     }
   ],
@@ -459,13 +455,13 @@
     {
       "id": "q1-pre-topic5",
       "topicId": 5,
-      "questionText": "Čo je kalória?",
+      "questionText": "Pri férovej šeststennej kocke je pravdepodobnosť hodu 6:",
       "questionType": "multiple_choice",
       "options": [
-        "Typ vitamínu",
-        "Jednotka energie v jedle",
-        "Typ makroživiny",
-        "Minerál"
+        "1/3",
+        "1/6",
+        "1/2",
+        "1/12"
       ],
       "correctAnswer": 1,
       "order": 1
@@ -473,39 +469,39 @@
     {
       "id": "q2-pre-topic5",
       "topicId": 5,
-      "questionText": "Koľko kalórií obsahuje 1 gram bielkovín?",
+      "questionText": "Pravdepodobnosť istej udalosti je:",
       "questionType": "multiple_choice",
       "options": [
-        "2 kcal",
-        "4 kcal",
-        "7 kcal",
-        "9 kcal"
+        "0",
+        "0,5",
+        "1",
+        "2"
       ],
-      "correctAnswer": 1,
+      "correctAnswer": 2,
       "order": 2
     },
     {
       "id": "q3-pre-topic5",
       "topicId": 5,
-      "questionText": "Tuky majú viac kalórií ako sacharidy.",
+      "questionText": "Ak pri rulete padlo 5× čierna, ďalší hod musí s väčšou pravdepodobnosťou padnúť červená.",
       "questionType": "true_false",
       "options": [
         "Pravda",
         "Nepravda"
       ],
-      "correctAnswer": 0,
+      "correctAnswer": 1,
       "order": 3
     },
     {
       "id": "q4-pre-topic5",
       "topicId": 5,
-      "questionText": "Koľko kalórií obsahuje 1 gram tuku?",
+      "questionText": "Dva nezávislé hody férovou mincou — pravdepodobnosť dvoch lírov:",
       "questionType": "multiple_choice",
       "options": [
-        "4 kcal",
-        "7 kcal",
-        "9 kcal",
-        "12 kcal"
+        "1/2",
+        "1/3",
+        "1/4",
+        "1/8"
       ],
       "correctAnswer": 2,
       "order": 4
@@ -513,21 +509,21 @@
     {
       "id": "q5-pre-topic5",
       "topicId": 5,
-      "questionText": "Čo je BMR (bazálny metabolizmus)?",
+      "questionText": "Šanca 1 : 500 (jedna „výhra“ na 500 pokusov v tomto pomere) je približne:",
       "questionType": "multiple_choice",
       "options": [
-        "Kalórie potrebné na cvičenie",
-        "Kalórie spálené v pokoji",
-        "Denný príjem kalórií",
-        "Kalórie v jedle"
+        "50 %",
+        "10 %",
+        "0,2 %",
+        "2 %"
       ],
-      "correctAnswer": 1,
+      "correctAnswer": 2,
       "order": 5
     },
     {
       "id": "q6-pre-topic5",
       "topicId": 5,
-      "questionText": "Pre chudnutie musíte jesť menej kalórií, ako spalujete.",
+      "questionText": "Ak sú A a B výlučné a pokrývajú všetko, platí P(A) + P(B) = 1.",
       "questionType": "true_false",
       "options": [
         "Pravda",
@@ -539,29 +535,27 @@
     {
       "id": "q7-pre-topic5",
       "topicId": 5,
-      "questionText": "Koľko kalórií je približne v 1 kg telesného tuku?",
+      "questionText": "10 výherných lístkov z 1000. P(výhra) =",
       "questionType": "multiple_choice",
       "options": [
-        "3 500 kcal",
-        "5 000 kcal",
-        "7 000 kcal",
-        "10 000 kcal"
+        "1 %",
+        "10 %",
+        "0,1 %",
+        "5 %"
       ],
-      "correctAnswer": 2,
+      "correctAnswer": 0,
       "order": 7
     },
     {
       "id": "q8-pre-topic5",
       "topicId": 5,
-      "questionText": "Ktorá makroživina má prioritu pri metabolizme?",
-      "questionType": "multiple_choice",
+      "questionText": "Pre nezávislé A a B platí P(A a B) = P(A) · P(B).",
+      "questionType": "true_false",
       "options": [
-        "Bielkoviny",
-        "Sacharidy",
-        "Tuky",
-        "Všetky rovnako"
+        "Pravda",
+        "Nepravda"
       ],
-      "correctAnswer": 1,
+      "correctAnswer": 0,
       "order": 8
     }
   ],
@@ -1114,6 +1108,745 @@
       "correctAnswer": 1,
       "order": 8
     }
+  ],
+  "11": [
+    {
+      "id": "q1-pre-topic11",
+      "topicId": 11,
+      "questionText": "Orientačné odporúčanie spánku pre dospelých je často okolo:",
+      "questionType": "multiple_choice",
+      "options": [
+        "5–6 h",
+        "7–9 h",
+        "10–12 h",
+        "3–4 h"
+      ],
+      "correctAnswer": 1,
+      "order": 1
+    },
+    {
+      "id": "q2-pre-topic11",
+      "topicId": 11,
+      "questionText": "Modré svetlo z obrazoviek večer môže:",
+      "questionType": "multiple_choice",
+      "options": [
+        "urychliť zaspávanie",
+        "sťažiť zaspávanie",
+        "vylúčiť spánok úplne",
+        "nahradiť denné svetlo"
+      ],
+      "correctAnswer": 1,
+      "order": 2
+    },
+    {
+      "id": "q3-pre-topic11",
+      "topicId": 11,
+      "questionText": "Kofeín popoludní u ľudí môže zhoršiť nočný spánok.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 3
+    },
+    {
+      "id": "q4-pre-topic11",
+      "topicId": 11,
+      "questionText": "Spánkovú depriváciu sa dá zdravo plne „dospať“ jedným víkendom bez následkov.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 1,
+      "order": 4
+    },
+    {
+      "id": "q5-pre-topic11",
+      "topicId": 11,
+      "questionText": "REM spánok je dôležitý okrem iného pre:",
+      "questionType": "multiple_choice",
+      "options": [
+        "rast kostí",
+        "pamäť a spracovanie emócií",
+        "trávenie bielkovín",
+        "hydratáciu"
+      ],
+      "correctAnswer": 1,
+      "order": 5
+    },
+    {
+      "id": "q6-pre-topic11",
+      "topicId": 11,
+      "questionText": "Pravidelný čas vstávania pomáha:",
+      "questionType": "multiple_choice",
+      "options": [
+        "narušiť rytmus",
+        "stabilizovať biologické hodiny",
+        "vylúčiť hlboký spánok",
+        "znížiť potrebu svetla"
+      ],
+      "correctAnswer": 1,
+      "order": 6
+    },
+    {
+      "id": "q7-pre-topic11",
+      "topicId": 11,
+      "questionText": "Krátke zdriemnutie popoludní (napr. 20 min) môže:",
+      "questionType": "multiple_choice",
+      "options": [
+        "vždy zničiť nočný spánok",
+        "podporiť bdelosť u niektorých",
+        "nahradiť 8 h spánku",
+        "vylúčiť REM"
+      ],
+      "correctAnswer": 1,
+      "order": 7
+    },
+    {
+      "id": "q8-pre-topic11",
+      "topicId": 11,
+      "questionText": "Hlučné prostredie počas spánku často:",
+      "questionType": "multiple_choice",
+      "options": [
+        "zvyšuje hlboký spánok",
+        "sťažuje kvalitu spánku",
+        "nemá vplyv",
+        "zvyšuje len sny"
+      ],
+      "correctAnswer": 1,
+      "order": 8
+    }
+  ],
+  "12": [
+    {
+      "id": "q1-pre-topic12",
+      "topicId": 12,
+      "questionText": "Energia na etikete v EU sa často uvádza v:",
+      "questionType": "multiple_choice",
+      "options": [
+        "kJ a kcal",
+        "len g",
+        "litrách",
+        "pH"
+      ],
+      "correctAnswer": 0,
+      "order": 1
+    },
+    {
+      "id": "q2-pre-topic12",
+      "topicId": 12,
+      "questionText": "„Na 100 g“ znamená hodnoty:",
+      "questionType": "multiple_choice",
+      "options": [
+        "vždy pre celý obal",
+        "pre referenčných 100 g",
+        "vždy pre jednu porciu",
+        "iba pre cukor"
+      ],
+      "correctAnswer": 1,
+      "order": 2
+    },
+    {
+      "id": "q3-pre-topic12",
+      "topicId": 12,
+      "questionText": "Porcia 30 g, obal 150 g — koľko porcií?",
+      "questionType": "multiple_choice",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "correctAnswer": 2,
+      "order": 3
+    },
+    {
+      "id": "q4-pre-topic12",
+      "topicId": 12,
+      "questionText": "Celkové cukry v tabuľke môžu zahŕňať pridaný aj prirodzený cukor v jednom výrobku.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 4
+    },
+    {
+      "id": "q5-pre-topic12",
+      "topicId": 12,
+      "questionText": "Vysoký obsah soli môže byť problematický pre krvný tlak u ľudí.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 5
+    },
+    {
+      "id": "q6-pre-topic12",
+      "topicId": 12,
+      "questionText": "Nasýtené mastné kyseliny by sme mali v strave:",
+      "questionType": "multiple_choice",
+      "options": [
+        "neobmedzene",
+        "sledovať a obmedzovať",
+        "úplne vylúčiť vždy",
+        "nahradiť len cukrom"
+      ],
+      "correctAnswer": 1,
+      "order": 6
+    },
+    {
+      "id": "q7-pre-topic12",
+      "topicId": 12,
+      "questionText": "Vláknina pochádza najčastejšie z:",
+      "questionType": "multiple_choice",
+      "options": [
+        "čistého mäsa",
+        "rastlinných zdrojov",
+        "sladidiel",
+        "vody"
+      ],
+      "correctAnswer": 1,
+      "order": 7
+    },
+    {
+      "id": "q8-pre-topic12",
+      "topicId": 12,
+      "questionText": "% referenčného príjmu na etikete slúži na:",
+      "questionType": "multiple_choice",
+      "options": [
+        "cenu",
+        "orientáciu voči odporúčanému dennému príjmu",
+        "trvanlivosť",
+        "dávku lieku"
+      ],
+      "correctAnswer": 1,
+      "order": 8
+    }
+  ],
+  "13": [
+    {
+      "id": "q1-pre-topic13",
+      "topicId": 13,
+      "questionText": "Vyšší očakávaný výnos zvyčajne súvisí s:",
+      "questionType": "multiple_choice",
+      "options": [
+        "nulovým rizikom",
+        "vyšším rizikom kolísania",
+        "žiadnym vzťahom",
+        "istotou istiny"
+      ],
+      "correctAnswer": 1,
+      "order": 1
+    },
+    {
+      "id": "q2-pre-topic13",
+      "topicId": 13,
+      "questionText": "Diverzifikácia znamená:",
+      "questionType": "multiple_choice",
+      "options": [
+        "všetko v jednej akcii",
+        "rozloženie medzi viac investícií",
+        "vyhnúť sa investovaniu",
+        "iba hotovosť"
+      ],
+      "correctAnswer": 1,
+      "order": 2
+    },
+    {
+      "id": "q3-pre-topic13",
+      "topicId": 13,
+      "questionText": "Inflácia časom znižuje reálnu kúpnu silu hotovosti.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 3
+    },
+    {
+      "id": "q4-pre-topic13",
+      "topicId": 13,
+      "questionText": "„Garantovaný vysoký výnos bez rizika“ je často:",
+      "questionType": "multiple_choice",
+      "options": [
+        "štátna ponuka",
+        "signál opatrnosti",
+        "typický podvodný návnada",
+        "normálna banka"
+      ],
+      "correctAnswer": 2,
+      "order": 4
+    },
+    {
+      "id": "q5-pre-topic13",
+      "topicId": 13,
+      "questionText": "Dlhší investičný horizont často znáša krátkodobú volatilitu.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 5
+    },
+    {
+      "id": "q6-pre-topic13",
+      "topicId": 13,
+      "questionText": "Kúpa akcie znamená:",
+      "questionType": "multiple_choice",
+      "options": [
+        "pôžičku firme",
+        "podiel na vlastníctve",
+        "pevný úrok",
+        "poistenie vkladu"
+      ],
+      "correctAnswer": 1,
+      "order": 6
+    },
+    {
+      "id": "q7-pre-topic13",
+      "topicId": 13,
+      "questionText": "Dlhové nástroje sú vždy v každej situácii bezpečnejšie než akcie.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 1,
+      "order": 7
+    },
+    {
+      "id": "q8-pre-topic13",
+      "topicId": 13,
+      "questionText": "Rovnaká nominálna suma peňazí po rokoch inflácie často:",
+      "questionType": "multiple_choice",
+      "options": [
+        "vždy kúpi viac",
+        "môže reálne kúpiť menej",
+        "je vždy rovnaká",
+        "nie je ovplyvnená"
+      ],
+      "correctAnswer": 1,
+      "order": 8
+    }
+  ],
+  "14": [
+    {
+      "id": "q1-pre-topic14",
+      "topicId": 14,
+      "questionText": "Silné heslo by malo byť:",
+      "questionType": "multiple_choice",
+      "options": [
+        "krátke a všeobecné",
+        "dlhšie a jedinečné pre službu",
+        "rovnaké všade",
+        "dátum narodenia"
+      ],
+      "correctAnswer": 1,
+      "order": 1
+    },
+    {
+      "id": "q2-pre-topic14",
+      "topicId": 14,
+      "questionText": "2FA pridáva:",
+      "questionType": "multiple_choice",
+      "options": [
+        "reklamu",
+        "ďalšiu vrstvu okrem hesla",
+        "nič",
+        "verejný profil"
+      ],
+      "correctAnswer": 1,
+      "order": 2
+    },
+    {
+      "id": "q3-pre-topic14",
+      "topicId": 14,
+      "questionText": "Phishing často žiada okamžite heslo cez podozrivý odkaz.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 3
+    },
+    {
+      "id": "q4-pre-topic14",
+      "topicId": 14,
+      "questionText": "Verejná Wi-Fi bez ochrany je ideálna na bankovníctvo bez obáv.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 1,
+      "order": 4
+    },
+    {
+      "id": "q5-pre-topic14",
+      "topicId": 14,
+      "questionText": "Aktualizácie systému často opravujú bezpečnostné chyby.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 5
+    },
+    {
+      "id": "q6-pre-topic14",
+      "topicId": 14,
+      "questionText": "Zálohy dát pomáhajú aj pri útokoch typu ransomware.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 6
+    },
+    {
+      "id": "q7-pre-topic14",
+      "topicId": 14,
+      "questionText": "Sociálny inžiniering znamená manipuláciu človeka, aby vyzradil údaje.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 7
+    },
+    {
+      "id": "q8-pre-topic14",
+      "topicId": 14,
+      "questionText": "Správca hesiel pomáha používať unikátne heslá.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 8
+    }
+  ],
+  "15": [
+    {
+      "id": "q1-pre-topic15",
+      "topicId": 15,
+      "questionText": "Skleníkový efekt: niektoré plyny v atmosfére",
+      "questionType": "multiple_choice",
+      "options": [
+        "odvádzajú všetko teplo",
+        "zachytávajú časť vyžarovaného tepla",
+        "nemajú vplyv",
+        "chladia planétu bezmedzne"
+      ],
+      "correctAnswer": 1,
+      "order": 1
+    },
+    {
+      "id": "q2-pre-topic15",
+      "topicId": 15,
+      "questionText": "Počasie vs. klíma:",
+      "questionType": "multiple_choice",
+      "options": [
+        "to isté",
+        "počasie krátkodobé, klíma dlhodobý priemer",
+        "klíma je jeden deň",
+        "nedefinovateľné"
+      ],
+      "correctAnswer": 1,
+      "order": 2
+    },
+    {
+      "id": "q3-pre-topic15",
+      "topicId": 15,
+      "questionText": "CO₂ je skleníkový plyn.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 3
+    },
+    {
+      "id": "q4-pre-topic15",
+      "topicId": 15,
+      "questionText": "Jedna studená zima vyvracia merané dlhodobé otepľovanie.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 1,
+      "order": 4
+    },
+    {
+      "id": "q5-pre-topic15",
+      "topicId": 15,
+      "questionText": "Oceány absorbujú časť CO₂ a ovplyvňujú okysľovanie.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 5
+    },
+    {
+      "id": "q6-pre-topic15",
+      "topicId": 15,
+      "questionText": "Ľudská činnosť zvýšila koncentráciu CO₂ od priemyselnej revolúcie.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 6
+    },
+    {
+      "id": "q7-pre-topic15",
+      "topicId": 15,
+      "questionText": "„Vedec nevie počasie na zajtra, tak nevie klímu“ je:",
+      "questionType": "multiple_choice",
+      "options": [
+        "logicky správne",
+        "omyl — iné škály a dôkazy",
+        "vždy pravda",
+        "definícia IPCC"
+      ],
+      "correctAnswer": 1,
+      "order": 7
+    },
+    {
+      "id": "q8-pre-topic15",
+      "topicId": 15,
+      "questionText": "Mitigácia klimatických zmien znamená najmä:",
+      "questionType": "multiple_choice",
+      "options": [
+        "ignorovať emisie",
+        "znižovanie emisií a príčin",
+        "iba prispôsobenie",
+        "zákaz výskumu"
+      ],
+      "correctAnswer": 1,
+      "order": 8
+    }
+  ],
+  "16": [
+    {
+      "id": "q1-pre-topic16",
+      "topicId": 16,
+      "questionText": "Spaced repetition znamená opakovanie:",
+      "questionType": "multiple_choice",
+      "options": [
+        "iba v jeden deň",
+        "rozložené v čase",
+        "nikdy",
+        "len pasívne čítanie"
+      ],
+      "correctAnswer": 1,
+      "order": 1
+    },
+    {
+      "id": "q2-pre-topic16",
+      "topicId": 16,
+      "questionText": "Aktívne vyvolávanie z pamäti často posilňuje učenie.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 2
+    },
+    {
+      "id": "q3-pre-topic16",
+      "topicId": 16,
+      "questionText": "Multitasking pri náročnom učení zvyčajne zvyšuje kvalitu.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 1,
+      "order": 3
+    },
+    {
+      "id": "q4-pre-topic16",
+      "topicId": 16,
+      "questionText": "Kratšie bloky s prestávkami môžu pomôcť pozornosti.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 4
+    },
+    {
+      "id": "q5-pre-topic16",
+      "topicId": 16,
+      "questionText": "Spánok po učení môže podporiť konsolidáciu pamäte.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 5
+    },
+    {
+      "id": "q6-pre-topic16",
+      "topicId": 16,
+      "questionText": "Striedanie tém pri cvičení (interleaving) môže pomôcť prenosu.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 6
+    },
+    {
+      "id": "q7-pre-topic16",
+      "topicId": 16,
+      "questionText": "Len podčiarkovanie textu bez aktívnej práce je často slabá stratégia.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 7
+    },
+    {
+      "id": "q8-pre-topic16",
+      "topicId": 16,
+      "questionText": "Metakognícia znamená vedomie o vlastnom učení a stratégiách.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 8
+    }
+  ],
+  "17": [
+    {
+      "id": "q1-pre-topic17",
+      "topicId": 17,
+      "questionText": "Dospelý bez dychu/bez reakcie — čo najskôr:",
+      "questionType": "multiple_choice",
+      "options": [
+        "čakať",
+        "privolať 112 a začať KPR podľa školenia",
+        "podávať vodu",
+        "masírovať srdce"
+      ],
+      "correctAnswer": 1,
+      "order": 1
+    },
+    {
+      "id": "q2-pre-topic17",
+      "topicId": 17,
+      "questionText": "Európske tiesňové číslo je:",
+      "questionType": "multiple_choice",
+      "options": [
+        "155",
+        "112",
+        "911",
+        "0800"
+      ],
+      "correctAnswer": 1,
+      "order": 2
+    },
+    {
+      "id": "q3-pre-topic17",
+      "topicId": 17,
+      "questionText": "Pri masívnom krvácaní treba zastaviť krvácanie tlakom.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 3
+    },
+    {
+      "id": "q4-pre-topic17",
+      "topicId": 17,
+      "questionText": "Pri horiacom oblečení na osobe môže „stop, drop, roll“ pomôcť.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 4
+    },
+    {
+      "id": "q5-pre-topic17",
+      "topicId": 17,
+      "questionText": "Šok: nohy mierne vyvýšené môže byť vhodné len ak nehrozí zranenie chrbtice.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 5
+    },
+    {
+      "id": "q6-pre-topic17",
+      "topicId": 17,
+      "questionText": "Heimlich manéver je pri:",
+      "questionType": "multiple_choice",
+      "options": [
+        "zástave srdca",
+        "úplnom upchaní dýchacích ciest pri vedomí",
+        "krvácaní",
+        "popálenine"
+      ],
+      "correctAnswer": 1,
+      "order": 6
+    },
+    {
+      "id": "q7-pre-topic17",
+      "topicId": 17,
+      "questionText": "FAST skratka môže pomôcť zapamätať príznaky mŕtvice.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 7
+    },
+    {
+      "id": "q8-pre-topic17",
+      "topicId": 17,
+      "questionText": "AED môže použiť laik podľa pokynov zariadenia.",
+      "questionType": "true_false",
+      "options": [
+        "Pravda",
+        "Nepravda"
+      ],
+      "correctAnswer": 0,
+      "order": 8
+    }
   ]
 }
-

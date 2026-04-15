@@ -63,6 +63,31 @@
   text-overflow: ellipsis;
 }
 .file-info-meta { font-size: 0.78rem; color: #64748b; margin-top: 0.2rem; }
+
+.file-info-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quiz-link-btn {
+  padding: 0.55rem 1.1rem;
+  background: rgba(52, 211, 153, 0.12);
+  color: #6ee7b7;
+  font-weight: 600;
+  font-size: 0.82rem;
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  border-radius: 9px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.quiz-link-btn:hover {
+  background: rgba(52, 211, 153, 0.2);
+  color: #a7f3d0;
+}
+
 .regenerate-btn {
   padding: 0.55rem 1.1rem;
   background: rgba(129,140,248,0.12);

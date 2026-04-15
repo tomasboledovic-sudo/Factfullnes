@@ -200,7 +200,7 @@ function PreAssessmentPage() {
                 <span className="score-number">{preTestScore.percentage}%</span>
               </div>
               <p className="score-text">
-                {preTestScore.correctAnswers} z {preTestScore.totalQuestions} správne
+                {preTestScore.correctAnswers} z {preTestScore.totalQuestions} správne ({preTestScore.percentage}%)
               </p>
             </div>
           </div>

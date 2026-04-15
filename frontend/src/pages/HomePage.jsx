@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
 import Navigation from '../components/Navigation';
@@ -101,7 +101,12 @@ function HomePage() {
       </section>
 
       <section className="topics-section">
-        <h2 className="section-title">Vyber si tému</h2>
+        <h2 className="section-title">
+          Vyber si tému alebo{' '}
+          <Link to="/admin" className="section-title-upload-link">
+            nahraj súbor
+          </Link>
+        </h2>
         <div className="topics-grid">
           {topics.map((topic) => (
             <TopicCard 

@@ -1,0 +1,139 @@
+{
+  "topicId": 12,
+  "byQuestionId": {
+    "q1-pre-topic12": {
+      "heading": "Energia",
+      "content": "**kJ a kcal** udávajú energetickú hodnotu — kcal sú pre väčšinu ľudí intuitívnejšie. Porovnávaj výrobky na rovnakej báze (100 g alebo porcia).\n\n**Ako si to upevniť:** Napíš jednu vlastnú vetu, kde použiješ presne pravidlo z odseka vyššie — napríklad mini-príklad z nákupu, z domácnosti alebo z práce. Potom si ju prečítaj nahlas: ak znie nejasne, upresni pojmy. **Častá chyba** je spoľahnúť sa na prvý dojem bez kontroly, či percento alebo pravdepodobnosť patrí k správnemu základu. Ak si nevieš rady, vráť sa k zneniu otázky v teste a porovnaj ho so správnou odpoveďou."
+    },
+    "q2-pre-topic12": {
+      "heading": "Na 100 g",
+      "content": "Údaj **na 100 g** umožňuje porovnať výrobky navzájom, aj keď máš inú veľkosť balenia.\n\n**Praktický krok:** Vezmi si papier alebo poznámku v telefóne a rozpíš výpočet po jednom kroku — aj keď ti neskôr pôjde „naspamäť“, spočiatku ťa to ochráni pred chybami pri úpravách. Skús si tiež vymyslieť protipríklad: kedy by podobné tvrdenie neplatilo? Tak lepšie pochopíš hranice pravidla a nebudeš ho používať slepo mimo kontextu."
+    },
+    "q3-pre-topic12": {
+      "heading": "Porcie",
+      "content": "150 / 30 = **5** porcií. Ak zješ celý obal, vynásob hodnoty na porciu piatimi.\n\n**Štruktúra odpovede:** Keď si spätne prechádzaš chybu, rozdeľ si ju na „čo presne som zle interpretoval“ a „aký krok výpočtu alebo logiky som vynechal“. Tým sa nenaučíš len správnu voľbu A/B, ale aj postup, ktorý zopakuješ pri podobných úlohách. Pri dlhších témach si pomôž krátkym zoznamom bodov na konci dňa."
+    },
+    "q4-pre-topic12": {
+      "heading": "Cukry",
+      "content": "**Celkové cukry** sú súčet; pridaný cukor hľadaj aj v zložení (sirupy, glukóza…).\n\n**Odolnosť voči omylom:** **Ľudský** mozog má rád skratky; preto si pri náročnejších témach vyhraď pár minút na „pomalé myslenie“. Prepni telefón do režimu bez upozornení, prečítaj odsek znova a skús ho parafrázovať vlastnými slovami. Ak parafráza nesedí s originálom, ešte nechápeš — to je signál na ďalšie čítanie, nie na preskakovanie."
+    },
+    "q5-pre-topic12": {
+      "heading": "Soľ",
+      "content": "Nadmerná soľ súvisí s **tlakom** u predisponovaných ľudí — Svetová zdravotnícka organizácia odporúča obmedzovať príjem.\n\n**Ako si to upevniť:** Napíš jednu vlastnú vetu, kde použiješ presne pravidlo z odseka vyššie — napríklad mini-príklad z nákupu, z domácnosti alebo z práce. Potom si ju prečítaj nahlas: ak znie nejasne, upresni pojmy. **Častá chyba** je spoľahnúť sa na prvý dojem bez kontroly, či percento alebo pravdepodobnosť patrí k správnemu základu. Ak si nevieš rady, vráť sa k zneniu otázky v teste a porovnaj ho so správnou odpoveďou."
+    },
+    "q6-pre-topic12": {
+      "heading": "Nasýtené tuky",
+      "content": "**Nasýtené** mastné kyseliny často zvyšujú LDL — obmedzovanie je rozumná súčasť prevencie.\n\n**Bezpečnosť a zdravý rozum:** Pri odporúčaniach týkajúcich sa zdravia, financií alebo IT platí: ak niečo znie príliš jednoducho alebo naliehavo, spomaľ. Spoj si fakt s dôveryhodným zdrojom alebo s pravidlom, ktoré si práve precvičil. V učení platí, že spoľahlivosť je dôležitejšia ako rýchlosť — lepšie pomalšie a presne ako rýchlo a skreslene."
+    },
+    "q7-pre-topic12": {
+      "heading": "Vláknina",
+      "content": "Vláknina je **rastlinný** polysacharid — celozrnné, strukoviny, ovocie a zelenina.\n\n**Štruktúra odpovede:** Keď si spätne prechádzaš chybu, rozdeľ si ju na „čo presne som zle interpretoval“ a „aký krok výpočtu alebo logiky som vynechal“. Tým sa nenaučíš len správnu voľbu A/B, ale aj postup, ktorý zopakuješ pri podobných úlohách. Pri dlhších témach si pomôž krátkym zoznamom bodov na konci dňa."
+    },
+    "q8-pre-topic12": {
+      "heading": "% RDA",
+      "content": "Percentá **GDV/RVH** sú orientačné voči referenčnému dennému príjmu dospelého.\n\n**Zhrnutie v jednej vete:** Skús na záver sekcie napísať jednu vetu, ktorá obsahuje hlavný pojem a jeho dôsledok bez nových informácií. Ak sa ti to nepodarí, prečítaj odsek ešte raz. Táto disciplína zvyšuje kvalitu učenia viac než pasívne podčiarkovanie, ktoré často len vyzerá ako pokrok."
+    }
+  },
+  "allCorrectSections": [
+    {
+      "heading": "Etikety",
+      "content": "Super. Vždy skontroluj **porciu**, **100 g** a **zloženie**.\n\n**Motivácia a dôsledky:** Zamysli sa, prečo by ťa mohlo zaujímať práve toto pravidlo v budúcnosti — úspora peňazí, lepší spánok, menšie riziko podvodu alebo istota pri skúške. Keď vidíš zmysel, pamäť pracuje ochotnejšie. Krátky zápis „prečo mi to pomôže“ na konci sekcie často stačí na to, aby si sa k látke vrátil aj o týždeň."
+    },
+    {
+      "heading": "Prax",
+      "content": "Porovnaj dve podobné cereálie na cukor a vlákninu na 100 g.\n\n**Zhrnutie v jednej vete:** Skús na záver sekcie napísať jednu vetu, ktorá obsahuje hlavný pojem a jeho dôsledok bez nových informácií. Ak sa ti to nepodarí, prečítaj odsek ešte raz. Táto disciplína zvyšuje kvalitu učenia viac než pasívne podčiarkovanie, ktoré často len vyzerá ako pokrok."
+    }
+  ],
+  "finalTest": {
+    "testFormat": "mc_4",
+    "description": "Záverečný test: výživové tabuľky",
+    "questions": [
+      {
+        "question": "2 porcie po 40 g, na porciu 200 kcal. Spolu?",
+        "options": [
+          "200",
+          "320",
+          "400",
+          "440"
+        ],
+        "correctOption": "400",
+        "explainsWeakness": "2×200."
+      },
+      {
+        "question": "„Bez pridaného cukru“ vždy znamená bez kalórií.",
+        "options": [
+          "Pravda",
+          "Nepravda"
+        ],
+        "correctOption": "Nepravda",
+        "explainsWeakness": "Môže obsahovať inú energiu."
+      },
+      {
+        "question": "Vláknina sa často nachádza v:",
+        "options": [
+          "sladených nápojoch",
+          "celozrnných výrobkoch",
+          "čistom mäse bez príloh",
+          "čokoláde"
+        ],
+        "correctOption": "celozrnných výrobkoch",
+        "explainsWeakness": "Zdroje."
+      },
+      {
+        "question": "Kalórie a zdravie:",
+        "options": [
+          "kalória je jediný ukazovateľ",
+          "dôležitý je aj typ živín a celkový vzorec stravy",
+          "nízke kalórie = vždy zdravé",
+          "vysoké kalórie = vždy zlé"
+        ],
+        "correctOption": "dôležitý je aj typ živín a celkový vzorec stravy",
+        "explainsWeakness": "Kontext."
+      },
+      {
+        "question": "Porcia na obale je:",
+        "options": [
+          "zákon o tom, koľko musíš zjesť",
+          "orientačná dávka výrobcu",
+          "vždy 100 g",
+          "počet v celej krabici"
+        ],
+        "correctOption": "orientačná dávka výrobcu",
+        "explainsWeakness": "Definícia."
+      },
+      {
+        "question": "Nasýtené tuky v tabuľke by si mal:",
+        "options": [
+          "ignorovať",
+          "sledovať pri častých nákupoch",
+          "maximalizovať",
+          "nahradiť trans tukmi"
+        ],
+        "correctOption": "sledovať pri častých nákupoch",
+        "explainsWeakness": "Srdce."
+      },
+      {
+        "question": "Soľ v tabuľke 0,5 g na porciu — pri nízkom celkovom príjme soli:",
+        "options": [
+          "vždy nebezpečné",
+          "záleží na celkovom dni a individuálnych limitoch",
+          "vždy zdravé",
+          "soľ nezáleží"
+        ],
+        "correctOption": "záleží na celkovom dni a individuálnych limitoch",
+        "explainsWeakness": "Kumulácia."
+      },
+      {
+        "question": "Energia z tukov 9 kcal/g, zo sacharidov 4 kcal/g — rovnaká hmotnosť tuku a sacharidov:",
+        "options": [
+          "rovnaká energia",
+          "tuk má vyššiu energetickú hustotu",
+          "sacharidy majú vždy viac",
+          "energia nezávisí od makier"
+        ],
+        "correctOption": "tuk má vyššiu energetickú hustotu",
+        "explainsWeakness": "9 vs 4 kcal/g."
+      }
+    ]
+  }
+}

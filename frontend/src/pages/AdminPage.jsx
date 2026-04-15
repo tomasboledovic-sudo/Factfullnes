@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 import Navigation from '../components/Navigation';
 import './AdminPage.css';
@@ -24,6 +25,7 @@ function fileIcon(type) {
 
 export default function AdminPage() {
   const navigate = useNavigate();
+  const { token, getAuthHeaders } = useAuth();
   const fileInputRef = useRef(null);
 
   const [files, setFiles] = useState([]);
@@ -34,13 +36,24 @@ export default function AdminPage() {
   const [activeFile, setActiveFile] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
 
-  useEffect(() => { fetchFiles(); }, []);
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+    fetchFiles();
+  }, [token]);
 
   async function fetchFiles() {
+    if (!token) return;
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${API_BASE_URL}/files`);
+      const res = await fetch(`${API_BASE_URL}/files`, { headers: getAuthHeaders() });
+      if (res.status === 401) {
+        navigate('/login');
+        return;
+      }
       const data = await res.json();
       if (data.success) setFiles(data.data);
       else setError(data.error?.message || 'Nepodarilo sa načítať súbory');
@@ -51,6 +64,20 @@ export default function AdminPage() {
     }
   }
 
+  function parseApiError(res, bodyText, fallback) {
+    if (!bodyText?.trim()) {
+      return res.ok ? fallback : `Chyba servera (${res.status})`;
+    }
+    try {
+      const data = JSON.parse(bodyText);
+      const msg = data.error?.message || data.message;
+      if (typeof msg === 'string' && msg.length) return msg;
+    } catch {
+      /* nie JSON — napr. HTML z proxy */
+    }
+    return fallback;
+  }
+
   async function handleUpload() {
     if (!selectedFile) return;
     setUploading(true);
@@ -58,14 +85,32 @@ export default function AdminPage() {
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
-      const res = await fetch(`${API_BASE_URL}/files`, { method: 'POST', body: formData });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.error?.message || 'Upload zlyhal');
+      const res = await fetch(`${API_BASE_URL}/files`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: formData
+      });
+      const text = await res.text();
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        setError(
+          'Server vrátil neplatnú odpoveď. Skontroluj, či backend beží a že VITE_API_URL v .env ukazuje na správny API (napr. http://localhost:3001).'
+        );
+        return;
+      }
+      if (!res.ok || !data.success) {
+        const msg = parseApiError(res, text, 'Nahrávanie zlyhalo.');
+        setError(msg.length > 400 ? 'Nahrávanie zlyhalo. Skontroluj konfiguráciu servera a Supabase.' : msg);
+        return;
+      }
       setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
       await fetchFiles();
     } catch (e) {
-      setError(e.message);
+      const m = e instanceof Error ? e.message : String(e);
+      setError(m.length > 400 ? 'Nepodarilo sa pripojiť k serveru alebo spracovať odpoveď.' : m);
     } finally {
       setUploading(false);
     }
@@ -74,7 +119,10 @@ export default function AdminPage() {
   async function handleDelete(file) {
     setError(null);
     try {
-      const res = await fetch(`${API_BASE_URL}/files/${file.id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/files/${file.id}`, {
+        method: 'DELETE',
+        headers: getAuthHeaders()
+      });
       const data = await res.json();
       if (!data.success) throw new Error(data.error?.message || 'Vymazanie zlyhalo');
       setFiles(prev => prev.filter(f => f.id !== file.id));
@@ -158,7 +206,7 @@ export default function AdminPage() {
               <div>
                 <h2 className="card-title">
                   <span className="card-icon">📚</span>
-                  Všetky materiály
+                  Moje materiály
                 </h2>
                 <p className="card-subtitle">{files.length} súbor{files.length === 1 ? '' : files.length < 5 ? 'y' : 'ov'}</p>
               </div>
@@ -217,6 +265,12 @@ export default function AdminPage() {
                 onClick={() => navigate(`/admin/materials/${activeFile.id}`)}
               >
                 🤖 AI Zhrnutie
+              </button>
+              <button
+                className="btn-quiz"
+                onClick={() => navigate(`/admin/materials/${activeFile.id}/quiz`)}
+              >
+                📝 Test z dokumentu
               </button>
               {deleteConfirm?.id === activeFile.id ? (
                 <div className="delete-confirm">

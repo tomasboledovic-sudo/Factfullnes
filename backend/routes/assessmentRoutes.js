@@ -5,7 +5,8 @@ import {
     submitPostTest, 
     getContentStatus,
     getTestStatus,
-    startTestGeneration
+    startTestGeneration,
+    regenerateLearning
 } from '../controllers/assessmentController.js';
 
 const router = express.Router();
@@ -13,6 +14,9 @@ const router = express.Router();
 // Vstupný test
 router.get('/:sessionId/pre-test', getPreTest);
 router.post('/:sessionId/pre-test/submit', submitPreTest);
+
+// Znovu vygenerovať učebné materiály (AI)
+router.post('/:sessionId/regenerate-content', regenerateLearning);
 
 // Status generovania
 router.get('/:sessionId/content/status', getContentStatus);
