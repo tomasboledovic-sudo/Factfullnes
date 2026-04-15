@@ -30,16 +30,6 @@
     "coverImage": "/images/topics/pythagoras.jpg"
   },
   {
-    "id": 4,
-    "title": "Varenie na Woku",
-    "category": "Varenie",
-    "difficulty": "beginner",
-    "description": "Zvládnite umenie ázijského varenia na vysokej teplote",
-    "longDescription": "Naučte sa techniky prípravy jedla na woku - od správnej teploty až po časovanie ingrediencií.",
-    "estimatedDuration": 10,
-    "coverImage": "/images/topics/wok-cooking.jpg"
-  },
-  {
     "id": 5,
     "title": "Pravdepodobnosť v každodennom živote",
     "category": "Matematika",
@@ -78,16 +68,6 @@
     "longDescription": "Objavte, ako sa správne stretchovať pre zvýšenie flexibility, prevenciu zranení a lepší výkon.",
     "estimatedDuration": 10,
     "coverImage": "/images/topics/stretching.jpg"
-  },
-  {
-    "id": 9,
-    "title": "Farebná Harmónia",
-    "category": "Dizajn",
-    "difficulty": "beginner",
-    "description": "Ktoré farby sa k sebe hodia a prečo",
-    "longDescription": "Pochopte farebný kruh, komplementárne farby a ako vytvárať harmonické farebné kombinácie.",
-    "estimatedDuration": 10,
-    "coverImage": "/images/topics/color-theory.jpg"
   },
   {
     "id": 10,

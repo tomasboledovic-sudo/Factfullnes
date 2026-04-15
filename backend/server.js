@@ -56,6 +56,14 @@ import {
 import { requireAuth } from './middleware/auth.js';
 import { getGeminiModelId } from './services/geminiService.js';
 
+/** Verzia z package.json — v /api/health vieš overiť, či beží aktuálny kód (po redeploy). */
+let backendPackageVersion = '0.0.0';
+try {
+    backendPackageVersion = JSON.parse(readFileSync(join(__dirname, 'package.json'), 'utf8')).version || backendPackageVersion;
+} catch {
+    /* ignore */
+}
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
@@ -68,7 +76,15 @@ function getAllowedOrigins() {
         .split(',')
         .map((s) => s.trim().replace(/\/+$/, ''))
         .filter(Boolean);
-    return [...LOCAL_ORIGINS, ...extra];
+    const urls = [...LOCAL_ORIGINS, ...extra];
+    /** Jeden Vercel projekt (frontend + API): VERCEL_URL doplní pôvod nasadenia bez ručného FRONTEND_URL. */
+    const vercelUrl = process.env.VERCEL_URL;
+    if (vercelUrl) {
+        const host = vercelUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
+        const origin = `https://${host}`;
+        if (!urls.includes(origin)) urls.push(origin);
+    }
+    return urls;
 }
 
 function isOriginAllowed(origin) {
@@ -109,7 +125,20 @@ app.get('/api/files/:id/quiz', requireAuth, getFileQuiz);
 app.post('/api/files/:id/quiz/submit', requireAuth, submitFileQuiz);
 
 app.get('/api/health', (req, res) => {
-    res.json({ success: true, message: 'Server is running', timestamp: new Date().toISOString() });
+    res.json({
+        success: true,
+        message: 'Server is running',
+        timestamp: new Date().toISOString(),
+        /** Na Vercel sa doplní commit; lokálne býva null — po zmene kódu reštartuj backend (`npm run dev`). */
+        build: {
+            backendPackageVersion,
+            geminiModel: getGeminiModelId(),
+            vercelEnv: process.env.VERCEL_ENV || undefined,
+            gitCommit: process.env.VERCEL_GIT_COMMIT_SHA || undefined,
+            gitBranch: process.env.VERCEL_GIT_COMMIT_REF || undefined,
+            deploymentUrl: process.env.VERCEL_URL || undefined
+        }
+    });
 });
 
 app.get('/', (req, res) => {

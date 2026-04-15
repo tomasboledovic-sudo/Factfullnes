@@ -17,6 +17,25 @@ const config = {
     maxContentChars: 2500
 };
 
+/**
+ * Dodatočné zadanie pre záverečný test — len vybrané kurzy (topic id).
+ * Zlepšuje konzistentnosť otázok s obsahom predmetu.
+ */
+const FINAL_TEST_TOPIC_DIRECTIVES = {
+    1: `Záverečné otázky musia byť čisto z bunkovej biológie: rozdiel prokaryot vs eukaryot, úloha jadra a DNA, membrána a transport, mitochondrie a ATP, ribozómy a bielkoviny, špecifiká rastlinnej bunky (stena, chloroplasty, vakuola). Každá otázka nech overuje jeden konkrétny pojem alebo rozlíšenie, nie všeobecné „čo je bunka“ bez väzby na materiál.`,
+    2: `Otázky nech sa týkajú výhradne Pytagorovej vety: vzťah a² + b² = c² u pravouhlého trojuholníka, pojmy prepona a odvesny, rozpoznanie kedy vzorec platí, výpočet chýbajúcej strany z dvoch známych, Pytagorejské trojuholníky. Vyhni sa otázkam z inej geometrie bez väzby na materiál.`,
+    6: `Otázky majú overovať chápanie vektora ako veličiny s veľkosťou a smerom, rozdiel oproti skaláru, zápis vektora, sčítanie intuitívne alebo z kontextu materiálu, nulový vektor, modul. Nepridávaj ťažkú fyziku ani súradnice, ak nie sú v učebnom texte.`,
+    7: `Zameraj sa na definíciu mocniny a zápisu aⁿ, význam základu a exponenta, pravidlá pre mocninu 0 a záporný exponent, druhú mocninu a súvis s odmocninou tam kde to vyplýva z materiálu. aspoň jedna otázka nech je výpočtová alebo na rozpoznanie správnej úpravy.`,
+    8: `Otázky z výkladu o strečingu: statický vs dynamický vs ballistický, kedy čo použiť, typické trvanie statického držania, či má byť bolestivý, prínosy pre flexibilitu a rozsah pohybu. Drž sa termínov z materiálu.`,
+    10: `Otázky musí rozlíšiť List (poradie, duplikáty), Set (unikátnosť, bez záruky poradia), Map (kľúč–hodnota), Vector/dynamické pole podľa textu. Overuj rozdiely v použití, nie len definície jedným vetou.`
+};
+
+function getFinalTestTopicDirective(topicData) {
+    const id = typeof topicData?.id === 'number' ? topicData.id : parseInt(String(topicData?.id), 10);
+    if (!Number.isFinite(id)) return '';
+    return FINAL_TEST_TOPIC_DIRECTIVES[id] || '';
+}
+
 // ─── Fallback content ────────────────────────────────────────────────────────
 
 /** Krátky fallback text ~50–100 slov k jednej chybe (bez Gemini). */
@@ -118,6 +137,22 @@ function buildFallbackFourOptions(correct, wrong, topicData, questionIndex) {
     return shuffleArray(unique.slice(0, 4));
 }
 
+/** Doplnková otázka vo fallback záverečnom teste, keď je málo chýb (< 4). */
+const FALLBACK_PAD_QUESTION = {
+    1: 'Ktoré tvrdenie najlepšie zodpovedá úlohe jadra v zmysle učebného materiálu o bunke?',
+    2: 'Pri pravouhlom trojuholníku, ktoré tvrdenie o vzťahu medzi stranami zodpovedá Pytagorovej vete?',
+    6: 'Ktorá charakteristika najlepšie vystihuje vektor v porovnaní so skalárom?',
+    7: 'Ktoré tvrdenie o zápise alebo výpočte mocniny je v súlade s materiálom?',
+    8: 'Ktoré tvrdenie o statickom strečingu zodpovedá odporúčaniam z učebného textu?',
+    10: 'Ktorá štruktúra dát je podľa materiálu vhodná na ukladanie párov kľúč–hodnota?'
+};
+
+function getFallbackPadQuestion(topicData) {
+    const id = typeof topicData?.id === 'number' ? topicData.id : parseInt(String(topicData?.id), 10);
+    if (Number.isFinite(id) && FALLBACK_PAD_QUESTION[id]) return FALLBACK_PAD_QUESTION[id];
+    return `Čo najlepšie vystihuje pojem „${topicData.title}“ v kontexte učebného materiálu?`;
+}
+
 function generateFallbackTest(topicData, testResults) {
     const incorrectAnswers = (testResults?.detailedAnswers || []).filter(a => !a.wasCorrect);
 
@@ -131,7 +166,7 @@ function generateFallbackTest(topicData, testResults) {
     while (questions.length < 4) {
         const i = questions.length;
         questions.push({
-            question: `Čo najlepšie vystihuje pojem „${topicData.title}“ v kontexte učebného materiálu?`,
+            question: getFallbackPadQuestion(topicData),
             options: buildFallbackFourOptions(
                 topicData.description,
                 null,
@@ -246,12 +281,16 @@ function buildFinalTestPrompt(topicData, learningContent, originalTestResults) {
     const sectionsText = learningContent.sections
         .map(s => `### ${s.heading}\n${s.content}`)
         .join('\n\n');
+    const topicDirective = getFinalTestTopicDirective(topicData);
+    const directiveBlock =
+        topicDirective.trim().length > 0
+            ? `\nŠPECIFICKÉ ZAMERANIE PRE TÚTO TÉMU (dodrž presne):\n${topicDirective}\n`
+            : '';
 
     return `ÚLOHA: Vytvor záverečný test v štýle školského kvízu — štvormožnostové otázky podľa učebného materiálu.
 
 TÉMA: ${topicData.title}
-JAZYK: ${config.language}
-
+JAZYK: ${config.language}${directiveBlock}
 POČET CHÝB NA VSTUPNOM TESTE: ${weaknessCount}
 - Vygeneruj presne ${weaknessCount} otázok — každá musí zodpovedať jednej oblasti z učebného materiálu nižšie (materiál je len o týchto chybách).
 

@@ -18,14 +18,37 @@ git push -u origin main
 
 ---
 
-## 2. Vercel — dva projekty (odporúčané)
+## 2. Vercel
 
-### A) Backend (API)
+### A) Jeden projekt (frontend + API na jednej doméne)
+
+1. **New Project** → import repozitára.
+2. **Root Directory:** nechaj **prázdny** (koreň repa) — použije sa **`vercel.json`** v koreni (`frontend/dist` + serverless `api/index.js`).
+3. **Environment Variables** (rovnaké ako backend nižšie, okrem `VITE_*`):
+
+| Premenná | Poznámka |
+|----------|----------|
+| `SUPABASE_URL` | z Supabase |
+| `SUPABASE_ANON_KEY` alebo `SUPABASE_SERVICE_ROLE_KEY` | podľa kódu |
+| `JWT_SECRET` | dlhý náhodný reťazec |
+| `GEMINI_API_KEY` | Google AI Studio |
+| `GEMINI_MODEL` | voliteľné, napr. `gemini-2.5-flash` |
+| `FRONTEND_URL` | **voliteľné** pri jednom projekte — CORS doplní `VERCEL_URL` automaticky; pri vlastnej doméne môžeš zadať `https://tvoja-domena.sk` |
+
+**Frontend build** nepotrebuje `VITE_API_URL` — v produkcii sa volá relatívne `/api/...` (rovnaký pôvod). Lokálne (`npm run dev` vo fronte) ostáva predvolené `http://localhost:3001`.
+
+4. Deploy. API bude na **`https://tvoj-projekt.vercel.app/api/...`**, rovnaká doména ako React app.
+
+---
+
+### B) Dva projekty (samostatný backend + frontend)
+
+#### B1) Backend (API)
 
 1. [Vercel Dashboard](https://vercel.com) → **Add New** → **Project** → Import repozitára.
 2. **Root Directory:** `backend`
-3. Framework: Other / Node (detekuje sa z `backend/vercel.json`).
-4. **Environment Variables** (Settings → Environment Variables):
+3. Framework: Other / Node (môže sa brať z `backend/vercel.json`).
+4. **Environment Variables:**
 
 | Premenná | Poznámka |
 |----------|----------|
@@ -38,7 +61,7 @@ git push -u origin main
 
 5. Deploy. Skopíruj URL backendu, napr. `https://fact-backend-xxx.vercel.app`.
 
-### B) Frontend
+#### B2) Frontend
 
 1. **New Project** → ten istý repozitár.
 2. **Root Directory:** `frontend`
@@ -65,6 +88,6 @@ git push -u origin main
 ## 4. Kontrola
 
 - Frontend: otvor stránku, prihlásenie, načítanie tém.
-- `GET https://tvoj-backend.vercel.app/api/health` → JSON `success: true`.
+- `GET …/api/health` (rovnaká doména pri jednom projekte, alebo URL backendu pri dvoch) → JSON `success: true`.
 
-Ak prehliadač hlási CORS, skontroluj, že `FRONTEND_URL` na backende presne sedí s URL v adresnom riadku (vrátane `https`).
+Pri **dvoch projektoch**: ak prehliadač hlási CORS, skontroluj `FRONTEND_URL` na backende. Pri **jednom projekte** by mal stačiť automatický pôvod z `VERCEL_URL`.

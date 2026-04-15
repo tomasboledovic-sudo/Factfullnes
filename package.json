@@ -1,13 +1,10 @@
 {
-  "name": "gemini-api-app",
+  "name": "fact-monorepo",
+  "private": true,
   "version": "1.0.0",
-  "description": "Jednoduchá aplikácia pre Gemini API",
-  "main": "server.js",
+  "description": "LearnFlow — frontend/ + backend/. Žiadny koreňový statický server.",
   "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "dotenv": "^16.3.1"
+    "dev": "echo 'Frontend: cd frontend && npm run dev  →  :5173' && echo 'Backend:  cd backend && npm run dev   →  :3001'",
+    "start": "echo 'Použi: cd backend && npm start  alebo  cd frontend && npm run dev' && exit 1"
   }
 }
-

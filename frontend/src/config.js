@@ -1,10 +1,18 @@
 /**
  * Všetky Express trasy sú pod prefixom `/api`.
- * Ak je v .env len host (bez `/api`), doplníme ho — inak volania končia na 404 „Endpoint neexistuje“.
+ * - Produkcia bez VITE_API_URL: relatívne `/api` (jeden Vercel projekt = rovnaký pôvod).
+ * - Dev alebo oddelený backend: VITE_API_URL = napr. http://localhost:3001 alebo https://api.example.com
  */
 function normalizeApiBase() {
-    let base = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-    base = String(base).trim().replace(/\/+$/, '');
+    let raw = import.meta.env.VITE_API_URL;
+    if (raw === undefined || String(raw).trim() === '') {
+        if (import.meta.env.DEV) {
+            raw = 'http://localhost:3001';
+        } else {
+            return '/api';
+        }
+    }
+    let base = String(raw).trim().replace(/\/+$/, '');
     if (!base.endsWith('/api')) {
         base = `${base}/api`;
     }

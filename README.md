@@ -207,8 +207,8 @@ Inšpirované **Brilliant.org / Factfullness** dizajn audit:
 │   │   └── config.js
 │   └── package.json
 │
-├── index.html             # Originálny demo (Gemini tlačidlo)
-├── server.js              # Originálny jednoduchý server
+├── api/                   # Vercel serverless vstup (Express z backend/)
+├── vercel.json            # Jeden Vercel projekt: frontend/dist + /api
 └── README.md              # Tento súbor
 ```
 
