@@ -1,4 +1,3 @@
-import { PDFParse } from 'pdf-parse';
 import supabase from '../services/supabaseClient.js';
 import { generateQuizFromFileContent, summarizeUploadedDocument } from '../services/geminiService.js';
 
@@ -15,6 +14,8 @@ async function extractDocumentText(file) {
     const lower = file.file_name.toLowerCase();
 
     if (lower.endsWith('.pdf') || file.file_type === 'application/pdf') {
+        /** Dynamický import — statický import pdf-parse pri štarte serverless často spôsobí 500 na Verceli (aj pri /api/topics). */
+        const { PDFParse } = await import('pdf-parse');
         const parser = new PDFParse({ data: buffer });
         try {
             const result = await parser.getText();
