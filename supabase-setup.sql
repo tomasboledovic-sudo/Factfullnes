@@ -78,7 +78,14 @@ INSERT INTO topics (id, title, category, difficulty, description, long_descripti
 (15, 'Klimatické zmeny: fakty a zjednodušenia', 'Veda', 'beginner', 'Skleníkový efekt, klíma vs. počasie a čo vieme meraním', 'Rozlíšte základné fyzikálne fakty od zjednodušení a pochopte rozdiel medzi počasím a klímou.', 10, '/images/topics/cell.jpg'),
 (16, 'Efektívne učenie', 'Vzdelávanie', 'beginner', 'Spaced repetition, testovanie a sústredenie', 'Ako sa učiť múdrejšie: rozloženie opakovania, aktívne vyvolávanie a úlohy jedna po druhej.', 10, '/images/topics/color-theory.jpg'),
 (17, 'Základy prvej pomoci (orientačne)', 'Zdravie', 'beginner', 'Tiesňové číslo, KPR a kedy volať pomoc', 'Orientačné pravidlá prvej pomoci — nie náhrada certifikovaného kurzu. Kedy volať 112 a ako neškodiť.', 10, '/images/topics/stretching.jpg')
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET
+  title = EXCLUDED.title,
+  category = EXCLUDED.category,
+  difficulty = EXCLUDED.difficulty,
+  description = EXCLUDED.description,
+  long_description = EXCLUDED.long_description,
+  estimated_duration = EXCLUDED.estimated_duration,
+  cover_image = EXCLUDED.cover_image;
 
 -- ============================================
 -- Seed pre-test questions

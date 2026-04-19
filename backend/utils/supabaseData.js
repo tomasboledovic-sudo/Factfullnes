@@ -57,7 +57,11 @@ export async function getTopics() {
         console.warn('[topics] USE_LOCAL_TOPIC_DATA — data/topics.json');
         return loadLocalTopics().map(mapRowToTopic);
     }
-    const { data, error } = await supabase.from('topics').select('*').order('id');
+    const { data, error } = await supabase
+        .from('topics')
+        .select('*')
+        .order('id', { ascending: true })
+        .limit(500);
     if (!error && Array.isArray(data)) {
         return data.map(mapRowToTopic);
     }
