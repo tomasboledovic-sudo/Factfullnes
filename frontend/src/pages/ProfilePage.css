@@ -262,12 +262,24 @@
   color: #64748b;
 }
 
+.file-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+  flex-shrink: 0;
+}
+
 .file-row-link {
   flex-shrink: 0;
   color: #c084fc;
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
+}
+
+.file-row-link-quiz {
+  color: #93c5fd;
 }
 
 .file-row-link:hover {

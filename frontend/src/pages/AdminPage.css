@@ -124,6 +124,21 @@
   margin: 0 0 1.25rem;
 }
 
+.upload-open-quiz {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #475569;
+  margin: -0.5rem 0 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.upload-open-quiz input {
+  accent-color: #6366f1;
+}
+
 /* Drop zone: plná šírka, obsah vľavo */
 .drop-zone {
   border: 2px dashed #cbd5e1;

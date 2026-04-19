@@ -35,6 +35,8 @@ export default function AdminPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [activeFile, setActiveFile] = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
+  /** Po úspešnom nahratí presmerovať rovno na AI test z dokumentu */
+  const [openQuizAfterUpload, setOpenQuizAfterUpload] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -105,9 +107,16 @@ export default function AdminPage() {
         setError(msg.length > 400 ? 'Nahrávanie zlyhalo. Skontroluj konfiguráciu servera a Supabase.' : msg);
         return;
       }
+      const uploaded = data.data;
       setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = '';
       await fetchFiles();
+      if (openQuizAfterUpload && uploaded?.id) {
+        navigate(`/admin/materials/${uploaded.id}/quiz`);
+        setOpenQuizAfterUpload(false);
+      } else if (uploaded) {
+        setActiveFile(uploaded);
+      }
     } catch (e) {
       const m = e instanceof Error ? e.message : String(e);
       setError(m.length > 400 ? 'Nepodarilo sa pripojiť k serveru alebo spracovať odpoveď.' : m);
@@ -140,7 +149,10 @@ export default function AdminPage() {
       <div className="admin-hero">
         <div className="admin-hero-content">
           <h1>Admin Panel</h1>
-          <p>Spravuj učebné materiály — nahrávaj súbory a generuj AI zhrnutia</p>
+          <p>
+            Nahraj PDF alebo text, potom vygeneruj AI test z dokumentu (rovnaký formát ako testy v kurze) alebo
+            AI zhrnutie.
+          </p>
         </div>
       </div>
 
@@ -159,7 +171,16 @@ export default function AdminPage() {
               <span className="card-icon">⬆️</span>
               Nahrať súbor
             </h2>
-            <p className="card-subtitle">PDF, TXT, kód a ďalšie formáty (max 20 MB)</p>
+            <p className="card-subtitle">PDF, TXT a ďalšie (max 20 MB). Z textu vie AI vytvoriť test s výberom odpovede.</p>
+
+            <label className="upload-open-quiz">
+              <input
+                type="checkbox"
+                checked={openQuizAfterUpload}
+                onChange={(e) => setOpenQuizAfterUpload(e.target.checked)}
+              />
+              Po nahratí otvoriť stránku „Test z dokumentu“
+            </label>
 
             <div
               className={`drop-zone ${selectedFile ? 'has-file' : ''}`}
