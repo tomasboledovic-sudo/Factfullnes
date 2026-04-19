@@ -2,16 +2,9 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
+import { isAdminUser } from '../utils/adminAccess';
 import Navigation from '../components/Navigation';
 import './LoginPage.css';
-
-/** Presmerovanie na /admin pre účet admin (meno alebo email pred @). */
-function isAdminUser(user) {
-  if (!user) return false;
-  const name = String(user.name || '').trim().toLowerCase();
-  const local = String(user.email || '').split('@')[0]?.trim().toLowerCase() || '';
-  return name === 'admin' || local === 'admin';
-}
 
 function LoginPage() {
   const [activeTab, setActiveTab] = useState('login');

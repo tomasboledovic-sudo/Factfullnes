@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
+import { isAdminUser } from '../utils/adminAccess';
 import Navigation from '../components/Navigation';
 import TopicCard from '../components/TopicCard';
 import './HomePage.css';
@@ -11,7 +12,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { getAuthHeaders } = useAuth();
+  const { getAuthHeaders, user } = useAuth();
 
   useEffect(() => {
     fetchTopics();
@@ -110,10 +111,16 @@ function HomePage() {
 
       <section className="topics-section">
         <h2 className="section-title">
-          Vyber si tému alebo{' '}
-          <Link to="/admin" className="section-title-upload-link">
-            nahraj súbor
-          </Link>
+          Vyber si tému
+          {isAdminUser(user) && (
+            <>
+              {' '}
+              alebo{' '}
+              <Link to="/admin" className="section-title-upload-link">
+                nahraj súbor
+              </Link>
+            </>
+          )}
         </h2>
         <div className="topics-grid">
           {topics.map((topic) => (

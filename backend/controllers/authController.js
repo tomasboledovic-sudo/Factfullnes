@@ -4,6 +4,7 @@ import supabase from '../services/supabaseClient.js';
 import { getTopicById } from '../utils/supabaseData.js';
 import { listSessionsForUser } from '../utils/sessionRepository.js';
 import { listFilesMetadataForUser } from './filesController.js';
+import { isAdminUser } from '../utils/adminAccess.js';
 
 function generateToken(userId) {
     const secret = process.env.JWT_SECRET?.trim();
@@ -83,10 +84,12 @@ export async function getProfile(req, res, next) {
 
         const sessions = await listSessionsForUser(req.userId);
         let uploadedFiles = [];
-        try {
-            uploadedFiles = await listFilesMetadataForUser(req.userId);
-        } catch (e) {
-            console.warn('[profile] Súbory sa nepodarilo načítať:', e.message);
+        if (isAdminUser(user)) {
+            try {
+                uploadedFiles = await listFilesMetadataForUser(req.userId);
+            } catch (e) {
+                console.warn('[profile] Súbory sa nepodarilo načítať:', e.message);
+            }
         }
 
         const testHistory = await Promise.all(
