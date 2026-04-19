@@ -1,0 +1,14 @@
+---
+description: Po úpravách kódu vždy commit a push na origin/main (ak nie je iná vetva).
+alwaysApply: true
+---
+
+# Git po úlohe
+
+Keď v rámci konverzácie zmeníš súbory v repozitári:
+
+1. `git status` — skontroluj zmeny.
+2. `git add` relevantné súbory, `git commit -m "..."` so zmysluplnou správou.
+3. `git push origin main` (alebo aktuálnu vetvu z `git branch`).
+
+Ak push zlyhá (oprávnenia, konflikt), vysvetli používateľovi presnú chybu. Nechávaj workspace bez necommitnutých zmien po dokončení úlohy, pokiaľ používateľ výslovne nechce inak.

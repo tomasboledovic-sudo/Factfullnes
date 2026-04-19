@@ -27,7 +27,6 @@ function LearningPage() {
   const [testAnswers, setTestAnswers] = useState({});
   const [showTestResults, setShowTestResults] = useState(false);
   const [testScore, setTestScore] = useState(null);
-  const [regenerating, setRegenerating] = useState(false);
 
   const startTimeRef = useRef(Date.now());
   const contentRef = useRef(null);
@@ -92,36 +91,6 @@ function LearningPage() {
       navigate('/');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleRegenerateContent = async () => {
-    if (
-      !window.confirm(
-        'Znova vygenerovať učebné materiály pomocou AI? Uložený záverečný test sa zruší a pripraví sa znovu z nového textu.'
-      )
-    ) {
-      return;
-    }
-    setRegenerating(true);
-    try {
-      const res = await fetch(`${API_BASE_URL}/sessions/${sessionId}/regenerate-content`, { method: 'POST' });
-      const data = await res.json();
-      if (!data.success) {
-        alert(data.error?.message || 'Nepodarilo sa obnoviť materiály');
-        return;
-      }
-      testGenStartedRef.current = false;
-      setFinalTest(null);
-      setTestReady(false);
-      setTestGenerating(true);
-      setLoading(true);
-      await fetchContent();
-    } catch (e) {
-      console.error(e);
-      alert('Chyba pri obnovení materiálov');
-    } finally {
-      setRegenerating(false);
     }
   };
 
@@ -426,7 +395,6 @@ function LearningPage() {
         <div className="assessment-container">
           <div className="assessment-header">
             <h1>Záverečný Test</h1>
-            <p className="test-description">{finalTest.description}</p>
             <div className="progress-info">
               Otázka {currentQuestionIndex + 1} z {finalTest.questions.length}
             </div>
@@ -498,16 +466,6 @@ function LearningPage() {
               <span className="stat-label">Čas:</span>
               <span className="stat-value">{formatTime(elapsedTime)}</span>
             </div>
-          </div>
-          <div className="learning-header-actions">
-            <button
-              type="button"
-              className="btn btn-secondary learning-regenerate-btn"
-              onClick={handleRegenerateContent}
-              disabled={regenerating}
-            >
-              {regenerating ? 'Generujem…' : 'Znova vygenerovať materiály (AI)'}
-            </button>
           </div>
         </div>
 

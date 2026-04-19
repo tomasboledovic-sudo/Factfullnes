@@ -26,17 +26,6 @@
   gap: 2rem;
 }
 
-.learning-header-actions {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-}
-
-.learning-regenerate-btn {
-  font-size: 0.8125rem;
-  padding: 0.5rem 0.875rem;
-}
-
 .stat {
   display: flex;
   flex-direction: column;

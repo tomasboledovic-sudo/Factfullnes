@@ -108,10 +108,7 @@ export function buildPreGeneratedLearningBundle(topicData, testResults) {
         }
         out.finalTest = {
             ...data.finalTest,
-            description:
-                wlist.length > 0
-                    ? `Záverečný test (${wlist.length} otázok — oblasti zo vstupného testu)`
-                    : data.finalTest.description,
+            description: 'Záverečný test',
             questions: wlist.length === 0 ? [] : picked.slice(0, wlist.length)
         };
     }
