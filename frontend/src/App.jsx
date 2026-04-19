@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import AppShell from './components/AppShell';
 import HomePage from './pages/HomePage';
 import PreAssessmentPage from './pages/PreAssessmentPage';
 import LearningPage from './pages/LearningPage';
@@ -17,16 +18,18 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/admin/materials/:id" element={<MaterialSummaryPage />} />
-          <Route path="/admin/materials/:id/quiz" element={<FileQuizPage />} />
-          <Route path="/session/:sessionId/pre-test" element={<PreAssessmentPage />} />
-          <Route path="/session/:sessionId/learning" element={<LearningPage />} />
-          <Route path="/session/:sessionId/post-test" element={<PostAssessmentPage />} />
-          <Route path="/session/:sessionId/results" element={<ResultsPage />} />
+          <Route element={<AppShell />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/materials/:id" element={<MaterialSummaryPage />} />
+            <Route path="/admin/materials/:id/quiz" element={<FileQuizPage />} />
+            <Route path="/session/:sessionId/pre-test" element={<PreAssessmentPage />} />
+            <Route path="/session/:sessionId/learning" element={<LearningPage />} />
+            <Route path="/session/:sessionId/post-test" element={<PostAssessmentPage />} />
+            <Route path="/session/:sessionId/results" element={<ResultsPage />} />
+          </Route>
         </Routes>
       </Router>
     </AuthProvider>
