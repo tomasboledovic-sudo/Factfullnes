@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
-import Footer from './Footer';
 import CookieBanner from './CookieBanner';
 
 const COOKIE_STORAGE_KEY = 'learnflow_cookie_consent_v1';
@@ -14,7 +13,7 @@ function readCookieAccepted() {
 }
 
 /**
- * Spoločný obal: obsah stránky + pätička + cookie lišta.
+ * Spoločný obal: obsah stránky + cookie lišta.
  */
 function AppShell() {
   const [cookieAccepted, setCookieAccepted] = useState(readCookieAccepted);
@@ -31,7 +30,6 @@ function AppShell() {
   return (
     <div className={`app-layout${!cookieAccepted ? ' app-layout--cookie' : ''}`}>
       <Outlet />
-      <Footer />
       {!cookieAccepted && <CookieBanner onAccept={handleCookieAccept} />}
     </div>
   );

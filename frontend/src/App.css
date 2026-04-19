@@ -32,7 +32,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Globálny obal z AppShell: pätička dole, rezerva pod fixnou cookie lištou */
+/* Globálny obal z AppShell: rezerva pod fixnou cookie lištou */
 .app-layout {
   min-height: 100vh;
   display: flex;
