@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config';
 
 const AuthContext = createContext(null);
 
@@ -8,19 +9,51 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('auth_token');
-    const storedUser = localStorage.getItem('auth_user');
+    let cancelled = false;
 
-    if (storedToken && storedUser) {
+    async function init() {
+      const storedToken = localStorage.getItem('auth_token');
+      const storedUser = localStorage.getItem('auth_user');
+
+      if (!storedToken || !storedUser) {
+        setLoading(false);
+        return;
+      }
+
+      let parsed;
       try {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
+        parsed = JSON.parse(storedUser);
       } catch {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('auth_user');
+        setLoading(false);
+        return;
+      }
+
+      setToken(storedToken);
+      setUser(parsed);
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+          headers: { Authorization: `Bearer ${storedToken}` }
+        });
+        const data = await res.json();
+        if (!cancelled && data.success && data.data?.user) {
+          const merged = { ...parsed, ...data.data.user };
+          setUser(merged);
+          localStorage.setItem('auth_user', JSON.stringify(merged));
+        }
+      } catch {
+        /* offline alebo dočasná chyba — ostane parsed z localStorage */
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     }
-    setLoading(false);
+
+    init();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   function login(userData, authToken) {

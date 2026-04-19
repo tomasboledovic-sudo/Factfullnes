@@ -33,6 +33,7 @@ git push -u origin main
 | `JWT_SECRET` | dlhý náhodný reťazec |
 | `GEMINI_API_KEY` | Google AI Studio |
 | `GEMINI_MODEL` | voliteľné, napr. `gemini-2.5-flash` |
+| `ADMIN_EMAILS` | **voliteľné** — čiarka-oddelené emaily so správcovským prístupom (`/admin`, nahraté súbory); ak chýba, platí len meno `admin` alebo `admin@…` |
 | `FRONTEND_URL` | **voliteľné** pri jednom projekte — CORS doplní `VERCEL_URL` automaticky; pri vlastnej doméne môžeš zadať `https://tvoja-domena.sk` |
 
 **Frontend build** nepotrebuje `VITE_API_URL` — v produkcii sa volá relatívne `/api/...` (rovnaký pôvod). Lokálne (`npm run dev` vo fronte) ostáva predvolené `http://localhost:3001`.
@@ -57,6 +58,7 @@ git push -u origin main
 | `JWT_SECRET` | dlhý náhodný reťazec |
 | `GEMINI_API_KEY` | Google AI Studio |
 | `GEMINI_MODEL` | voliteľné, napr. `gemini-2.5-flash` |
+| `ADMIN_EMAILS` | voliteľné — čiarka-oddelené emaily správcu (pozri vyššie) |
 | `FRONTEND_URL` | presná URL frontendu na Vercel, napr. `https://tvoj-projekt.vercel.app` (bez lomky na konci) |
 
 5. Deploy. Skopíruj URL backendu, napr. `https://fact-backend-xxx.vercel.app`.

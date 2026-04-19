@@ -45,7 +45,14 @@ export async function register(req, res, next) {
         if (error) throw error;
 
         const token = generateToken(newUser.id);
-        res.status(201).json({ success: true, data: { token, user: { id: newUser.id, email: newUser.email, name: newUser.name, createdAt: newUser.created_at } } });
+        const payloadUser = {
+            id: newUser.id,
+            email: newUser.email,
+            name: newUser.name,
+            createdAt: newUser.created_at,
+            isAdmin: isAdminUser(newUser)
+        };
+        res.status(201).json({ success: true, data: { token, user: payloadUser } });
     } catch (error) {
         next(error);
     }
@@ -69,7 +76,14 @@ export async function login(req, res, next) {
         }
 
         const token = generateToken(user.id);
-        res.json({ success: true, data: { token, user: { id: user.id, email: user.email, name: user.name, createdAt: user.created_at } } });
+        const payloadUser = {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            createdAt: user.created_at,
+            isAdmin: isAdminUser(user)
+        };
+        res.json({ success: true, data: { token, user: payloadUser } });
     } catch (error) {
         next(error);
     }
@@ -132,7 +146,8 @@ export async function getProfile(req, res, next) {
                     id: user.id,
                     email: user.email,
                     name: user.name,
-                    createdAt: user.created_at
+                    createdAt: user.created_at,
+                    isAdmin: isAdminUser(user)
                 },
                 testHistory,
                 stats: {
