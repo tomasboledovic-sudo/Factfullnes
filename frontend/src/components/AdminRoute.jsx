@@ -14,9 +14,10 @@ export default function AdminRoute() {
   /** unknown = ešte neoverené, ok = vstup, denied = nie je správca */
   const [gate, setGate] = useState('unknown');
 
+  /** Nová navigácia = nový pokus o overenie (location.key sa mení pri push; nie search — vyhlieme sa resetu po ?nahrat=1). */
   useEffect(() => {
     setGate('unknown');
-  }, [token]);
+  }, [token, location.key]);
 
   useEffect(() => {
     if (loading || !token) return;
@@ -37,7 +38,7 @@ export default function AdminRoute() {
     return () => {
       cancelled = true;
     };
-  }, [loading, token, syncUserFromProfile]);
+  }, [loading, token, syncUserFromProfile, location.key]);
 
   if (loading) {
     return (
@@ -72,12 +73,20 @@ export default function AdminRoute() {
   }
 
   if (gate === 'denied') {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" replace state={{ adminAccessDenied: true }} />;
   }
 
-  if (isAdminUser(user)) {
-    return <Outlet />;
+  if (gate === 'ok') {
+    if (isAdminUser(user)) {
+      return <Outlet />;
+    }
+    return (
+      <div className="page-wrapper">
+        <Navigation />
+        <div className="loading">Otváram panel…</div>
+      </div>
+    );
   }
 
-  return <Navigate to="/" replace />;
+  return <Navigate to="/" replace state={{ adminAccessDenied: true }} />;
 }
