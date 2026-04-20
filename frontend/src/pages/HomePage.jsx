@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
-import { isAdminUser } from '../utils/adminAccess';
 import Navigation from '../components/Navigation';
 import TopicCard from '../components/TopicCard';
 import './HomePage.css';
@@ -11,12 +10,8 @@ function HomePage() {
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [uploadHint, setUploadHint] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { getAuthHeaders, token, user } = useAuth();
-
-  const adminDenied = Boolean(location.state?.adminAccessDenied);
+  const { getAuthHeaders, token } = useAuth();
 
   useEffect(() => {
     fetchTopics();
@@ -114,25 +109,13 @@ function HomePage() {
       </section>
 
       <section className="topics-section">
-        {adminDenied && (
-          <div className="home-admin-denied-banner" role="status">
-            <p>
-              <strong>Nemáš oprávnenie správcu.</strong> Nahrávanie súborov je len pre určený účet. Ak ho
-              potrebuješ, kontaktuj majiteľa projektu.
-            </p>
-            <button
-              type="button"
-              className="home-admin-denied-dismiss"
-              onClick={() => navigate('/', { replace: true, state: {} })}
-            >
-              Rozumiem
-            </button>
-          </div>
-        )}
-
         <h2 className="section-title">
           Vyber si tému alebo{' '}
-          {!token ? (
+          {token ? (
+            <Link to="/admin?nahrat=1" className="section-title-upload-link">
+              nahraj súbor
+            </Link>
+          ) : (
             <Link
               to="/login"
               state={{ from: { pathname: '/admin', search: '?nahrat=1' } }}
@@ -140,30 +123,8 @@ function HomePage() {
             >
               nahraj súbor
             </Link>
-          ) : !user ? (
-            <Link to="/admin?nahrat=1" className="section-title-upload-link">
-              nahraj súbor
-            </Link>
-          ) : isAdminUser(user) ? (
-            <Link to="/admin?nahrat=1" className="section-title-upload-link">
-              nahraj súbor
-            </Link>
-          ) : (
-            <button
-              type="button"
-              className="section-title-upload-btn"
-              onClick={() => setUploadHint((v) => !v)}
-            >
-              nahraj súbor
-            </button>
           )}
         </h2>
-        {uploadHint && !isAdminUser(user) && (
-          <p className="home-upload-restricted-hint">
-            Túto časť aplikácie môže používať len <strong>správca</strong>. Bežný účet môže študovať témy z
-            katalógu.
-          </p>
-        )}
         <div className="topics-grid">
           {topics.map((topic) => (
             <TopicCard 

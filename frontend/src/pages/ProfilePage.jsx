@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { isAdminUser } from '../utils/adminAccess';
 import { API_BASE_URL } from '../config';
 import Navigation from '../components/Navigation';
 import './ProfilePage.css';
@@ -254,43 +253,41 @@ function ProfilePage() {
               )}
             </div>
 
-            {isAdminUser(user) && (
-              <div className="files-section">
-                <h2>Nahrané súbory</h2>
-                {uploadedFiles.length === 0 ? (
-                  <div className="no-files">
-                    <p>Zatiaľ žiadne súbory.</p>
-                    <Link to="/admin" className="files-link-cta">
-                      Nahrať súbor →
-                    </Link>
-                  </div>
-                ) : (
-                  <ul className="files-list-profile">
-                    {uploadedFiles.map((f) => (
-                      <li key={f.id} className="file-row-profile">
-                        <span className="file-row-icon" title={f.file_type || ''}>
-                          📎
+            <div className="files-section">
+              <h2>Nahrané súbory</h2>
+              {uploadedFiles.length === 0 ? (
+                <div className="no-files">
+                  <p>Zatiaľ žiadne súbory.</p>
+                  <Link to="/admin" className="files-link-cta">
+                    Nahrať súbor →
+                  </Link>
+                </div>
+              ) : (
+                <ul className="files-list-profile">
+                  {uploadedFiles.map((f) => (
+                    <li key={f.id} className="file-row-profile">
+                      <span className="file-row-icon" title={f.file_type || ''}>
+                        📎
+                      </span>
+                      <div className="file-row-info">
+                        <span className="file-row-name">{f.file_name}</span>
+                        <span className="file-row-meta">
+                          {formatFileSize(f.file_size)} · {formatDate(f.uploaded_at)}
                         </span>
-                        <div className="file-row-info">
-                          <span className="file-row-name">{f.file_name}</span>
-                          <span className="file-row-meta">
-                            {formatFileSize(f.file_size)} · {formatDate(f.uploaded_at)}
-                          </span>
-                        </div>
-                        <div className="file-row-actions">
-                          <Link to={`/admin/materials/${f.id}`} className="file-row-link">
-                            Zhrnutie
-                          </Link>
-                          <Link to={`/admin/materials/${f.id}/quiz`} className="file-row-link file-row-link-quiz">
-                            AI test
-                          </Link>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
+                      </div>
+                      <div className="file-row-actions">
+                        <Link to={`/admin/materials/${f.id}`} className="file-row-link">
+                          Zhrnutie
+                        </Link>
+                        <Link to={`/admin/materials/${f.id}/quiz`} className="file-row-link file-row-link-quiz">
+                          AI test
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </>
         )}
       </div>

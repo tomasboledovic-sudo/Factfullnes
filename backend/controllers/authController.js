@@ -98,12 +98,10 @@ export async function getProfile(req, res, next) {
 
         const sessions = await listSessionsForUser(req.userId);
         let uploadedFiles = [];
-        if (isAdminUser(user)) {
-            try {
-                uploadedFiles = await listFilesMetadataForUser(req.userId);
-            } catch (e) {
-                console.warn('[profile] Súbory sa nepodarilo načítať:', e.message);
-            }
+        try {
+            uploadedFiles = await listFilesMetadataForUser(req.userId);
+        } catch (e) {
+            console.warn('[profile] Súbory sa nepodarilo načítať:', e.message);
         }
 
         const testHistory = await Promise.all(

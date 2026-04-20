@@ -33,8 +33,8 @@ git push -u origin main
 | `JWT_SECRET` | dlhý náhodný reťazec |
 | `GEMINI_API_KEY` | Google AI Studio |
 | `GEMINI_MODEL` | voliteľné, napr. `gemini-2.5-flash` |
-| `ADMIN_EMAILS` | **voliteľné** — čiarka-oddelené emaily so správcovským prístupom (`/admin`, nahraté súbory); ak chýba, platí len meno `admin` alebo `admin@…` |
-| `RESTRICT_LEARNING_AI_TO_ADMIN` | **voliteľné** — predvolene v kóde *zapnuté*: Gemini pri učení z tém len pre správcu; ostatní majú predgenerované témy alebo šablónu. Úplné AI pre všetkých: `false` |
+| `ADMIN_EMAILS` | **voliteľné** — len informačné pole `isAdmin` v API/profile (meno `admin` / `admin@…`); nahrávanie súborov má každý prihlásený |
+| `RESTRICT_LEARNING_AI_TO_ADMIN` | **voliteľné** — ak `true`, Gemini pri učení z tém len pre účty z `ADMIN_EMAILS` / `admin`; predvolene *vypnuté* |
 | `FRONTEND_URL` | **voliteľné** pri jednom projekte — CORS doplní `VERCEL_URL` automaticky; pri vlastnej doméne môžeš zadať `https://tvoja-domena.sk` |
 
 **Frontend build** nepotrebuje `VITE_API_URL` — v produkcii sa volá relatívne `/api/...` (rovnaký pôvod). Lokálne (`npm run dev` vo fronte) ostáva predvolené `http://localhost:3001`.
@@ -60,7 +60,7 @@ git push -u origin main
 | `GEMINI_API_KEY` | Google AI Studio |
 | `GEMINI_MODEL` | voliteľné, napr. `gemini-2.5-flash` |
 | `ADMIN_EMAILS` | voliteľné — čiarka-oddelené emaily správcu (pozri vyššie) |
-| `RESTRICT_LEARNING_AI_TO_ADMIN` | voliteľné — pozri tabuľku vyššie (`false` = Gemini učenie pre každého) |
+| `RESTRICT_LEARNING_AI_TO_ADMIN` | voliteľné — `true` = obmedziť Gemini pri učení na správcov (pozri vyššie) |
 | `FRONTEND_URL` | presná URL frontendu na Vercel, napr. `https://tvoj-projekt.vercel.app` (bez lomky na konci) |
 
 5. Deploy. Skopíruj URL backendu, napr. `https://fact-backend-xxx.vercel.app`.

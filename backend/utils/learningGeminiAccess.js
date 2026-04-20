@@ -3,20 +3,19 @@ import { isAdminUser } from './adminAccess.js';
 
 /**
  * Ak je true, pri učení z tém sa Gemini volá len pre správcu (isAdminUser).
- * Ostatní: predgenerované JSON témy alebo lokálna šablóna (bez API).
- *
- * Predvolene zapnuté. Vypnutie: RESTRICT_LEARNING_AI_TO_ADMIN=false (alebo 0, off, no).
+ * Predvolene vypnuté — Gemini pri učení môže hocikto (prihlásený s reláciou).
+ * Zapnutie obmedzenia: RESTRICT_LEARNING_AI_TO_ADMIN=true (alebo 1, yes, on).
  */
 export function isLearningGeminiRestricted() {
     const v = process.env.RESTRICT_LEARNING_AI_TO_ADMIN;
     if (v == null || String(v).trim() === '') {
-        return true;
-    }
-    const s = String(v).trim().toLowerCase();
-    if (s === '0' || s === 'false' || s === 'no' || s === 'off') {
         return false;
     }
-    return true;
+    const s = String(v).trim().toLowerCase();
+    if (s === '1' || s === 'true' || s === 'yes' || s === 'on') {
+        return true;
+    }
+    return false;
 }
 
 /** Môže táto relácia volať Gemini pri generovaní učebných materiálov / záverečného testu? */

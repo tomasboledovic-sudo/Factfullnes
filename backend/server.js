@@ -53,7 +53,7 @@ import {
     getFileQuiz,
     submitFileQuiz
 } from './controllers/filesController.js';
-import { requireAuth, requireAdmin } from './middleware/auth.js';
+import { requireAuth } from './middleware/auth.js';
 import { getGeminiModelId } from './services/geminiService.js';
 
 /** Verzia z package.json — v /api/health vieš overiť, či beží aktuálny kód (po redeploy). */
@@ -115,14 +115,14 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/sessions', assessmentRoutes);
 app.use('/api/sessions', contentRoutes);
 
-// Súbory + AI z nich — len správca (isAdminUser), aby nemohol hoci kto nahrávať ani volať Gemini
-app.get('/api/files', requireAuth, requireAdmin, listFiles);
-app.post('/api/files', requireAuth, requireAdmin, upload.single('file'), uploadFile);
-app.delete('/api/files/:id', requireAuth, requireAdmin, deleteFile);
-app.post('/api/files/:id/summarize', requireAuth, requireAdmin, summarizeFile);
-app.post('/api/files/:id/quiz/generate', requireAuth, requireAdmin, generateFileQuiz);
-app.get('/api/files/:id/quiz', requireAuth, requireAdmin, getFileQuiz);
-app.post('/api/files/:id/quiz/submit', requireAuth, requireAdmin, submitFileQuiz);
+// Súbory + AI z nich — každý prihlásený používateľ (vlastné súbory podľa user_id)
+app.get('/api/files', requireAuth, listFiles);
+app.post('/api/files', requireAuth, upload.single('file'), uploadFile);
+app.delete('/api/files/:id', requireAuth, deleteFile);
+app.post('/api/files/:id/summarize', requireAuth, summarizeFile);
+app.post('/api/files/:id/quiz/generate', requireAuth, generateFileQuiz);
+app.get('/api/files/:id/quiz', requireAuth, getFileQuiz);
+app.post('/api/files/:id/quiz/submit', requireAuth, submitFileQuiz);
 
 app.get('/api/health', (req, res) => {
     res.json({
