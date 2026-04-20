@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 import Navigation from '../components/Navigation';
@@ -25,8 +25,10 @@ function fileIcon(type) {
 
 export default function AdminPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { token, getAuthHeaders } = useAuth();
   const fileInputRef = useRef(null);
+  const uploadSectionRef = useRef(null);
 
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,11 +42,23 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (!token) {
-      navigate('/login');
+      navigate('/login', {
+        replace: true,
+        state: { from: { pathname: '/admin', search: location.search } }
+      });
       return;
     }
     fetchFiles();
   }, [token]);
+
+  /** Pri odkaze „nahraj súbor“ z úvodnej stránky — rovno k panelu nahrávania. */
+  useLayoutEffect(() => {
+    const q = new URLSearchParams(location.search);
+    if (q.get('nahrat') !== '1') return;
+    uploadSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const id = window.setTimeout(() => navigate('/admin', { replace: true }), 350);
+    return () => window.clearTimeout(id);
+  }, [location.search, navigate]);
 
   async function fetchFiles() {
     if (!token) return;
@@ -166,7 +180,7 @@ export default function AdminPage() {
 
         <div className="admin-grid">
           {/* Upload panel */}
-          <div className="admin-card upload-card">
+          <div ref={uploadSectionRef} className="admin-card upload-card">
             <h2 className="card-title">
               <span className="card-icon">⬆️</span>
               Nahrať súbor

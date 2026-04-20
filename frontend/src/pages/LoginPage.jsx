@@ -1,10 +1,30 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../config';
 import { isAdminUser } from '../utils/adminAccess';
 import Navigation from '../components/Navigation';
 import './LoginPage.css';
+
+/** Kam ísť po úspešnom prihlásení / registrácii (napr. z „nahraj súbor“). */
+function navigateAfterAuth(navigate, user, fromState) {
+  const from = fromState;
+  let target = null;
+  if (from?.pathname) {
+    target = `${from.pathname}${from.search || ''}`;
+  } else if (typeof from === 'string') {
+    target = from;
+  }
+  if (target && target.startsWith('/admin') && !isAdminUser(user)) {
+    navigate('/', { replace: true });
+    return;
+  }
+  if (target) {
+    navigate(target, { replace: true });
+    return;
+  }
+  navigate(isAdminUser(user) ? '/admin' : '/', { replace: true });
+}
 
 function LoginPage() {
   const [activeTab, setActiveTab] = useState('login');
@@ -16,6 +36,7 @@ function LoginPage() {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -32,7 +53,7 @@ function LoginPage() {
 
       if (data.success) {
         login(data.data.user, data.data.token);
-        navigate(isAdminUser(data.data.user) ? '/admin' : '/');
+        navigateAfterAuth(navigate, data.data.user, location.state?.from);
       } else {
         setError(data.error?.message || 'Nepodarilo sa prihlásiť');
       }
@@ -58,7 +79,7 @@ function LoginPage() {
 
       if (data.success) {
         login(data.data.user, data.data.token);
-        navigate('/');
+        navigateAfterAuth(navigate, data.data.user, location.state?.from);
       } else {
         setError(data.error?.message || 'Nepodarilo sa zaregistrovať');
       }

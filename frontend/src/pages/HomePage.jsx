@@ -11,7 +11,7 @@ function HomePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { getAuthHeaders } = useAuth();
+  const { getAuthHeaders, token } = useAuth();
 
   useEffect(() => {
     fetchTopics();
@@ -111,9 +111,19 @@ function HomePage() {
       <section className="topics-section">
         <h2 className="section-title">
           Vyber si tému alebo{' '}
-          <Link to="/admin" className="section-title-upload-link">
-            nahraj súbor
-          </Link>
+          {token ? (
+            <Link to="/admin?nahrat=1" className="section-title-upload-link">
+              nahraj súbor
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              state={{ from: { pathname: '/admin', search: '?nahrat=1' } }}
+              className="section-title-upload-link"
+            >
+              nahraj súbor
+            </Link>
+          )}
         </h2>
         <div className="topics-grid">
           {topics.map((topic) => (
