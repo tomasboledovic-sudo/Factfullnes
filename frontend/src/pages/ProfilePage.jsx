@@ -276,9 +276,6 @@ function ProfilePage() {
                         </span>
                       </div>
                       <div className="file-row-actions">
-                        <Link to={`/admin/materials/${f.id}`} className="file-row-link">
-                          Zhrnutie
-                        </Link>
                         <Link to={`/admin/materials/${f.id}/quiz`} className="file-row-link file-row-link-quiz">
                           AI test
                         </Link>

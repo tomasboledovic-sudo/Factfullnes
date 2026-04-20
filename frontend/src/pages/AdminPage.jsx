@@ -162,11 +162,21 @@ export default function AdminPage() {
 
       <div className="admin-hero">
         <div className="admin-hero-content">
-          <h1>Admin Panel</h1>
-          <p>
-            Nahraj PDF alebo text, potom vygeneruj AI test z dokumentu (rovnaký formát ako testy v kurze) alebo
-            AI zhrnutie.
+          <h1>AI test z vlastného dokumentu</h1>
+          <p className="admin-hero-intro">
+            Vytvor si test s výberom odpovede z PDF alebo textu — rovnaký typ otázok ako pri témach v kurze.
           </p>
+          <ol className="admin-hero-steps">
+            <li>
+              <strong>Nahraj súbor</strong> (PDF, TXT a pod., max 20 MB). Server z neho vytiahne text.
+            </li>
+            <li>
+              <strong>V zozname klikni na súbor</strong> — zobrazí sa panel s akciami.
+            </li>
+            <li>
+              <strong>Otvor AI test</strong> — na ďalšej stránke spustíš generovanie otázok z textu, vyplníš test a uvidíš výsledok.
+            </li>
+          </ol>
         </div>
       </div>
 
@@ -183,9 +193,11 @@ export default function AdminPage() {
           <div ref={uploadSectionRef} className="admin-card upload-card">
             <h2 className="card-title">
               <span className="card-icon">⬆️</span>
-              Nahrať súbor
+              Nahrať dokument
             </h2>
-            <p className="card-subtitle">PDF, TXT a ďalšie (max 20 MB). Z textu vie AI vytvoriť test s výberom odpovede.</p>
+            <p className="card-subtitle">
+              Vyber súbor nižšie a potvrď nahratie. Z obsahu sa neskôr vygenerujú otázky s jednou správnou odpoveďou.
+            </p>
 
             <label className="upload-open-quiz">
               <input
@@ -193,7 +205,7 @@ export default function AdminPage() {
                 checked={openQuizAfterUpload}
                 onChange={(e) => setOpenQuizAfterUpload(e.target.checked)}
               />
-              Po nahratí otvoriť stránku „Test z dokumentu“
+              Po nahratí hneď otvoriť stránku AI testu (tam spustíš generovanie)
             </label>
 
             <div
@@ -241,9 +253,11 @@ export default function AdminPage() {
               <div>
                 <h2 className="card-title">
                   <span className="card-icon">📚</span>
-                  Moje materiály
+                  Tvoje nahrané súbory
                 </h2>
-                <p className="card-subtitle">{files.length} súbor{files.length === 1 ? '' : files.length < 5 ? 'y' : 'ov'}</p>
+                <p className="card-subtitle">
+                  {files.length} súbor{files.length === 1 ? '' : files.length < 5 ? 'y' : 'ov'} — kliknutím vyber súbor a otvor AI test.
+                </p>
               </div>
               <button className="refresh-btn" onClick={fetchFiles} title="Obnoviť">
                 🔄
@@ -259,7 +273,7 @@ export default function AdminPage() {
               <div className="files-empty">
                 <span>📭</span>
                 <p>Žiadne súbory zatiaľ</p>
-                <p className="files-empty-sub">Nahraj prvý súbor pomocou panelu vľavo</p>
+                <p className="files-empty-sub">Použi panel vľavo: nahraj súbor, potom ho vyber a klikni na „Otvoriť AI test“.</p>
               </div>
             ) : (
               <div className="files-list">
@@ -296,16 +310,10 @@ export default function AdminPage() {
             </div>
             <div className="file-actions-btns">
               <button
-                className="btn-summarize"
-                onClick={() => navigate(`/admin/materials/${activeFile.id}`)}
-              >
-                🤖 AI Zhrnutie
-              </button>
-              <button
                 className="btn-quiz"
                 onClick={() => navigate(`/admin/materials/${activeFile.id}/quiz`)}
               >
-                📝 Test z dokumentu
+                📝 Otvoriť AI test
               </button>
               {deleteConfirm?.id === activeFile.id ? (
                 <div className="delete-confirm">

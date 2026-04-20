@@ -9,7 +9,6 @@ import ResultsPage from './pages/ResultsPage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
-import MaterialSummaryPage from './pages/MaterialSummaryPage';
 import FileQuizPage from './pages/FileQuizPage';
 import PrivateRoute from './components/PrivateRoute';
 import './App.css';
@@ -25,7 +24,6 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="admin" element={<PrivateRoute />}>
               <Route index element={<AdminPage />} />
-              <Route path="materials/:id" element={<MaterialSummaryPage />} />
               <Route path="materials/:id/quiz" element={<FileQuizPage />} />
             </Route>
             <Route path="/session/:sessionId/pre-test" element={<PreAssessmentPage />} />

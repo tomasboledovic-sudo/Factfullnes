@@ -22,7 +22,7 @@
   pointer-events: none;
 }
 .admin-hero-content {
-  max-width: 700px;
+  max-width: 820px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
@@ -38,6 +38,22 @@
   color: #64748b;
   font-size: 1.05rem;
   margin: 0;
+}
+.admin-hero-intro {
+  margin-bottom: 1rem;
+}
+.admin-hero-steps {
+  margin: 0;
+  padding-left: 1.35rem;
+  color: #475569;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+.admin-hero-steps li + li {
+  margin-top: 0.45rem;
+}
+.admin-hero-steps strong {
+  color: #334155;
 }
 
 /* Container — širší layout, viac miesta pre upload vľavo */
@@ -425,7 +441,7 @@
   gap: 0.75rem;
   flex-shrink: 0;
 }
-.btn-summarize {
+.btn-quiz {
   padding: 0.6rem 1.25rem;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #fff;
@@ -437,23 +453,8 @@
   transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
-.btn-summarize:hover {
-  opacity: 0.95;
-  transform: translateY(-1px);
-}
-.btn-quiz {
-  padding: 0.6rem 1.25rem;
-  background: #ecfdf5;
-  color: #047857;
-  font-weight: 700;
-  font-size: 0.875rem;
-  border: 1px solid #a7f3d0;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-}
 .btn-quiz:hover {
-  background: #d1fae5;
+  opacity: 0.95;
   transform: translateY(-1px);
 }
 .btn-delete {

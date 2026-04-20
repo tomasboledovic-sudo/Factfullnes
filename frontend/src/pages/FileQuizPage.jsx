@@ -140,8 +140,8 @@ export default function FileQuizPage() {
 
       <div className="assessment-container">
         <div className="assessment-header">
-          <Link to={`/admin/materials/${id}`} className="file-quiz-back">
-            ← Späť na materiál
+          <Link to="/admin" className="file-quiz-back">
+            ← Späť na zoznam súborov
           </Link>
           <h1>Test z vlastného súboru</h1>
           {fileName && <p className="file-quiz-sub">{fileName}</p>}
@@ -155,7 +155,7 @@ export default function FileQuizPage() {
           <div className="file-quiz-panel error">
             <p>{error}</p>
             <button type="button" className="file-quiz-btn primary" onClick={() => navigate('/admin')}>
-              Na admin
+              Späť na zoznam súborov
             </button>
           </div>
         )}
@@ -164,8 +164,9 @@ export default function FileQuizPage() {
           <div className="file-quiz-panel">
             <h2>Vytvoriť test z dokumentu</h2>
             <p>
-              AI (Gemini) vygeneruje 8 otázok s výberom odpovede výhradne z textu tvojho súboru (PDF,
-              TXT a pod.). Najprv sa musí z textu dať extrahovať obsah — obrázky nie sú podporované.
+              AI (Gemini) vytvorí 8 otázok s výberom odpovede z textu tvojho súboru — rovnaký štýl ako pri
+              testoch k témam v kurze. Funguje to len z extrahovateľného textu (PDF/TXT a pod.); čisté obrázky
+              v PDF bez textu nestačia.
             </p>
             {error && <div className="file-quiz-err">⚠️ {error}</div>}
             <button
@@ -262,7 +263,7 @@ export default function FileQuizPage() {
                 Znova vyplniť tento test
               </button>
               <Link to="/admin" className="file-quiz-btn primary">
-                Na moje súbory
+                Späť na zoznam súborov
               </Link>
             </div>
           </div>
