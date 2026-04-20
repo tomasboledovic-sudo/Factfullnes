@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { API_BASE_URL } from '../config';
 
 const AuthContext = createContext(null);
@@ -75,8 +75,31 @@ export function AuthProvider({ children }) {
     return { Authorization: `Bearer ${token}` };
   }
 
+  /** Obnoví meno / email / isAdmin zo servera (napr. pred kontrolou admin trasy). */
+  const syncUserFromProfile = useCallback(async () => {
+    if (!token) return null;
+    try {
+      const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (!data.success || !data.data?.user) return null;
+      const u = data.data.user;
+      setUser((prev) => {
+        const merged = { ...(prev || {}), ...u };
+        localStorage.setItem('auth_user', JSON.stringify(merged));
+        return merged;
+      });
+      return u;
+    } catch {
+      return null;
+    }
+  }, [token]);
+
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, logout, getAuthHeaders }}>
+    <AuthContext.Provider
+      value={{ user, token, loading, login, logout, getAuthHeaders, syncUserFromProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );

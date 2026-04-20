@@ -23,10 +23,10 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route element={<AdminRoute />}>
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/admin/materials/:id" element={<MaterialSummaryPage />} />
-              <Route path="/admin/materials/:id/quiz" element={<FileQuizPage />} />
+            <Route path="admin" element={<AdminRoute />}>
+              <Route index element={<AdminPage />} />
+              <Route path="materials/:id" element={<MaterialSummaryPage />} />
+              <Route path="materials/:id/quiz" element={<FileQuizPage />} />
             </Route>
             <Route path="/session/:sessionId/pre-test" element={<PreAssessmentPage />} />
             <Route path="/session/:sessionId/learning" element={<LearningPage />} />
