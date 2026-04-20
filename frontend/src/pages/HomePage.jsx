@@ -111,15 +111,15 @@ function HomePage() {
 
       <section className="topics-section">
         <h2 className="section-title">
-          Vyber si tému
-          {isAdminUser(user) && (
-            <>
-              {' '}
-              alebo{' '}
-              <Link to="/admin" className="section-title-upload-link">
-                nahraj súbor
-              </Link>
-            </>
+          Vyber si tému alebo{' '}
+          {isAdminUser(user) ? (
+            <Link to="/admin" className="section-title-upload-link">
+              nahraj súbor
+            </Link>
+          ) : (
+            <span className="section-title-upload-inline" title="Nahrávanie je len pre správcu">
+              nahraj súbor
+            </span>
           )}
         </h2>
         <div className="topics-grid">
