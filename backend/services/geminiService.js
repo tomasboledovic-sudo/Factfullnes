@@ -675,12 +675,19 @@ function buildTestSchema(expectedCount) {
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
-export async function generateLearningContent(topicData, testResults) {
+export async function generateLearningContent(topicData, testResults, opts = {}) {
+    const allowGemini = opts.allowGemini !== false;
+
     if (usesOnlyPreGeneratedLearning(topicData)) {
         console.log(`Učebné materiály (predpripravené, bez AI): ${topicData.title}`);
         const bundle = buildPreGeneratedLearningBundle(topicData, testResults);
         if (bundle) return bundle;
         console.warn('Predpripravený materiál sa nepodarilo zostaviť — lokálny fallback.');
+        return generateFallbackContent(topicData, testResults);
+    }
+
+    if (!allowGemini) {
+        console.log(`Učebné materiály bez Gemini API (obmedzenie na správcu): ${topicData.title}`);
         return generateFallbackContent(topicData, testResults);
     }
 
@@ -796,7 +803,8 @@ export async function generateQuizFromFileContent(fileName, fileContent, questio
     throw new Error('Nepodarilo sa vygenerovať test z dokumentu (Gemini). Skús to znova.');
 }
 
-export async function generateFinalTest(topicData, learningContent, originalTestResults) {
+export async function generateFinalTest(topicData, learningContent, originalTestResults, opts = {}) {
+    const allowGemini = opts.allowGemini !== false;
     const wrong = (originalTestResults?.detailedAnswers || []).filter((a) => !a.wasCorrect);
     if (wrong.length === 0) {
         console.log(`✅ Záverečný test sa nevyžaduje (vstupný test bez chýb): ${topicData.title}`);
@@ -805,6 +813,12 @@ export async function generateFinalTest(topicData, learningContent, originalTest
             description: `Vstupný test témy „${topicData.title}“ bez chýb — záverečný test nie je potrebný.`,
             questions: []
         };
+    }
+
+    if (!allowGemini) {
+        console.log(`Záverečný test bez Gemini API (obmedzenie na správcu): ${topicData.title}`);
+        const fb = generateFallbackTest(topicData, originalTestResults);
+        return sanitizeFinalTestForSession(fb, topicData.title, learningContent?.sections);
     }
 
     const expectedQ = wrong.length;

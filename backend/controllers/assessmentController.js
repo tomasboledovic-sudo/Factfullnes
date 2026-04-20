@@ -1,6 +1,7 @@
 import { getTopicById, getQuestionsByTopicId } from '../utils/supabaseData.js';
 import { generateLearningContent, generateFinalTest, sanitizeFinalTestForSession } from '../services/geminiService.js';
 import { getSessionById, patchSession } from '../utils/sessionRepository.js';
+import { sessionMayUseLearningGemini } from '../utils/learningGeminiAccess.js';
 
 async function fetchSession(sessionId) {
     return getSessionById(sessionId);
@@ -72,7 +73,8 @@ export async function submitPreTest(req, res, next) {
             detailedAnswers: evaluatedAnswers,
             questionIdsInOrder: questions.map((q) => q.id)
         };
-        const generatedContent = await generateLearningContent(topic, testResults);
+        const allowGemini = await sessionMayUseLearningGemini(session);
+        const generatedContent = await generateLearningContent(topic, testResults, { allowGemini });
 
         await updateSession(sessionId, {
             generated_content: generatedContent,
@@ -80,7 +82,7 @@ export async function submitPreTest(req, res, next) {
             content_generated_at: new Date().toISOString()
         });
 
-        console.log(`✅ Učebné materiály vygenerované pre session: ${sessionId}`);
+        console.log(`✅ Učebné materiály vygenerované pre session: ${sessionId}${allowGemini ? '' : ' (bez Gemini API)'}`);
 
         res.json({
             success: true,
@@ -127,7 +129,10 @@ export async function startTestGeneration(req, res, next) {
             detailedAnswers: preAnswers
         };
 
-        const finalTest = await generateFinalTest(topic, session.generated_content, originalTestResults);
+        const allowGemini = await sessionMayUseLearningGemini(session);
+        const finalTest = await generateFinalTest(topic, session.generated_content, originalTestResults, {
+            allowGemini
+        });
 
         const updatedContent = { ...session.generated_content, finalTest };
         await updateSession(sessionId, {
@@ -270,8 +275,11 @@ export async function regenerateLearning(req, res, next) {
             questionIdsInOrder: (topicQuestions || []).map((q) => q.id)
         };
 
-        console.log(`Obnovujem učebné materiály (AI) pre session: ${sessionId}`);
-        const generatedContent = await generateLearningContent(topic, testResults);
+        const allowGemini = await sessionMayUseLearningGemini(session);
+        console.log(
+            `${allowGemini ? 'Obnovujem učebné materiály (AI)' : 'Obnovujem učebné materiály (bez Gemini API)'} pre session: ${sessionId}`
+        );
+        const generatedContent = await generateLearningContent(topic, testResults, { allowGemini });
 
         await updateSession(sessionId, {
             generated_content: generatedContent,
