@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
 import Navigation from '../components/Navigation';
@@ -24,12 +24,22 @@ export default function FileQuizPage() {
   const [results, setResults] = useState(null);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!token) {
-      navigate('/login');
+      navigate('/login', {
+        replace: true,
+        state: { from: { pathname: location.pathname, search: location.search } }
+      });
+      return;
+    }
+    if (!id || id === 'undefined') {
+      setError('Chýba identifikátor súboru.');
+      setPhase('error');
       return;
     }
     loadQuiz();
-  }, [id, token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- načítanie pri zmene id/token/auth
+  }, [id, token, authLoading]);
 
   async function loadQuiz() {
     setError(null);
@@ -40,7 +50,17 @@ export default function FileQuizPage() {
 
     try {
       const res = await fetch(`${API_BASE_URL}/files/${id}/quiz`, { headers: getAuthHeaders() });
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = text ? JSON.parse(text) : {};
+      } catch {
+        setError(
+          'Server vrátil neplatnú odpoveď (nie JSON). Skontroluj backend a že voláš správne /api/files/…/quiz.'
+        );
+        setPhase('error');
+        return;
+      }
 
       if (data.success) {
         setQuestions(data.data.questions);
@@ -52,7 +72,13 @@ export default function FileQuizPage() {
 
       if (data.error?.code === 'QUIZ_NOT_GENERATED') {
         const fr = await fetch(`${API_BASE_URL}/files`, { headers: getAuthHeaders() });
-        const fd = await fr.json();
+        const fText = await fr.text();
+        let fd = {};
+        try {
+          fd = fText ? JSON.parse(fText) : {};
+        } catch {
+          /* ignore */
+        }
         const f = fd.data?.find((x) => String(x.id) === String(id));
         if (f) setFileName(f.file_name);
         setPhase('generate');
@@ -77,19 +103,21 @@ export default function FileQuizPage() {
         headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
         body: JSON.stringify({ questionCount: 8 })
       });
+      const text = await res.text();
       let data;
       try {
-        data = await res.json();
+        data = text ? JSON.parse(text) : {};
       } catch {
-        throw new Error(`Server vrátil neplatnú odpoveď (HTTP ${res.status})`);
+        throw new Error(`Server vrátil neplatnú odpoveď (HTTP ${res.status}). Skontroluj log Vercelu / backendu.`);
       }
       if (!res.ok || !data.success) {
         throw new Error(data.error?.message || `Generovanie zlyhalo (HTTP ${res.status})`);
       }
       await loadQuiz();
     } catch (e) {
-      alert(e.message || 'Generovanie zlyhalo');
+      const msg = e instanceof Error ? e.message : String(e);
       await loadQuiz();
+      setError(msg);
     } finally {
       setGenerating(false);
     }

@@ -1,12 +1,15 @@
 import './QuestionCard.css';
 
 function QuestionCard({ question, selectedAnswer, onAnswer }) {
+  const text = question?.questionText ?? question?.question ?? '';
+  const options = Array.isArray(question?.options) ? question.options : [];
+
   return (
     <div className="question-card">
-      <h3 className="question-text">{question.questionText}</h3>
+      <h3 className="question-text">{text}</h3>
       
       <div className="options-list">
-        {question.options.map((option, index) => (
+        {options.map((option, index) => (
           <button
             key={index}
             className={`option-button ${selectedAnswer === index ? 'selected' : ''}`}

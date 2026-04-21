@@ -150,13 +150,14 @@ app.get('/', (req, res) => {
 });
 
 /**
- * Krátka, bezpečná správa pre klienta (dlhé / omylom vložené texty z .env neposielame celé).
+ * Správa pre klienta — zastrihnutá, ale nie „zmazaná“ (Gemini/DB chyby bývajú dlhšie; 380 znakov bolo málo).
  */
 function publicErrorMessage(err) {
     const raw = String(err?.message ?? '').trim();
     if (!raw) return 'Došlo k chybe na serveri';
-    if (raw.length > 380) {
-        return 'Došlo k chybe na serveri. Podrobnosti nájdeš v logu servera (konzola / Vercel).';
+    const max = 1800;
+    if (raw.length > max) {
+        return `${raw.slice(0, max - 24)}… [skrátené]`;
     }
     return raw;
 }
@@ -169,7 +170,7 @@ app.use((err, req, res, next) => {
     }
     const status = err.status || 500;
     const details =
-        status < 500 && err.details != null && String(err.message ?? '').length <= 380 ? err.details : null;
+        status < 500 && err.details != null && String(err.message ?? '').length <= 1800 ? err.details : null;
     res.status(status).json({
         success: false,
         error: {

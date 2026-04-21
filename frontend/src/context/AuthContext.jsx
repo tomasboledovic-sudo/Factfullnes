@@ -70,10 +70,10 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('auth_user');
   }
 
-  function getAuthHeaders() {
+  const getAuthHeaders = useCallback(() => {
     if (!token) return {};
     return { Authorization: `Bearer ${token}` };
-  }
+  }, [token]);
 
   /** Obnoví meno / email / isAdmin zo servera (napr. pred kontrolou admin trasy). */
   const syncUserFromProfile = useCallback(async () => {
