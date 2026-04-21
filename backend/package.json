@@ -12,6 +12,7 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.99",
     "@supabase/supabase-js": "^2.99.3",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
