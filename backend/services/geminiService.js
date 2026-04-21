@@ -380,6 +380,18 @@ async function callGeminiAPI(prompt, schema) {
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         const msg = errorData.error?.message || response.statusText;
+        if (response.status === 429) {
+            const e = new Error(
+                'Prekročená kvóta Gemini API (časté pri bezplatnom pláne alebo po vyčerpaní limitu). ' +
+                    'Čo môžeš urobiť: skús znova neskôr; v Google AI Studio / Google Cloud skontroluj Usage a prípadne **zapni fakturáciu** (paid tier); ' +
+                    `v .env skús iný model (napr. \`GEMINI_MODEL=gemini-2.5-flash\` — aktuálne: ${getGeminiModelId()}). ` +
+                    'Ak API hlási „limit: 0“ pri free tier, daný model nemusí byť na free pláne dostupný. ' +
+                    'https://ai.google.dev/gemini-api/docs/rate-limits'
+            );
+            e.status = 429;
+            e.code = 'GEMINI_QUOTA';
+            throw e;
+        }
         const modelHint =
             response.status === 404
                 ? ` Skontroluj GEMINI_MODEL (teraz: ${getGeminiModelId()}) — na Google AI Studio musí model existovať.`
@@ -787,8 +799,10 @@ Odpovedaj v slovenčine. Formátuj odpoveď prehľadne s nadpismi.`;
  */
 export async function generateQuizFromFileContent(fileName, fileContent, questionCount = 8) {
     const n = Math.min(10, Math.max(4, Number(questionCount) || 8));
+    /** Kratší vstup = menej input tokenov (nižšia záťaž na free tier). */
+    const maxChars = 14000;
     const truncated =
-        fileContent.length > 28000 ? `${fileContent.substring(0, 28000)}\n...[skrátené]` : fileContent;
+        fileContent.length > maxChars ? `${fileContent.substring(0, maxChars)}\n...[skrátené]` : fileContent;
     if (!truncated.trim()) {
         throw new Error('Text dokumentu je prázdny — zo súboru sa nedá vytvoriť test.');
     }
@@ -813,14 +827,16 @@ export async function generateQuizFromFileContent(fileName, fileContent, questio
         } catch (err) {
             lastErr = err;
             console.error(`❌ Pokus ${attempt}/3 (test z materiálu):`, err.message);
+            if (err?.status === 429 || err?.code === 'GEMINI_QUOTA') {
+                throw err;
+            }
             if (attempt < 3) await new Promise((r) => setTimeout(r, 2000));
         }
     }
 
     const detail = lastErr instanceof Error ? lastErr.message : String(lastErr);
-    throw new Error(
-        `Nepodarilo sa vygenerovať test z dokumentu (Gemini). ${detail || 'Skús to znova.'}`.slice(0, 500)
-    );
+    const combined = `Nepodarilo sa vygenerovať test z dokumentu (Gemini). ${detail || 'Skús to znova.'}`;
+    throw new Error(combined.length > 600 ? combined.slice(0, 580) + '…' : combined);
 }
 
 export async function generateFinalTest(topicData, learningContent, originalTestResults, opts = {}) {
