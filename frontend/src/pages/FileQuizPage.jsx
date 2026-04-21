@@ -10,7 +10,8 @@ import './FileQuizPage.css';
 export default function FileQuizPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { token, getAuthHeaders } = useAuth();
+  const location = useLocation();
+  const { token, getAuthHeaders, loading: authLoading } = useAuth();
 
   const [phase, setPhase] = useState('loading');
   const [error, setError] = useState(null);
