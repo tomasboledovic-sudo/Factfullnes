@@ -154,15 +154,20 @@ function PreAssessmentPage() {
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem('preTestScore', data.data.preTestScore.percentage);
-        
-        // Okamžite zobraziť výsledky
+        const perfect = data.data.perfectPreTest === true;
+        if (!perfect) {
+          localStorage.setItem('preTestScore', String(data.data.preTestScore.percentage));
+        }
+
         setTestResults(data.data);
         setShowResults(true);
         setSubmitting(false);
-        
-        // Spustiť polling pre generovanie na pozadí
-        startPolling();
+
+        if (perfect) {
+          setContentReady(true);
+        } else {
+          startPolling();
+        }
       } else {
         alert(`Chyba: ${data.error?.message || 'Nepodarilo sa odoslať test'}`);
         setSubmitting(false);
@@ -181,6 +186,20 @@ function PreAssessmentPage() {
     navigate(`/session/${sessionId}/learning`);
   };
 
+  const handlePerfectGoHome = () => {
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current);
+    }
+    localStorage.removeItem('currentSessionId');
+    localStorage.removeItem('sessionStartTime');
+    localStorage.removeItem('preTestScore');
+    localStorage.removeItem('postTestScore');
+    localStorage.removeItem('improvement');
+    localStorage.removeItem('currentTopicId');
+    localStorage.removeItem('currentTopicTitle');
+    navigate('/');
+  };
+
   if (loading) {
     return (
       <div className="page-wrapper">
@@ -192,12 +211,43 @@ function PreAssessmentPage() {
 
   // Zobrazenie výsledkov
   if (showResults && testResults) {
-    const { preTestScore, detailedResults } = testResults;
-    
+    const { preTestScore, detailedResults, perfectPreTest } = testResults;
+
+    if (perfectPreTest) {
+      return (
+        <div className="page-wrapper">
+          <Navigation />
+
+          <div className="results-container pre-test-perfect">
+            <div className="results-header">
+              <div className="perfect-badge" aria-hidden="true">
+                🌟
+              </div>
+              <h1>Výborne!</h1>
+              <p className="perfect-lead">
+                Máš všetky otázky vo vstupnom teste správne ({preTestScore.correctAnswers} z{' '}
+                {preTestScore.totalQuestions}) — tému už ovládaš na úrovni tohto testu.
+              </p>
+              <p className="perfect-hint">
+                Učebné materiály pre túto tému ti teraz neukážeme; skús si vybrať{' '}
+                <strong>inú tému</strong>, kde ešte môžeš naraziť na nové súvislosti alebo výzvy.
+              </p>
+            </div>
+
+            <div className="results-actions">
+              <button type="button" onClick={handlePerfectGoHome} className="btn btn-primary btn-large">
+                Späť na výber tém
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="page-wrapper">
         <Navigation />
-        
+
         <div className="results-container">
           <div className="results-header">
             <h1>Výsledky Vstupného Testu</h1>
@@ -214,8 +264,8 @@ function PreAssessmentPage() {
           <div className="detailed-results">
             <h2>Detailné Výsledky</h2>
             {detailedResults.map((result, index) => (
-              <div 
-                key={result.questionId} 
+              <div
+                key={result.questionId}
                 className={`result-item ${result.wasCorrect ? 'correct' : 'incorrect'}`}
               >
                 <div className="result-number">
@@ -244,8 +294,8 @@ function PreAssessmentPage() {
           </div>
 
           <div className="results-actions">
-            <button 
-              onClick={handleContinue} 
+            <button
+              onClick={handleContinue}
               className={`btn btn-primary btn-large ${!contentReady ? 'btn-waiting' : ''}`}
               disabled={!contentReady}
             >

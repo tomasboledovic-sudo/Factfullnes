@@ -112,11 +112,12 @@ export async function getProfile(req, res, next) {
                 const improvement =
                     pre != null && post != null ? Math.round((post - pre) * 10) / 10 : null;
                 const completed = s.completed === true;
-                const continuePath = !completed
-                    ? s.status === 'pre_assessment'
-                        ? `/session/${s.id}/pre-test`
-                        : `/session/${s.id}/learning`
-                    : null;
+                const continuePath =
+                    !completed && s.status !== 'pre_test_perfect'
+                        ? s.status === 'pre_assessment'
+                            ? `/session/${s.id}/pre-test`
+                            : `/session/${s.id}/learning`
+                        : null;
                 return {
                     sessionId: s.id,
                     topicId: s.topic_id,

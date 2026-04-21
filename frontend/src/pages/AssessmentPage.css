@@ -321,3 +321,26 @@
     padding: 0.875rem;
   }
 }
+
+/* Vstupný test 100 % — gratulácia, len odkaz domov */
+.pre-test-perfect .perfect-badge {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.pre-test-perfect .perfect-lead {
+  font-size: 1.05rem;
+  color: var(--foreground);
+  line-height: 1.55;
+  max-width: 36rem;
+  margin: 0 auto 1rem;
+}
+
+.pre-test-perfect .perfect-hint {
+  font-size: 0.98rem;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+  max-width: 36rem;
+  margin: 0 auto 2rem;
+}

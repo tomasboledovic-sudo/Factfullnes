@@ -55,8 +55,36 @@ export async function submitPreTest(req, res, next) {
         const correctCount = evaluatedAnswers.filter(a => a.wasCorrect).length;
         const totalCount = evaluatedAnswers.length;
         const percentage = Math.round((correctCount / totalCount) * 100 * 10) / 10;
+        const allCorrect = correctCount === totalCount;
 
         console.log(`✅ Skóre: ${percentage}% (${correctCount}/${totalCount})`);
+
+        if (allCorrect) {
+            await updateSession(sessionId, {
+                pre_test_answers: evaluatedAnswers,
+                pre_test_score: percentage,
+                status: 'pre_test_perfect',
+                generated_content: null,
+                content_generated_at: null
+            });
+            console.log(`🌟 Vstupný test 100 % — preskakujem generovanie učebných materiálov (${sessionId})`);
+            return res.json({
+                success: true,
+                data: {
+                    sessionId,
+                    preTestScore: {
+                        percentage,
+                        correctAnswers: correctCount,
+                        totalQuestions: totalCount,
+                        incorrectAnswers: 0
+                    },
+                    detailedResults: evaluatedAnswers,
+                    contentStatus: 'skipped_perfect',
+                    perfectPreTest: true,
+                    message: 'Všetko správne — učebné materiály sa negenerujú; odporúčame inú tému.'
+                }
+            });
+        }
 
         await updateSession(sessionId, {
             pre_test_answers: evaluatedAnswers,
@@ -91,6 +119,7 @@ export async function submitPreTest(req, res, next) {
                 preTestScore: { percentage, correctAnswers: correctCount, totalQuestions: totalCount, incorrectAnswers: totalCount - correctCount },
                 detailedResults: evaluatedAnswers,
                 contentStatus: 'ready',
+                perfectPreTest: false,
                 message: 'Test vyhodnotený a učebné materiály sú pripravené.'
             }
         });
@@ -159,7 +188,10 @@ export async function getContentStatus(req, res, next) {
         if (!session) return res.status(404).json({ success: false, error: { code: 'SESSION_NOT_FOUND', message: 'Session neexistuje' } });
 
         const ready = !!(session.generated_content?.sections?.length > 0);
-        const status = ready ? 'ready' : (session.status === 'generation_failed' ? 'error' : 'generating');
+        let status = ready ? 'ready' : session.status === 'generation_failed' ? 'error' : 'generating';
+        if (session.status === 'pre_test_perfect') {
+            status = 'skipped_perfect';
+        }
 
         res.json({ success: true, data: { sessionId, status, ready, sessionStatus: session.status } });
     } catch (error) {
