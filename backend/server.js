@@ -35,9 +35,12 @@ function loadEnvFromPath(filePath, override = false) {
     }
 }
 
-// Koreň .env (VITE_*, USE_LOCAL_TOPIC_DATA, …), potom backend/.env s prednosťou — vždy platí konfigurácia backendu
+// Lokálne: koreň .env, potom backend/.env (prepíše koreň). Na Verceli sú len premenné z dashboardu — backend/.env sa nenačítava,
+// aby GEMINI_MODEL a ďalšie kľúče z Project Settings nikdy neprepísal súbor z buildu.
 loadEnvFromPath(join(__dirname, '..', '.env'), false);
-loadEnvFromPath(join(__dirname, '.env'), true);
+if (!process.env.VERCEL) {
+    loadEnvFromPath(join(__dirname, '.env'), true);
+}
 
 import assessmentRoutes from './routes/assessmentRoutes.js';
 import topicRoutes from './routes/topicRoutes.js';

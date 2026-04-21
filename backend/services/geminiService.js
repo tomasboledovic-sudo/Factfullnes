@@ -4,7 +4,14 @@ import { buildPreGeneratedLearningBundle, usesOnlyPreGeneratedLearning } from '.
 const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
 
 export function getGeminiModelId() {
-    return (process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL).trim();
+    let m = String(process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL).trim();
+    if (
+        (m.startsWith('"') && m.endsWith('"')) ||
+        (m.startsWith("'") && m.endsWith("'"))
+    ) {
+        m = m.slice(1, -1).trim();
+    }
+    return m || DEFAULT_GEMINI_MODEL;
 }
 
 function buildGeminiGenerateContentUrl(apiKey) {
