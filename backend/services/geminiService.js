@@ -379,13 +379,24 @@ async function callGeminiAPI(prompt, schema) {
 
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(`Gemini API error ${response.status}: ${errorData.error?.message || response.statusText}`);
+        const msg = errorData.error?.message || response.statusText;
+        const modelHint =
+            response.status === 404
+                ? ` Skontroluj GEMINI_MODEL (teraz: ${getGeminiModelId()}) — na Google AI Studio musí model existovať.`
+                : '';
+        throw new Error(`Gemini API error ${response.status}: ${msg}.${modelHint}`);
     }
 
     const data = await response.json();
     const candidate = data.candidates?.[0];
 
-    if (!candidate) throw new Error('Gemini API: žiadny kandidát v odpovedi');
+    if (!candidate) {
+        const br = data.promptFeedback?.blockReason;
+        if (br) {
+            throw new Error(`Gemini API: odpoveď zablokovaná (${br}). Skús kratší dokument alebo iný súbor.`);
+        }
+        throw new Error('Gemini API: žiadny kandidát v odpovedi (kvóta, filter alebo prázdny výstup).');
+    }
     if (candidate.finishReason === 'MAX_TOKENS') throw new Error('Gemini API: prekročený limit tokenov');
     if (!candidate.content?.parts?.[0]?.text) throw new Error('Gemini API: prázdna odpoveď');
 
@@ -787,20 +798,29 @@ export async function generateQuizFromFileContent(fileName, fileContent, questio
     const fakeTopic = { title: fileName, description: '', difficulty: 'custom' };
     const emptyLearning = { sections: [] };
 
+    let lastErr;
+    /** Schéma structured output občas zlyhá (model, veľkosť); 2.–3. pokus bez schémy — spoľahlivejšie na produkcii. */
     for (let attempt = 1; attempt <= 3; attempt++) {
         try {
-            console.log(`   [materiál] Generujem test z dokumentu (${n} otázok), pokus ${attempt}/3`);
-            const raw = await callGeminiAPI(prompt, schema);
+            const useSchema = attempt === 1;
+            console.log(
+                `   [materiál] Generujem test z dokumentu (${n} otázok), pokus ${attempt}/3${useSchema ? ' (so schémou)' : ' (bez schémy)'}`
+            );
+            const raw = await callGeminiAPI(prompt, useSchema ? schema : null);
             const result = parseFinalTestResponse(raw, fakeTopic, emptyLearning, n);
             console.log(`✅ Test z materiálu: ${result.questions.length} otázok`);
             return result;
         } catch (err) {
+            lastErr = err;
             console.error(`❌ Pokus ${attempt}/3 (test z materiálu):`, err.message);
             if (attempt < 3) await new Promise((r) => setTimeout(r, 2000));
         }
     }
 
-    throw new Error('Nepodarilo sa vygenerovať test z dokumentu (Gemini). Skús to znova.');
+    const detail = lastErr instanceof Error ? lastErr.message : String(lastErr);
+    throw new Error(
+        `Nepodarilo sa vygenerovať test z dokumentu (Gemini). ${detail || 'Skús to znova.'}`.slice(0, 500)
+    );
 }
 
 export async function generateFinalTest(topicData, learningContent, originalTestResults, opts = {}) {
