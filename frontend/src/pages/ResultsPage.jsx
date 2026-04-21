@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { API_BASE_URL } from '../config';
+import { useAuth } from '../context/AuthContext';
 import './ResultsPage.css';
 
 function ResultsPage() {
@@ -44,8 +45,8 @@ function ResultsPage() {
   };
 
   const handleRestartTest = async () => {
-    if (!currentTopicId) {
-      alert('Nepodarilo sa načítať tému');
+    if (!Number.isFinite(currentTopicId)) {
+      alert('Nepodarilo sa načítať tému. Skús znova začať z úvodnej stránky.');
       return;
     }
 
@@ -57,6 +58,7 @@ function ResultsPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...getAuthHeaders()
         },
         body: JSON.stringify({ topicId: currentTopicId })
       });

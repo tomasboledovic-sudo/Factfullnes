@@ -1,0 +1,131 @@
+{
+  "topicId": 10,
+  "byQuestionId": {
+    "q1-pre-topic10": {
+      "heading": "List (zoznam)",
+      "content": "**List** je usporiadaná sekvencia: prvky majú **poradie** a ten istý prvok sa môže vyskytovať **viackrát**. Typicky máš rýchly prístup podľa indexu (`get(i)` / `[]`).\n\n**Kontrola:** Ak potrebuješ len unikátne hodnoty bez ohľadu na poradie, často je vhodnejší **Set**; ak páry kľúč–hodnota, **Map**."
+    },
+    "q2-pre-topic10": {
+      "heading": "Set (množina)",
+      "content": "**Set** drží **unikátne** prvky. Klasická implementácia (hash set) **nezaručuje** zmysluplné „poradie“ pre výpis — na to existujú varianty s definovaným poradím (napr. linked hash set v Jave).\n\n**Prepojenie:** Unikátnosť + rýchle testovanie „obsahuje?“ vs. zoznam s duplikátmi a indexmi."
+    },
+    "q3-pre-topic10": {
+      "heading": "Duplicity v Set",
+      "content": "Pri vkladaní do **Set** sa duplicitné hodnoty **neukladajú druhý raz** — štruktúra ich „splynie“. Tvrdenie v teste je **pravdivé**.\n\n**Prakticky:** Pred prevodom zoznamu na množinu si uvedom, že **stratíš duplicity aj (pri bežnom Set) poradie**."
+    },
+    "q4-pre-topic10": {
+      "heading": "Map (mapa)",
+      "content": "**Map** ukladá **páry kľúč → hodnota**. Kľúč jednoznačne určuje miesto; jedna mapa nemá dva rovnaké kľúče pre ten istý význam záznamu (duplicitný kľúč sa prepíše alebo odmietne podľa API).\n\n**Tip:** Nezmýľ si **index zoznamu** s **kľúčom mapy** — sú to iné koncepty."
+    },
+    "q5-pre-topic10": {
+      "heading": "Prístup podľa indexu",
+      "content": "Na prístup „**na i-tej pozícii**“ je typicky najprirodzenejší **List** (dynamické pole / ArrayList) s **O(1)** alebo amortizovaným prístupom. **Set** nemá pojem pozície ako zoznam; **Map** je organizovaná podľa kľúča, nie podľa čísla poradia.\n\n**Zhrnutie:** Indexová adresa → zoznam; unikátnosť → set; asociácia → map."
+    },
+    "q6-pre-topic10": {
+      "heading": "Kľúče v Map",
+      "content": "V štandardnom modeli **mapy** je kľúč **jednoznačný** — rovnaký kľúč druhýkrát zvyčajne **prepíše** hodnotu, neukladajú sa dva paralelné záznamy s rovnakým kľúčom. Preto je tvrdenie „Map môže mať duplicitné kľúče“ vo všeobecnom zmysle **nepravdivé**.\n\n**Výnimky v praxi:** multimap / zoznam hodnôt pod jedným kľúčom je už iná abstrakcia."
+    },
+    "q7-pre-topic10": {
+      "heading": "Kedy Set namiesto List",
+      "content": "**Set** je vhodný, keď potrebuješ **unikátne prvky** a často testuješ prítomnosť (**contains**) — hash set býva O(1) priemerne. **List** si vyberieš, keď je kľúčové **poradie**, **index** alebo **duplicitné** výskyty.\n\n**Poznámka:** Ak potrebuješ **unikátnosť aj stabilné poradie** vloženia, v niektorých jazykoch existuje špecializovaná štruktúra (napr. LinkedHashSet)."
+    },
+    "q8-pre-topic10": {
+      "heading": "Vector v kóde",
+      "content": "V **C++** je `vector` dynamické pole s rýchlym prístupom podľa indexu. V **Jave** historicky `Vector` (podobné **ArrayList**). Nie je to matematický vektor zo zátvory, ale **úložisko prvkov v poradí**.\n\n**Kontext:** Vždy čítaj dokumentáciu jazyka — rovnaké slovo môže znamenať niečo iné v matematike a v štandardnej knižnici."
+    }
+  },
+  "allCorrectSections": [
+    {
+      "heading": "List, Set, Map",
+      "content": "Výborne — máš základ rozlíšený: **List** (poradie, duplicity, index), **Set** (unikátnosť), **Map** (kľúč → hodnota).\n\n**Ďalší krok:** Pri návrhu si polož otázku: čo je primárne — **poradie**, **unikátnosť**, alebo **vyhľadanie podľa kľúča**?"
+    },
+    {
+      "heading": "Zložitosť a API",
+      "content": "Pri rozhodovaní pomáha vedieť typické zložitosti operácií v tvojom jazyku (insert, lookup, pamäť). **Správna štruktúra** šetrí chyby aj čas pri refaktorovaní.\n\n**Návyk:** Nakresli si príklad dát (3–5 prvkov) a skús operácie „pridaj / nájdi / zmaž“ na papieri pred kódom."
+    }
+  ],
+  "finalTest": {
+    "testFormat": "mc_4",
+    "description": "Záverečný test: dátové štruktúry",
+    "questions": [
+      {
+        "question": "Ktorá štruktúra najčastejšie ukladá prvky v určenom poradí a povoľuje duplicity?",
+        "options": ["Set", "Map", "List", "Iba fronta"],
+        "correctOption": "List",
+        "explainsWeakness": "List = sekvencia s poradím."
+      },
+      {
+        "question": "Hlavný účel typického Setu:",
+        "options": [
+          "páry kľúč–hodnota",
+          "unikátne prvky a rýchle testovanie prítomnosti",
+          "iba statické pole",
+          "vždy zoradené výpisy bez dodatočnej logiky"
+        ],
+        "correctOption": "unikátne prvky a rýchle testovanie prítomnosti",
+        "explainsWeakness": "Definícia Set."
+      },
+      {
+        "question": "V bežnej Map je každý kľúč:",
+        "options": [
+          "vždy duplicitný",
+          "jednoznačný v rámci mapy",
+          "vždy číslo indexu zoznamu",
+          "vždy reťazec"
+        ],
+        "correctOption": "jednoznačný v rámci mapy",
+        "explainsWeakness": "Kľúč mapuje na jednu hodnotu."
+      },
+      {
+        "question": "Prístup k prvku podľa indexu i je typické pre:",
+        "options": ["HashSet bez rozšírenia", "List", "Iba Map", "Žiadnu štruktúru"],
+        "correctOption": "List",
+        "explainsWeakness": "Index ~ pozícia v zozname."
+      },
+      {
+        "question": "Ktoré tvrdenie zodpovedá Map?",
+        "options": [
+          "ukladá výhradne jednu hodnotu bez kľúča",
+          "ukladá priradenia kľúč → hodnota",
+          "nemôže obsahovať objekty",
+          "je to synonymum pre Set"
+        ],
+        "correctOption": "ukladá priradenia kľúč → hodnota",
+        "explainsWeakness": "Map = slovník."
+      },
+      {
+        "question": "Pri prevode zoznamu na bežný Set:",
+        "options": [
+          "duplicity zostanú",
+          "duplicity sa odstránia",
+          "poradie musí zostať vždy zachované v každom jazyku",
+          "nie je možné prevádzať"
+        ],
+        "correctOption": "duplicity sa odstránia",
+        "explainsWeakness": "Unikátnosť."
+      },
+      {
+        "question": "Na počítanie výskytov slov v texte je často vhodné:",
+        "options": [
+          "iba pole bez indexu",
+          "Map (slovo → počet) alebo podobná asociácia",
+          "výhradne Queue",
+          "vždy len jedna globálna premenná"
+        ],
+        "correctOption": "Map (slovo → počet) alebo podobná asociácia",
+        "explainsWeakness": "Asociácia kľúč–hodnota."
+      },
+      {
+        "question": "Vector v štandardnej knižnici (napr. C++) je najbližšie k:",
+        "options": [
+          "matematickej veľičine smeru v 2D",
+          "dynamickému polu s indexovaním",
+          "výhradne množine bez poradia",
+          "grafu hrán"
+        ],
+        "correctOption": "dynamickému polu s indexovaním",
+        "explainsWeakness": "Kontajner vs. matematika."
+      }
+    ]
+  }
+}

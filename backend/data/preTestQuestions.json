@@ -785,7 +785,7 @@
         "Usporiadaná kolekcia, ktorá povoľuje duplikáty",
         "Neusporiadaná kolekcia bez duplikátov",
         "Kolekcia párov kľúč-hodnota",
-        "Dynamické pole s fixnou veľkosťou"
+        "Pole s pevnou dĺžkou bez dynamického rastu"
       ],
       "correctAnswer": 0,
       "order": 1
@@ -906,7 +906,7 @@
       "questionText": "Modré svetlo z obrazoviek večer môže:",
       "questionType": "multiple_choice",
       "options": [
-        "urychliť zaspávanie",
+        "urýchliť zaspávanie",
         "sťažiť zaspávanie",
         "vylúčiť spánok úplne",
         "nahradiť denné svetlo"

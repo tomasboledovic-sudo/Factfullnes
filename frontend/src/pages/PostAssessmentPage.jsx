@@ -33,6 +33,12 @@ function PostAssessmentPage() {
       if (data.success) {
         setQuestions(data.data.questions);
         setTopicTitle(data.data.topicTitle);
+        if (data.data.topicId != null) {
+          localStorage.setItem('currentTopicId', String(data.data.topicId));
+        }
+        if (data.data.topicTitle) {
+          localStorage.setItem('currentTopicTitle', data.data.topicTitle);
+        }
       } else {
         alert('Nepodarilo sa načítať otázky');
         navigate('/');

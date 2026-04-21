@@ -27,6 +27,10 @@ ON CONFLICT (id) DO UPDATE SET
   estimated_duration = EXCLUDED.estimated_duration,
   cover_image = EXCLUDED.cover_image;
 
+-- Ak má tabuľka pre_test_questions pre niektoré topic_id 0 riadkov, backend použije
+-- zálohu z repozitára (data/preTestQuestions.json). Na úplné naplnenie DB môžeš
+-- exportovať tieto dáta samostatnou migráciou.
+
 -- Voliteľne: odstránenie zastaraných tém 4 a 9 (ak ešte existujú v DB)
 -- DELETE FROM pre_test_questions WHERE topic_id IN (4, 9);
 -- DELETE FROM sessions WHERE topic_id IN (4, 9);

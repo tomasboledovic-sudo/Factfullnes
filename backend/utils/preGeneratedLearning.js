@@ -6,10 +6,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const PRE_GEN_DIR = join(__dirname, '../data/preGeneratedLearning');
 
 /** Súbor JSON pre každú tému s predgenerovaným obsahom (učenie + voliteľný záverečný test). */
-const TOPIC_FILE_NAMES = {
+export const TOPIC_FILE_NAMES = {
     3: 'topic-3.json',
     5: 'topic-5.json',
     7: 'topic-7-mocniny.json',
+    10: 'topic-10.json',
     11: 'topic-11.json',
     12: 'topic-12.json',
     13: 'topic-13.json',

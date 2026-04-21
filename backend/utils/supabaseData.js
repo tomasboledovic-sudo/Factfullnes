@@ -105,7 +105,7 @@ export async function getQuestionsByTopicId(topicId) {
         .eq('topic_id', topicId)
         .order('order');
     if (!error && Array.isArray(data)) {
-        return data.map(q => ({
+        const mapped = data.map((q) => ({
             id: q.id,
             topicId: q.topic_id,
             questionText: q.question_text,
@@ -114,6 +114,12 @@ export async function getQuestionsByTopicId(topicId) {
             correctAnswer: q.correct_answer,
             order: q.order
         }));
+        if (mapped.length > 0) return mapped;
+        console.warn(
+            `[topics] pre_test_questions: pre topic_id=${topicId} žiadne riadky v DB — používam data/preTestQuestions.json`
+        );
+        const fallback = loadLocalPreTest()[String(topicId)] || [];
+        return [...fallback].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     }
     if (isMissingTable(error, 'pre_test_questions')) {
         console.warn('[topics] Tabuľka pre_test_questions v Supabase chýba — používam data/preTestQuestions.json');
