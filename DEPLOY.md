@@ -7,7 +7,7 @@ Repozitár: [tomasboledovic-sudo/Factfullnes](https://github.com/tomasboledovic-
 ```bash
 cd /cesta/k/fact
 git add -A
-git commit -m "Initial deploy: LearnFlow frontend + API"
+git commit -m "Initial deploy: Factfulness frontend + API"
 git branch -M main
 git remote add origin https://github.com/tomasboledovic-sudo/Factfullnes.git
 # ak už máš origin, použi: git remote set-url origin https://github.com/tomasboledovic-sudo/Factfullnes.git

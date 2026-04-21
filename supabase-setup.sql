@@ -1,5 +1,5 @@
 -- ============================================
--- LearnFlow - kompletné nastavenie databázy
+-- Factfulness - kompletné nastavenie databázy
 -- Spusti celý tento súbor v Supabase SQL Editor
 -- ============================================
 

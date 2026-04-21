@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Outlet } from 'react-router-dom';
 import CookieBanner from './CookieBanner';
 
-const COOKIE_STORAGE_KEY = 'learnflow_cookie_consent_v1';
+const COOKIE_STORAGE_KEY = 'factfulness_cookie_consent_v1';
 
 function readCookieAccepted() {
   try {

@@ -21,7 +21,7 @@ function Navigation() {
             <rect x="2" y="18" width="12" height="12" rx="3" fill="#22d3d1" />
             <rect x="18" y="18" width="12" height="12" rx="3" fill="#f472b6" />
           </svg>
-          <span className="logo-text">LearnFlow</span>
+          <span className="logo-text">Factfulness</span>
         </Link>
 
         <div className="nav-actions">

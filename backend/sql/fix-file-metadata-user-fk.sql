@@ -1,4 +1,4 @@
--- Oprava: FK na auth.users bráni uploadu — LearnFlow používa public.users (email/heslo), nie Supabase Auth.
+-- Oprava: FK na auth.users bráni uploadu — Factfulness používa public.users (email/heslo), nie Supabase Auth.
 -- Spusti v Supabase → SQL Editor (jednorazovo).
 
 ALTER TABLE file_metadata

@@ -6,4 +6,4 @@ ALTER TABLE file_metadata
 
 CREATE INDEX IF NOT EXISTS idx_file_metadata_user_id ON file_metadata(user_id);
 
-COMMENT ON COLUMN file_metadata.user_id IS 'LearnFlow user id (JWT userId); NULL = legacy záznam bez vlastníka';
+COMMENT ON COLUMN file_metadata.user_id IS 'Factfulness user id (JWT userId); NULL = legacy záznam bez vlastníka';

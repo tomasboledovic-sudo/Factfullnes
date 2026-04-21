@@ -2,7 +2,7 @@
   "name": "fact-monorepo",
   "private": true,
   "version": "1.0.0",
-  "description": "LearnFlow — frontend/ + backend/. Žiadny koreňový statický server.",
+  "description": "Factfulness — frontend/ + backend/. Žiadny koreňový statický server.",
   "scripts": {
     "dev": "echo 'Frontend: cd frontend && npm run dev  →  :5173' && echo 'Backend:  cd backend && npm run dev   →  :3001'",
     "start": "echo 'Použi: cd backend && npm start  alebo  cd frontend && npm run dev' && exit 1"
