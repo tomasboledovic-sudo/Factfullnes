@@ -1,7 +1,15 @@
+import { createRequire } from 'module';
 import supabase from '../services/supabaseClient.js';
 import { generateQuizFromFileContent, summarizeUploadedDocument } from '../services/geminiService.js';
 
 const BUCKET = 'files';
+const requireFromHere = createRequire(import.meta.url);
+/** pdf-parse 1.x: cez require (nie import()), aby sa v ESM nespustil testovací blok v index.js (!module.parent). */
+let pdfParseFn;
+function getPdfParse() {
+    if (!pdfParseFn) pdfParseFn = requireFromHere('pdf-parse');
+    return pdfParseFn;
+}
 
 /**
  * Stiahne súbor zo storage a vráti extrahovaný text (PDF/text) alebo prázdno pri obrázku.
@@ -14,23 +22,21 @@ async function extractDocumentText(file) {
     const lower = file.file_name.toLowerCase();
 
     if (lower.endsWith('.pdf') || file.file_type === 'application/pdf') {
-        /** Dynamický import — statický import pdf-parse pri štarte serverless často spôsobí 500 na Verceli (aj pri /api/topics). */
-        const { PDFParse } = await import('pdf-parse');
-        const parser = new PDFParse({ data: buffer });
+        /**
+         * pdf-parse 1.x — starší pdf.js v bundli, bez pdfjs-dist 5 / DOMMatrix z prehliadača.
+         */
         try {
-            const result = await parser.getText();
+            const result = await getPdfParse()(buffer);
             return { text: (result.text || '').trim(), isImage: false };
         } catch (e) {
             const msg = e instanceof Error ? e.message : String(e);
-            console.error('PDFParse:', msg);
+            console.error('pdf-parse:', msg);
             const err = new Error(
                 `Nepodarilo sa extrahovať text z PDF (poškodený súbor, šifrovaný PDF alebo neštandardný formát). ${msg}`
             );
             err.status = 422;
             err.code = 'PDF_PARSE';
             throw err;
-        } finally {
-            await parser.destroy().catch(() => {});
         }
     }
 
