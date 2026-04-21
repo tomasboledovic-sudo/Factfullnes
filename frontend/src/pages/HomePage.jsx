@@ -100,7 +100,7 @@ function HomePage() {
       <section className="hero">
         <div className="hero-content">
           <h1>
-            Nauč sa čokoľvek za <span className="italic">10 minút</span>
+            Naučte sa čokoľvek za <span className="italic">10 minút</span>
           </h1>
           <p className="lead">
             AI vytvorí personalizované materiály na základe tvojich vedomostí
