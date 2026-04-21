@@ -173,7 +173,22 @@ export default function FileQuizPage() {
             ← Späť na zoznam súborov
           </Link>
           <h1>Test z vlastného súboru</h1>
-          {fileName && <p className="file-quiz-sub">{fileName}</p>}
+          {fileName && <p className="test-description">{fileName}</p>}
+          {phase === 'taking' && questions.length > 0 && (
+            <>
+              {description && <p className="test-description file-quiz-desc-inline">{description}</p>}
+              <div className="progress-info">
+                Otázka {currentQuestionIndex + 1} z {questions.length} · zodpovedané {answeredCount}/
+                {questions.length}
+              </div>
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
+                />
+              </div>
+            </>
+          )}
         </div>
 
         {phase === 'loading' && (
@@ -183,7 +198,7 @@ export default function FileQuizPage() {
         {phase === 'error' && (
           <div className="file-quiz-panel error">
             <p>{error}</p>
-            <button type="button" className="file-quiz-btn primary" onClick={() => navigate('/admin')}>
+            <button type="button" className="btn btn-primary" onClick={() => navigate('/admin')}>
               Späť na zoznam súborov
             </button>
           </div>
@@ -200,7 +215,7 @@ export default function FileQuizPage() {
             {error && <div className="file-quiz-err">⚠️ {error}</div>}
             <button
               type="button"
-              className="file-quiz-btn primary"
+              className="btn btn-primary"
               disabled={generating}
               onClick={handleGenerate}
             >
@@ -211,18 +226,6 @@ export default function FileQuizPage() {
 
         {phase === 'taking' && currentQ && (
           <>
-            {description && <p className="file-quiz-desc">{description}</p>}
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-              />
-            </div>
-            <p className="question-counter">
-              Otázka {currentQuestionIndex + 1} z {questions.length} · zodpovedané {answeredCount}/
-              {questions.length}
-            </p>
-
             <QuestionCard
               question={currentQ}
               selectedAnswer={answers[currentQ.id]?.selectedOptionIndex}
@@ -232,7 +235,7 @@ export default function FileQuizPage() {
             <div className="navigation-buttons">
               <button
                 type="button"
-                className="nav-button"
+                className="btn btn-secondary"
                 disabled={currentQuestionIndex === 0}
                 onClick={() => setCurrentQuestionIndex((i) => i - 1)}
               >
@@ -241,7 +244,7 @@ export default function FileQuizPage() {
               {currentQuestionIndex < questions.length - 1 ? (
                 <button
                   type="button"
-                  className="nav-button primary"
+                  className="btn btn-primary"
                   onClick={() => setCurrentQuestionIndex((i) => i + 1)}
                 >
                   Ďalšia →
@@ -249,7 +252,7 @@ export default function FileQuizPage() {
               ) : (
                 <button
                   type="button"
-                  className="nav-button primary"
+                  className="btn btn-primary"
                   disabled={submitting || answeredCount < questions.length}
                   onClick={handleSubmit}
                 >
@@ -259,7 +262,12 @@ export default function FileQuizPage() {
             </div>
 
             <p className="file-quiz-regen">
-              <button type="button" className="link-btn" onClick={handleGenerate} disabled={generating}>
+              <button
+                type="button"
+                className="file-quiz-link-btn"
+                onClick={handleGenerate}
+                disabled={generating}
+              >
                 Vygenerovať nový test (prepíše starý)
               </button>
             </p>
@@ -267,31 +275,49 @@ export default function FileQuizPage() {
         )}
 
         {phase === 'results' && results && (
-          <div className="results-section">
-            <h2>Výsledok</h2>
-            <div className="score-display">
-              <span className="score-number">{results.score.percentage}%</span>
-              <span className="score-label">
-                {results.score.correctCount} z {results.score.totalCount} správne
-              </span>
+          <div className="results-container">
+            <div className="results-header">
+              <h1>Výsledok</h1>
+              <div className="score-display">
+                <div className="score-circle">
+                  <span className="score-number">{results.score.percentage}%</span>
+                </div>
+                <p className="score-text">
+                  {results.score.correctCount} z {results.score.totalCount} správne
+                </p>
+              </div>
             </div>
-            <ul className="file-quiz-detail-list">
-              {results.detailedResults.map((r) => (
-                <li key={r.questionId} className={r.wasCorrect ? 'ok' : 'bad'}>
-                  <strong>{r.wasCorrect ? '✓' : '✗'}</strong> {r.questionText}
+
+            <div className="detailed-results">
+              <h2>Detailné výsledky</h2>
+              {results.detailedResults.map((r, index) => (
+                <div
+                  key={r.questionId}
+                  className={`result-item ${r.wasCorrect ? 'correct' : 'incorrect'}`}
+                >
+                  <div className="result-number">
+                    {r.wasCorrect ? '✓' : '✗'} Otázka {index + 1}
+                  </div>
+                  <div className="result-question">{r.questionText}</div>
                   {!r.wasCorrect && (
-                    <div className="file-quiz-correct-hint">
-                      Správne: {r.correctOption}
+                    <div className="result-answers">
+                      <div className="result-answer wrong">
+                        <strong>Vaša odpoveď:</strong> {r.userSelectedOption ?? '—'}
+                      </div>
+                      <div className="result-answer correct-answer">
+                        <strong>Správna odpoveď:</strong> {r.correctOption}
+                      </div>
                     </div>
                   )}
-                </li>
+                </div>
               ))}
-            </ul>
-            <div className="file-quiz-actions">
-              <button type="button" className="file-quiz-btn" onClick={() => loadQuiz()}>
+            </div>
+
+            <div className="results-actions file-quiz-results-actions">
+              <button type="button" className="btn btn-secondary" onClick={() => loadQuiz()}>
                 Znova vyplniť tento test
               </button>
-              <Link to="/admin" className="file-quiz-btn primary">
+              <Link to="/admin" className="btn btn-primary">
                 Späť na zoznam súborov
               </Link>
             </div>
