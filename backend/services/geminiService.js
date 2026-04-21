@@ -382,11 +382,11 @@ async function callGeminiAPI(prompt, schema) {
         const msg = errorData.error?.message || response.statusText;
         if (response.status === 429) {
             const e = new Error(
-                'Prekročená kvóta Gemini API (časté pri bezplatnom pláne alebo po vyčerpaní limitu). ' +
-                    'Čo môžeš urobiť: skús znova neskôr; v Google AI Studio / Google Cloud skontroluj Usage a prípadne **zapni fakturáciu** (paid tier); ' +
-                    `v .env skús iný model (napr. \`GEMINI_MODEL=gemini-2.5-flash\` — aktuálne: ${getGeminiModelId()}). ` +
-                    'Ak API hlási „limit: 0“ pri free tier, daný model nemusí byť na free pláne dostupný. ' +
-                    'https://ai.google.dev/gemini-api/docs/rate-limits'
+                'Prekročená kvóta Gemini API (bezplatný plán alebo vyčerpaný limit). ' +
+                    'Skús neskôr; v Google AI Studio alebo Google Cloud skontroluj Usage a prípadne zapni fakturáciu (paid tier). ' +
+                    `Na Verceli v premenných prostredia nastav napr. GEMINI_MODEL=gemini-2.5-flash (teraz: ${getGeminiModelId()}). ` +
+                    'Ak API hlási limit 0 pri free tier, tento model tam nemusí byť dostupný. ' +
+                    'Viac: https://ai.google.dev/gemini-api/docs/rate-limits'
             );
             e.status = 429;
             e.code = 'GEMINI_QUOTA';
