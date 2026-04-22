@@ -17,6 +17,56 @@
   text-decoration: underline;
 }
 
+/* Textový krok späť (nie druhé tlačidlo) */
+.file-quiz-text-back {
+  display: block;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.file-quiz-text-back:hover {
+  color: var(--accent-dark);
+}
+
+.file-quiz-nav-back {
+  margin-bottom: 0.75rem;
+  margin-top: 0;
+}
+
+/* Jedna hlavná akcia: full width ako na testoch v kurze */
+.file-quiz-question-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.file-quiz-cta-sole {
+  width: 100%;
+  max-width: 100%;
+  justify-content: center;
+  padding: 0.7rem 1.25rem;
+  font-size: 0.9375rem;
+}
+
+/* Prepíš grid z AssessmentPage.css (2 stĺpce) — tu len jeden primary */
+.file-quiz-page .navigation-buttons {
+  display: none;
+}
+
 .file-quiz-desc-inline {
   margin-top: 0.25rem;
 }
@@ -85,48 +135,65 @@
   cursor: not-allowed;
 }
 
-/* Dva primárne/sekundárne CTA pod výsledkami */
-.file-quiz-results-actions {
+/* Výsledky: 1× primary, pod tým textový odkaz */
+.file-quiz-results-footer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  margin-top: 1.5rem;
+  gap: 0.9rem;
+  margin-top: 1.75rem;
+  padding-top: 0.5rem;
 }
 
-.file-quiz-results-actions .btn {
-  min-width: 200px;
+.file-quiz-text-link-standalone {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-@media (max-width: 768px) {
-  .file-quiz-results-actions .btn {
-    min-width: unset;
-    width: 100%;
-  }
+.file-quiz-text-link-standalone:hover {
+  color: var(--accent-dark);
 }
 
-.file-quiz-followup-banner,
-.file-quiz-followup-cta {
+.file-quiz-text-link-footer {
+  margin-top: 0.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.file-quiz-text-link-footer:hover {
+  color: var(--accent-dark);
+}
+
+/* Jeden panel ďalšieho kroku (materiály alebo doplňujúci test) */
+.file-quiz-next-step {
   margin-bottom: 1.25rem;
 }
 
-.file-quiz-followup-banner p,
-.file-quiz-followup-cta p {
+.file-quiz-next-step p {
   color: var(--foreground);
-  margin: 0 0 0.9rem;
+  margin: 0 0 1rem;
   line-height: 1.5;
   font-size: 0.95rem;
 }
 
-.file-quiz-followup-cta p:last-of-type,
-.file-quiz-followup-banner p:last-of-type {
+.file-quiz-next-step p:last-of-type {
   margin-bottom: 0;
 }
 
-.file-quiz-followup-cta .btn,
-.file-quiz-followup-banner .btn {
-  margin-top: 0.5rem;
+.file-quiz-next-step .file-quiz-cta-sole {
+  margin-top: 0.25rem;
 }
 
 .file-quiz-followup-warn {
@@ -140,46 +207,25 @@
   line-height: 1.45;
 }
 
-.file-quiz-back-button {
-  display: block;
-  margin: 0.5rem 0 0;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font: inherit;
-  text-align: center;
-  width: 100%;
-}
-
-.file-quiz-back-button:hover {
-  text-decoration: underline;
-}
-
-.file-quiz-learning-banner,
-.file-quiz-learning-cta {
-  margin-bottom: 1.25rem;
-}
-
-.file-quiz-learning-cta p,
-.file-quiz-learning-banner p {
-  color: var(--foreground);
-  margin: 0 0 0.9rem;
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
+/* Učebné materiály: jedno CTA, odkaz dole */
 .file-quiz-learning-body {
   max-width: 720px;
   margin: 0 auto;
-  padding: 0 0 2rem;
+  padding: 0 0 1rem;
 }
 
-.file-quiz-learning-actions {
+.file-quiz-learning-body .content-section {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+}
+
+.file-quiz-learning-footer {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
   margin-top: 1.5rem;
   padding-top: 0.5rem;
 }
@@ -187,7 +233,7 @@
 .file-quiz-learning-hint {
   color: var(--muted-foreground);
   font-size: 0.9rem;
-  margin: 0;
+  margin: 0 0 0.5rem;
   text-align: center;
-  width: 100%;
+  line-height: 1.45;
 }
