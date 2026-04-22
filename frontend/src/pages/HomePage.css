@@ -27,16 +27,19 @@
   z-index: 1;
 }
 
-.hero h1 {
-  font-size: 3rem;
+.hero h1.hero-headline {
+  /* Jedna fyzická riadok; veľkosť sa zmenšuje, aby sa zmestil na úzke displeje */
+  font-size: clamp(0.82rem, 2.65vw + 0.45rem, 3rem);
   font-weight: 800;
   margin-bottom: 1rem;
-  line-height: 1.15;
+  line-height: 1.2;
   color: #ffffff;
   letter-spacing: -0.02em;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
-.hero .italic {
+.hero .hero-headline-accent {
   background: linear-gradient(135deg, #818cf8, #c084fc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -105,3 +105,37 @@
     width: 100%;
   }
 }
+
+.file-quiz-followup-banner,
+.file-quiz-followup-cta {
+  margin-bottom: 1.25rem;
+}
+
+.file-quiz-followup-banner p,
+.file-quiz-followup-cta p {
+  color: var(--foreground);
+  margin: 0 0 0.9rem;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}
+
+.file-quiz-followup-cta p:last-of-type,
+.file-quiz-followup-banner p:last-of-type {
+  margin-bottom: 0;
+}
+
+.file-quiz-followup-cta .btn,
+.file-quiz-followup-banner .btn {
+  margin-top: 0.5rem;
+}
+
+.file-quiz-followup-warn {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92400e;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+  line-height: 1.45;
+}

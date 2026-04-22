@@ -17,12 +17,15 @@ export default function FileQuizPage() {
   const [error, setError] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [fileName, setFileName] = useState('');
-  const [description, setDescription] = useState('');
+  const [roundDescription, setRoundDescription] = useState('');
+  const [round, setRound] = useState('main');
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [results, setResults] = useState(null);
+  const [followUpResults, setFollowUpResults] = useState(null);
+  const [storedFollowUp, setStoredFollowUp] = useState(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -48,6 +51,8 @@ export default function FileQuizPage() {
     setAnswers({});
     setCurrentQuestionIndex(0);
     setResults(null);
+    setFollowUpResults(null);
+    setRound('main');
 
     try {
       const res = await fetch(`${API_BASE_URL}/files/${id}/quiz`, { headers: getAuthHeaders() });
@@ -66,7 +71,10 @@ export default function FileQuizPage() {
       if (data.success) {
         setQuestions(data.data.questions);
         setFileName(data.data.fileName);
-        setDescription(data.data.description || '');
+        setRoundDescription(data.data.description || '');
+        setStoredFollowUp(data.data.followUpQuiz && data.data.followUpQuiz.questions?.length
+          ? data.data.followUpQuiz
+          : null);
         setPhase('taking');
         return;
       }
@@ -124,6 +132,16 @@ export default function FileQuizPage() {
     }
   }
 
+  function startFollowUp(fu) {
+    if (!fu?.questions?.length) return;
+    setQuestions(fu.questions);
+    setRoundDescription(fu.description || '');
+    setRound('followUp');
+    setAnswers({});
+    setCurrentQuestionIndex(0);
+    setPhase('taking');
+  }
+
   function handleAnswer(questionId, selectedOptionIndex) {
     setAnswers((prev) => ({
       ...prev,
@@ -143,18 +161,32 @@ export default function FileQuizPage() {
     }
 
     setSubmitting(true);
+    const isFollowUp = round === 'followUp';
     try {
       const res = await fetch(`${API_BASE_URL}/files/${id}/quiz/submit`, {
         method: 'POST',
         headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers: ordered })
+        body: JSON.stringify({
+          answers: ordered,
+          ...(isFollowUp ? { quizPhase: 'followUp' } : {})
+        })
       });
       const data = await res.json();
       if (!data.success) throw new Error(data.error?.message || 'Odoslanie zlyhalo');
+      if (isFollowUp) {
+        setFollowUpResults(data.data);
+        setPhase('followUpResults');
+        return;
+      }
       setResults(data.data);
+      if (data.data.followUpQuiz) {
+        setStoredFollowUp(data.data.followUpQuiz);
+      } else {
+        setStoredFollowUp(null);
+      }
       setPhase('results');
     } catch (e) {
-      alert(e.message);
+      alert(e instanceof Error ? e.message : String(e));
     } finally {
       setSubmitting(false);
     }
@@ -162,6 +194,11 @@ export default function FileQuizPage() {
 
   const currentQ = questions[currentQuestionIndex];
   const answeredCount = questions.filter((q) => answers[q.id] != null).length;
+  const isMain = round === 'main';
+  const canShowFollowUpBanner =
+    phase === 'taking' && isMain && storedFollowUp?.questions?.length > 0;
+  const hasFollowUpAfterMain =
+    results && (results.followUpQuiz?.questions?.length > 0 || false);
 
   return (
     <div className="page-wrapper file-quiz-page">
@@ -172,14 +209,17 @@ export default function FileQuizPage() {
           <Link to="/admin" className="file-quiz-back">
             ← Späť na zoznam súborov
           </Link>
-          <h1>Test z vlastného súboru</h1>
+          <h1>{isMain ? 'Test z vlastného súboru' : 'Doplňujúci test'}</h1>
           {fileName && <p className="test-description">{fileName}</p>}
           {phase === 'taking' && questions.length > 0 && (
             <>
-              {description && <p className="test-description file-quiz-desc-inline">{description}</p>}
+              {roundDescription && (
+                <p className="test-description file-quiz-desc-inline">{roundDescription}</p>
+              )}
               <div className="progress-info">
                 Otázka {currentQuestionIndex + 1} z {questions.length} · zodpovedané {answeredCount}/
                 {questions.length}
+                {!isMain && ' · podľa chýb z hlavného kola'}
               </div>
               <div className="progress-bar">
                 <div
@@ -190,6 +230,22 @@ export default function FileQuizPage() {
             </>
           )}
         </div>
+
+        {canShowFollowUpBanner && (
+          <div className="file-quiz-followup-banner file-quiz-panel">
+            <p>
+              Máš pripravené <strong>doplňujúce otázky</strong> z oblastí, ktoré v hlavnom teste neboli
+              zvládnuté.
+            </p>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => startFollowUp(storedFollowUp)}
+            >
+              Začať doplňujúci test ({storedFollowUp.questionCount} otázok)
+            </button>
+          </div>
+        )}
 
         {phase === 'loading' && (
           <div className="loading file-quiz-center">Načítavam...</div>
@@ -256,28 +312,36 @@ export default function FileQuizPage() {
                   disabled={submitting || answeredCount < questions.length}
                   onClick={handleSubmit}
                 >
-                  {submitting ? 'Odosielam...' : 'Vyhodnotiť test'}
+                  {submitting
+                    ? isMain
+                      ? 'Vyhodnocujem a generujem doplňujúce otázky...'
+                      : 'Odosielam...'
+                    : isMain
+                    ? 'Vyhodnotiť test'
+                    : 'Vyhodnotiť doplňujúci test'}
                 </button>
               )}
             </div>
 
-            <p className="file-quiz-regen">
-              <button
-                type="button"
-                className="file-quiz-link-btn"
-                onClick={handleGenerate}
-                disabled={generating}
-              >
-                Vygenerovať nový test (prepíše starý)
-              </button>
-            </p>
+            {isMain && (
+              <p className="file-quiz-regen">
+                <button
+                  type="button"
+                  className="file-quiz-link-btn"
+                  onClick={handleGenerate}
+                  disabled={generating}
+                >
+                  Vygenerovať nový test (prepíše starý)
+                </button>
+              </p>
+            )}
           </>
         )}
 
         {phase === 'results' && results && (
           <div className="results-container">
             <div className="results-header">
-              <h1>Výsledok</h1>
+              <h1>Výsledok (hlavný test)</h1>
               <div className="score-display">
                 <div className="score-circle">
                   <span className="score-number">{results.score.percentage}%</span>
@@ -287,6 +351,28 @@ export default function FileQuizPage() {
                 </p>
               </div>
             </div>
+
+            {results.followUpError && (
+              <p className="file-quiz-followup-warn" role="alert">
+                Doplňujúce otázky sa nepodarilo vygenerovať: {results.followUpError}
+              </p>
+            )}
+
+            {hasFollowUpAfterMain && (
+              <div className="file-quiz-followup-cta file-quiz-panel">
+                <p>
+                  Podľa chýb z hlavného kola je pripravený <strong>doplňujúci test</strong> (
+                  {results.followUpQuiz.questionCount} otázok).
+                </p>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => startFollowUp(results.followUpQuiz)}
+                >
+                  Pokračovať na doplňujúci test
+                </button>
+              </div>
+            )}
 
             <div className="detailed-results">
               <h2>Detailné výsledky</h2>
@@ -316,6 +402,56 @@ export default function FileQuizPage() {
             <div className="results-actions file-quiz-results-actions">
               <button type="button" className="btn btn-secondary" onClick={() => loadQuiz()}>
                 Znova vyplniť tento test
+              </button>
+              <Link to="/admin" className="btn btn-primary">
+                Späť na zoznam súborov
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {phase === 'followUpResults' && followUpResults && (
+          <div className="results-container">
+            <div className="results-header">
+              <h1>Výsledok (doplňujúci test)</h1>
+              <div className="score-display">
+                <div className="score-circle">
+                  <span className="score-number">{followUpResults.score.percentage}%</span>
+                </div>
+                <p className="score-text">
+                  {followUpResults.score.correctCount} z {followUpResults.score.totalCount} správne
+                </p>
+              </div>
+            </div>
+
+            <div className="detailed-results">
+              <h2>Detailné výsledky</h2>
+              {followUpResults.detailedResults.map((r, index) => (
+                <div
+                  key={r.questionId}
+                  className={`result-item ${r.wasCorrect ? 'correct' : 'incorrect'}`}
+                >
+                  <div className="result-number">
+                    {r.wasCorrect ? '✓' : '✗'} Otázka {index + 1}
+                  </div>
+                  <div className="result-question">{r.questionText}</div>
+                  {!r.wasCorrect && (
+                    <div className="result-answers">
+                      <div className="result-answer wrong">
+                        <strong>Vaša odpoveď:</strong> {r.userSelectedOption ?? '—'}
+                      </div>
+                      <div className="result-answer correct-answer">
+                        <strong>Správna odpoveď:</strong> {r.correctOption}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="results-actions file-quiz-results-actions">
+              <button type="button" className="btn btn-secondary" onClick={() => loadQuiz()}>
+                Späť na hlavný test
               </button>
               <Link to="/admin" className="btn btn-primary">
                 Späť na zoznam súborov

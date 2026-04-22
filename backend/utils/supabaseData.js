@@ -7,6 +7,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const topicsPath = join(__dirname, '../data/topics.json');
 const preTestPath = join(__dirname, '../data/preTestQuestions.json');
 
+/** Počet otázok vo vstupnom teste (prvých N podľa order). */
+const PRE_TEST_QUESTION_LIMIT = 8;
+
 let cachedLocalTopics = null;
 let cachedLocalPreTest = null;
 
@@ -94,10 +97,14 @@ export async function getTopicById(topicId) {
     throw error;
 }
 
+function takePreTestQuestions(sorted) {
+    return sorted.slice(0, PRE_TEST_QUESTION_LIMIT);
+}
+
 export async function getQuestionsByTopicId(topicId) {
     if (useLocalTopicData()) {
         const list = loadLocalPreTest()[String(topicId)] || [];
-        return [...list].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        return takePreTestQuestions([...list].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)));
     }
     const { data, error } = await supabase
         .from('pre_test_questions')
@@ -114,17 +121,17 @@ export async function getQuestionsByTopicId(topicId) {
             correctAnswer: q.correct_answer,
             order: q.order
         }));
-        if (mapped.length > 0) return mapped;
+        if (mapped.length > 0) return takePreTestQuestions(mapped);
         console.warn(
             `[topics] pre_test_questions: pre topic_id=${topicId} žiadne riadky v DB — používam data/preTestQuestions.json`
         );
         const fallback = loadLocalPreTest()[String(topicId)] || [];
-        return [...fallback].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        return takePreTestQuestions([...fallback].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)));
     }
     if (isMissingTable(error, 'pre_test_questions')) {
         console.warn('[topics] Tabuľka pre_test_questions v Supabase chýba — používam data/preTestQuestions.json');
         const list = loadLocalPreTest()[String(topicId)] || [];
-        return [...list].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        return takePreTestQuestions([...list].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)));
     }
     throw error;
 }

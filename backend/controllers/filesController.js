@@ -1,6 +1,10 @@
 import { createRequire } from 'module';
 import supabase from '../services/supabaseClient.js';
-import { generateQuizFromFileContent, summarizeUploadedDocument } from '../services/geminiService.js';
+import {
+    generateFollowUpFileQuizFromMistakes,
+    generateQuizFromFileContent,
+    summarizeUploadedDocument
+} from '../services/geminiService.js';
 
 const BUCKET = 'files';
 const requireFromHere = createRequire(import.meta.url);
@@ -45,6 +49,36 @@ async function extractDocumentText(file) {
     }
 
     return { text: buffer.toString('utf8').trim(), isImage: false };
+}
+
+function mapStoredQuestionsToClient(questions) {
+    return (questions || []).map((q, i) => ({
+        id: String(i),
+        questionNumber: i + 1,
+        questionText: q.question,
+        options: q.options
+    }));
+}
+
+function buildDetailedGrading(questions, byQuestionId) {
+    return questions.map((q, i) => {
+        const ans = byQuestionId.get(String(i));
+        const options = q.options || [];
+        const correctOption = q.correctOption;
+        const correctIndex = options.findIndex((o) => String(o).trim() === String(correctOption).trim());
+        const sel = ans.selectedOptionIndex;
+        const wasCorrect = correctIndex >= 0 && sel === correctIndex;
+        return {
+            questionId: String(i),
+            questionText: q.question,
+            userSelectedOption: options[sel] ?? null,
+            correctOption: options[correctIndex] ?? correctOption,
+            selectedOptionIndex: sel,
+            correctAnswerIndex: correctIndex,
+            wasCorrect,
+            answeredAt: ans.answeredAt || new Date().toISOString()
+        };
+    });
 }
 
 async function getOwnedFileOr404(req, res) {
@@ -318,23 +352,27 @@ export async function getFileQuiz(req, res, next) {
             });
         }
 
-        const questions = raw.questions.map((q, i) => ({
-            id: String(i),
-            questionNumber: i + 1,
-            questionText: q.question,
-            options: q.options
-        }));
+        const questions = mapStoredQuestionsToClient(raw.questions);
 
-        res.json({
-            success: true,
-            data: {
-                fileId: file.id,
-                fileName: file.file_name,
-                description: raw.description || '',
-                questionCount: questions.length,
-                questions
-            }
-        });
+        const data = {
+            fileId: file.id,
+            fileName: file.file_name,
+            description: raw.description || '',
+            questionCount: questions.length,
+            questions
+        };
+        const fu = raw.followUpQuiz;
+        if (fu?.questions?.length) {
+            data.followUpQuiz = {
+                description: fu.description || '',
+                questionCount: fu.questions.length,
+                questions: mapStoredQuestionsToClient(fu.questions)
+            };
+        } else {
+            data.followUpQuiz = null;
+        }
+
+        res.json({ success: true, data });
     } catch (error) {
         next(error);
     }
@@ -342,7 +380,7 @@ export async function getFileQuiz(req, res, next) {
 
 /**
  * POST /api/files/:id/quiz/submit
- * Telo: { answers: [{ questionId, selectedOptionIndex, answeredAt? }] }
+ * Telo: { answers: [{ questionId, selectedOptionIndex, answeredAt? }], quizPhase?: "main" | "followUp" }
  */
 export async function submitFileQuiz(req, res, next) {
     try {
@@ -357,6 +395,19 @@ export async function submitFileQuiz(req, res, next) {
             });
         }
 
+        const quizPhase = req.body?.quizPhase === 'followUp' ? 'followUp' : 'main';
+        const questionSource =
+            quizPhase === 'followUp' ? raw.followUpQuiz?.questions : raw.questions;
+        if (quizPhase === 'followUp' && (!raw.followUpQuiz?.questions?.length || !Array.isArray(questionSource))) {
+            return res.status(400).json({
+                success: false,
+                error: {
+                    code: 'NO_FOLLOWUP',
+                    message: 'Doplňujúci test nie je k dispozícii. Odídi späť a znova odošli hlavný test.'
+                }
+            });
+        }
+
         const { answers } = req.body;
         if (!Array.isArray(answers)) {
             return res.status(400).json({
@@ -365,7 +416,7 @@ export async function submitFileQuiz(req, res, next) {
             });
         }
 
-        const total = raw.questions.length;
+        const total = questionSource.length;
         const byQuestionId = new Map(answers.map((a) => [String(a.questionId), a]));
 
         for (let i = 0; i < total; i++) {
@@ -379,7 +430,7 @@ export async function submitFileQuiz(req, res, next) {
                     }
                 });
             }
-            const opts = raw.questions[i].options || [];
+            const opts = questionSource[i].options || [];
             if (
                 !Number.isInteger(ans.selectedOptionIndex) ||
                 ans.selectedOptionIndex < 0 ||
@@ -392,38 +443,90 @@ export async function submitFileQuiz(req, res, next) {
             }
         }
 
-        const detailedResults = raw.questions.map((q, i) => {
-            const ans = byQuestionId.get(String(i));
-            const options = q.options || [];
-            const correctOption = q.correctOption;
-            const correctIndex = options.findIndex((o) => String(o).trim() === String(correctOption).trim());
-            const sel = ans.selectedOptionIndex;
-            const wasCorrect = correctIndex >= 0 && sel === correctIndex;
-
-            return {
-                questionId: String(i),
-                questionText: q.question,
-                userSelectedOption: options[sel] ?? null,
-                correctOption: options[correctIndex] ?? correctOption,
-                selectedOptionIndex: sel,
-                correctAnswerIndex: correctIndex,
-                wasCorrect,
-                answeredAt: ans.answeredAt || new Date().toISOString()
-            };
-        });
-
+        const detailedResults = buildDetailedGrading(questionSource, byQuestionId);
         const correctCount = detailedResults.filter((r) => r.wasCorrect).length;
         const percentage = Math.round((correctCount / total) * 1000) / 10;
 
-        res.json({
+        if (quizPhase === 'followUp') {
+            return res.json({
+                success: true,
+                data: {
+                    quizPhase: 'followUp',
+                    score: {
+                        percentage,
+                        correctCount,
+                        totalCount: total
+                    },
+                    detailedResults
+                }
+            });
+        }
+
+        const wrong = detailedResults.filter((r) => !r.wasCorrect);
+        let followUpQuiz = null;
+        let followUpError = null;
+
+        if (wrong.length === 0 && raw.followUpQuiz) {
+            const cleared = { ...raw };
+            delete cleared.followUpQuiz;
+            const { error: clearErr } = await supabase
+                .from('file_metadata')
+                .update({ generated_quiz: cleared })
+                .eq('id', file.id);
+            if (clearErr) console.error('clear followUpQuiz:', clearErr);
+        }
+
+        if (wrong.length > 0) {
+            try {
+                const { text, isImage } = await extractDocumentText(file);
+                if (isImage || !String(text).trim()) {
+                    followUpError = 'Doplňujúce otázky sa nevygenerovali (zo súboru nie je dostatok textu).';
+                } else {
+                    const mistakePayload = wrong.map((r) => ({
+                        questionText: r.questionText,
+                        userSelectedOption: r.userSelectedOption,
+                        correctOption: r.correctOption
+                    }));
+                    const n = Math.min(8, wrong.length);
+                    const followUp = await generateFollowUpFileQuizFromMistakes(
+                        file.file_name,
+                        text,
+                        mistakePayload,
+                        n
+                    );
+                    const followUpStored = {
+                        createdAt: new Date().toISOString(),
+                        testFormat: followUp.testFormat,
+                        description: followUp.description,
+                        questions: followUp.questions
+                    };
+                    const merged = { ...raw, followUpQuiz: followUpStored };
+                    const { error: upErr } = await supabase
+                        .from('file_metadata')
+                        .update({ generated_quiz: merged })
+                        .eq('id', file.id);
+                    if (upErr) throw upErr;
+                    followUpQuiz = {
+                        description: followUpStored.description || '',
+                        questionCount: followUpStored.questions.length,
+                        questions: mapStoredQuestionsToClient(followUpStored.questions)
+                    };
+                }
+            } catch (e) {
+                const msg = e instanceof Error ? e.message : String(e);
+                console.error('followUp file quiz generation:', msg);
+                followUpError = msg.length > 220 ? `${msg.slice(0, 200)}…` : msg;
+            }
+        }
+
+        return res.json({
             success: true,
             data: {
-                score: {
-                    percentage,
-                    correctCount,
-                    totalCount: total
-                },
-                detailedResults
+                quizPhase: 'main',
+                score: { percentage, correctCount, totalCount: total },
+                detailedResults,
+                followUpQuiz,
+                followUpError
             }
         });
     } catch (error) {

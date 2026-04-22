@@ -282,6 +282,108 @@ Každá položka v "questions":
 VYTVOR JSON:`;
 }
 
+/**
+ * Doplňujúce otázky z textu súboru — zamerané na oblasti, v ktorých používateľ v predchádzajúcom kole zlyhal.
+ * @param {{ questionText: string, userSelectedOption: string | null, correctOption: string }[]} mistakes
+ */
+function buildFollowUpFileQuizPrompt(fileName, documentText, mistakes, questionCount) {
+    const n = questionCount;
+    const missBlock = mistakes
+        .map(
+            (m, i) =>
+                `### Chyba ${i + 1}\nPôvodná otázka v teste: ${m.questionText}\nPoužívateľ odpovedal: ${m.userSelectedOption ?? '—'}\nSprávne: ${m.correctOption ?? '—'}`
+        )
+        .join('\n\n');
+    return `ÚLOHA: V predchádzajúcom teste z dokumentu používateľ zodpovedal nesprávne v ${mistakes.length} prípadoch. Vygeneruj presne ${n} NOVÝCH otázok s výberom odpovede (4 možnosti, presne 1 správna), ktoré cielia na rovnaké témy a súvislosti, ktoré tieto chyby odhaľujú. Znenia NOVÝCH otázok sa musia líšiť od pôvodných formulácií, ale odpovede musia byť stále overiteľné z textu dokumentu (nie z vedomostí mimo zdroj).
+
+NÁZOV SÚBORU: ${fileName}
+
+KONTEXT CHÝB (použi ako smerovanie, nie na kopírovanie znenia):
+${missBlock}
+
+TEXT DOKUMENTU (všetky správne odpovede musia vyplývať z tohto textu; ak je text skrátený, dávaj obozretné otázky k dostupným pasážam):
+---
+${documentText}
+---
+
+PRAVIDLÁ:
+- Jazyk: slovenčina; testFormat: "mc_4".
+- Každá otázka: presne 4 navzájom rôzne možnosti; "correctOption" presná kópia jednej z možností.
+- Cieľ: preveriť porozumenie v oblastiach, kde boli chyby, nie opakovať tú istú otázku slovom od slova.
+- Nepoužívaj „žiadna z uvedených“ ani ekvivalent.
+
+VÝSTUP — len validný JSON:
+{
+  "testFormat": "mc_4",
+  "description": "1–2 vety: čo cieli tento doplňujúci test",
+  "questions": [ /* presne ${n} položiek, formát rovnaký ako pri štandardnom teste z dokumentu */ ]
+}
+
+Každá položka:
+{
+  "question": "…",
+  "options": ["…", "…", "…", "…"],
+  "correctOption": "…",
+  "explainsWeakness": "1 krátka veta (voliteľné)"
+}
+
+VYTVOR JSON:`;
+}
+
+/**
+ * Doplňujúci test z nahraného súboru — podľa chýb z predchádzajúceho kola.
+ * @param {Array<{ questionText: string, userSelectedOption: string | null, correctOption: string }>} mistakes
+ */
+export async function generateFollowUpFileQuizFromMistakes(
+    fileName,
+    fileContent,
+    mistakes,
+    questionCount
+) {
+    if (!Array.isArray(mistakes) || mistakes.length === 0) {
+        throw new Error('Pre doplňujúci test chýbajú chyby z predchádzajúceho kola.');
+    }
+    const n = Math.min(8, Math.max(1, Math.min(Number(questionCount) || mistakes.length, mistakes.length)));
+    const maxChars = 12000;
+    const truncated =
+        fileContent.length > maxChars
+            ? `${fileContent.substring(0, maxChars)}\n...[skrátené]`
+            : fileContent;
+    if (!truncated.trim()) {
+        throw new Error('Text dokumentu je prázdny — nedá sa vytvoriť doplňujúci test.');
+    }
+
+    const prompt = buildFollowUpFileQuizPrompt(fileName, truncated, mistakes, n);
+    const schema = buildTestSchema(n);
+    const fakeTopic = { title: fileName, description: '', difficulty: 'custom' };
+    const emptyLearning = { sections: [] };
+
+    let lastErr;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+            const useSchema = attempt === 1;
+            console.log(
+                `   [materiál] Doplňujúci test po chybách (${n} otázok), pokus ${attempt}/3${useSchema ? ' (so schémou)' : ' (bez schémy)'}`
+            );
+            const raw = await callGeminiAPI(prompt, useSchema ? schema : null);
+            const result = parseFinalTestResponse(raw, fakeTopic, emptyLearning, n);
+            console.log(`✅ Doplňujúci test z materiálu: ${result.questions.length} otázok`);
+            return result;
+        } catch (err) {
+            lastErr = err;
+            console.error(`❌ Pokus ${attempt}/3 (doplňujúci test z materiálu):`, err.message);
+            if (err?.status === 429 || err?.code === 'GEMINI_QUOTA') {
+                throw err;
+            }
+            if (attempt < 3) await new Promise((r) => setTimeout(r, 2000));
+        }
+    }
+
+    const detail = lastErr instanceof Error ? lastErr.message : String(lastErr);
+    const combined = `Nepodarilo sa vygenerovať doplňujúci test (Gemini). ${detail || 'Skús to znova.'}`;
+    throw new Error(combined.length > 600 ? combined.slice(0, 580) + '…' : combined);
+}
+
 function buildFinalTestPrompt(topicData, learningContent, originalTestResults) {
     const wrong = (originalTestResults?.detailedAnswers || []).filter((a) => !a.wasCorrect);
     const weaknessCount = wrong.length;
