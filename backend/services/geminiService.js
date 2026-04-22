@@ -246,6 +246,102 @@ PRAVIDLÁ:
 VYTVOR JSON:`;
 }
 
+/**
+ * Učebné materiály pre test z nahraného súboru — výklad viaže na text dokumentu a chyby v teste.
+ * testResults musí mať detailedAnswers s wasCorrect, questionText, userSelectedOption, correctOption.
+ */
+function buildFileDocumentLearningPrompt(fileName, documentExcerpt, testResults) {
+    const wrong = (testResults?.detailedAnswers || []).filter((a) => !a.wasCorrect);
+    const weaknesses = wrong.map(
+        (a) =>
+            `- Otázka: "${a.questionText}" — zvolená odpoveď: "${a.userSelectedOption ?? '—'}" — správne: "${a.correctOption}"`
+    );
+    const weaknessesText =
+        weaknesses.length > 0
+            ? weaknesses.join('\n')
+            : '- (žiaden nesúlad — malo nenastať)';
+
+    const sectionRule =
+        wrong.length > 0
+            ? `Počet položiek "sections" musí byť presne ${wrong.length} (maximálne 8) — každá sekcia = jedna chyba z testu.`
+            : `Vytvor presne 1 alebo 2 "sections" — opakovanie kľúčových bodov dokumentu.`;
+
+    return `ÚLOHA: Vytvor učebné materiály (krátke výukové sekcie) pre používateľa, ktorý z testu založeného na dokumente urobil chyby. Výklad musí vychádzať z priloženého textu dokumentu a vysvetliť, prečo bola správna odpoveď v súlade so zdrojom.
+
+NÁZOV SÚBORU: ${fileName}
+
+SLABÉ MIESTA (výsledok testu z dokumentu):
+${weaknessesText}
+
+TEXT DOKUMENTU (podklad pre fakty; nesiahaj za rámec, čo z neho primerane vyplýva):
+---
+${documentExcerpt}
+---
+
+ŠTRUKTÚRA (povinné):
+- Jazyk: ${config.language}
+- ${sectionRule}
+- V každej "content" **50 až 100 slov**; jedna sekcia = jeden problém / jedna chyba.
+- "heading" = krátky nadpis tejto oblasti (nie celé znenie otázky z testu).
+- V texte použi markdown: **tučné** pre pojmy, kde to dáva zmysel.
+- Začni priamo JSON, bez oslovenia a bez záveru mimo JSON.
+
+VÝSTUP — len validný JSON:
+{
+  "sections": [
+    { "heading": "…", "content": "50–100 slov" }
+  ]
+}
+
+PRAVIDLÁ: platný JSON, escape \\"
+
+VYTVOR JSON:`;
+}
+
+/**
+ * Učebné materiály pre „test z vlastného súboru“ — AI na základe PDF/textu a chýb.
+ * @param {string} fileContent
+ * @param {{ detailedAnswers: Array<{ wasCorrect, questionText, userSelectedOption, correctOption }> }} testResults
+ */
+export async function generateLearningContentFromFileDocument(fileName, fileContent, testResults, opts = {}) {
+    const allowGemini = opts.allowGemini !== false;
+    if (!allowGemini) {
+        return generateFallbackContent({ title: fileName, description: 'Dokument', difficulty: 'custom' }, testResults);
+    }
+    if (!String(fileName || '').trim() || !String(fileContent || '').trim()) {
+        return generateFallbackContent({ title: fileName || 'Dokument', description: 'Dokument', difficulty: 'custom' }, testResults);
+    }
+    const maxChars = 12000;
+    const truncated =
+        fileContent.length > maxChars
+            ? `${fileContent.substring(0, maxChars)}\n...[skrátené]`
+            : fileContent;
+
+    const prompt = buildFileDocumentLearningPrompt(fileName, truncated, testResults);
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+            const useSchema = attempt < 3;
+            console.log(
+                `   [súbor] Učebné materiály z dokumentu, pokus ${attempt}/3${useSchema ? ' (so schémou)' : ' (bez schémy)'}`
+            );
+            const raw = await callGeminiAPI(prompt, useSchema ? LEARNING_SCHEMA : null);
+            const result = parseLearningResponse(raw);
+            console.log(`✅ Učebné materiály zo súboru: ${result.sections.length} sekcií`);
+            return result;
+        } catch (err) {
+            console.error(`❌ Pokus ${attempt} (materiály zo súboru):`, err.message);
+            if (err?.status === 429 || err?.code === 'GEMINI_QUOTA') {
+                throw err;
+            }
+            if (attempt < 3) await new Promise((r) => setTimeout(r, 2000));
+        }
+    }
+
+    console.warn('Gemini: materiály zo súboru neúspešné — fallback.');
+    return generateFallbackContent({ title: fileName, description: 'Dokument', difficulty: 'custom' }, testResults);
+}
+
 function buildMaterialQuizPrompt(fileName, documentText, questionCount) {
     return `ÚLOHA: Vytvor presne ${questionCount} otázok s výberom odpovede (4 možnosti, presne 1 správna) výhradne na základe NASLEDUJÚCEHO TEXTU z dokumentu.
 

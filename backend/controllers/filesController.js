@@ -2,6 +2,7 @@ import { createRequire } from 'module';
 import supabase from '../services/supabaseClient.js';
 import {
     generateFollowUpFileQuizFromMistakes,
+    generateLearningContentFromFileDocument,
     generateQuizFromFileContent,
     summarizeUploadedDocument
 } from '../services/geminiService.js';
@@ -372,6 +373,18 @@ export async function getFileQuiz(req, res, next) {
             data.followUpQuiz = null;
         }
 
+        const fl = raw.fileLearningContent;
+        if (fl?.sections?.length) {
+            data.fileLearningContent = {
+                generatedAt: fl.generatedAt || null,
+                sections: fl.sections,
+                keyTakeaways: fl.keyTakeaways || [],
+                totalDuration: fl.totalDuration ?? fl.sections.length * 2
+            };
+        } else {
+            data.fileLearningContent = null;
+        }
+
         res.json({ success: true, data });
     } catch (error) {
         next(error);
@@ -466,56 +479,122 @@ export async function submitFileQuiz(req, res, next) {
         let followUpQuiz = null;
         let followUpError = null;
 
-        if (wrong.length === 0 && raw.followUpQuiz) {
+        if (wrong.length === 0 && (raw.followUpQuiz || raw.fileLearningContent)) {
             const cleared = { ...raw };
             delete cleared.followUpQuiz;
+            delete cleared.fileLearningContent;
             const { error: clearErr } = await supabase
                 .from('file_metadata')
                 .update({ generated_quiz: cleared })
                 .eq('id', file.id);
-            if (clearErr) console.error('clear followUpQuiz:', clearErr);
+            if (clearErr) console.error('clear followUp / file learning:', clearErr);
         }
+
+        let fileLearningForClient = null;
+        let learningError = null;
 
         if (wrong.length > 0) {
             try {
                 const { text, isImage } = await extractDocumentText(file);
                 if (isImage || !String(text).trim()) {
-                    followUpError = 'Doplňujúce otázky sa nevygenerovali (zo súboru nie je dostatok textu).';
+                    const msg = 'Zo súboru nie je dostatok textu na generovanie materiálov a doplňujúceho testu.';
+                    learningError = msg;
+                    followUpError = msg;
+                    const merged = { ...raw };
+                    delete merged.followUpQuiz;
+                    delete merged.fileLearningContent;
+                    const { error: clearUp } = await supabase
+                        .from('file_metadata')
+                        .update({ generated_quiz: merged })
+                        .eq('id', file.id);
+                    if (clearUp) console.error('clear quiz extras (no text):', clearUp);
                 } else {
+                    const testResultsForLearning = {
+                        score: percentage,
+                        totalQuestions: total,
+                        correctAnswers: correctCount,
+                        detailedAnswers: detailedResults.map((r) => ({
+                            wasCorrect: r.wasCorrect,
+                            questionText: r.questionText,
+                            userSelectedOption: r.userSelectedOption,
+                            correctOption: r.correctOption
+                        }))
+                    };
+
+                    let storedLearning = null;
+                    try {
+                        const learned = await generateLearningContentFromFileDocument(
+                            file.file_name,
+                            text,
+                            testResultsForLearning,
+                            {}
+                        );
+                        storedLearning = {
+                            generatedAt: new Date().toISOString(),
+                            sections: learned.sections,
+                            totalDuration: learned.totalDuration,
+                            keyTakeaways: learned.keyTakeaways
+                        };
+                        fileLearningForClient = {
+                            generatedAt: storedLearning.generatedAt,
+                            sections: storedLearning.sections,
+                            keyTakeaways: storedLearning.keyTakeaways,
+                            totalDuration: storedLearning.totalDuration
+                        };
+                    } catch (e) {
+                        const msg = e instanceof Error ? e.message : String(e);
+                        console.error('file learning content generation:', msg);
+                        learningError = msg.length > 220 ? `${msg.slice(0, 200)}…` : msg;
+                    }
+
                     const mistakePayload = wrong.map((r) => ({
                         questionText: r.questionText,
                         userSelectedOption: r.userSelectedOption,
                         correctOption: r.correctOption
                     }));
                     const n = Math.min(8, wrong.length);
-                    const followUp = await generateFollowUpFileQuizFromMistakes(
-                        file.file_name,
-                        text,
-                        mistakePayload,
-                        n
-                    );
-                    const followUpStored = {
-                        createdAt: new Date().toISOString(),
-                        testFormat: followUp.testFormat,
-                        description: followUp.description,
-                        questions: followUp.questions
-                    };
-                    const merged = { ...raw, followUpQuiz: followUpStored };
+                    let followUpStored = null;
+                    try {
+                        const followUp = await generateFollowUpFileQuizFromMistakes(
+                            file.file_name,
+                            text,
+                            mistakePayload,
+                            n
+                        );
+                        followUpStored = {
+                            createdAt: new Date().toISOString(),
+                            testFormat: followUp.testFormat,
+                            description: followUp.description,
+                            questions: followUp.questions
+                        };
+                        followUpQuiz = {
+                            description: followUpStored.description || '',
+                            questionCount: followUpStored.questions.length,
+                            questions: mapStoredQuestionsToClient(followUpStored.questions)
+                        };
+                    } catch (e) {
+                        const msg = e instanceof Error ? e.message : String(e);
+                        console.error('followUp file quiz generation:', msg);
+                        followUpError = msg.length > 220 ? `${msg.slice(0, 200)}…` : msg;
+                    }
+
+                    const merged = { ...raw };
+                    if (storedLearning) merged.fileLearningContent = storedLearning;
+                    else delete merged.fileLearningContent;
+                    if (followUpStored) merged.followUpQuiz = followUpStored;
+                    else delete merged.followUpQuiz;
+
                     const { error: upErr } = await supabase
                         .from('file_metadata')
                         .update({ generated_quiz: merged })
                         .eq('id', file.id);
                     if (upErr) throw upErr;
-                    followUpQuiz = {
-                        description: followUpStored.description || '',
-                        questionCount: followUpStored.questions.length,
-                        questions: mapStoredQuestionsToClient(followUpStored.questions)
-                    };
                 }
             } catch (e) {
                 const msg = e instanceof Error ? e.message : String(e);
-                console.error('followUp file quiz generation:', msg);
-                followUpError = msg.length > 220 ? `${msg.slice(0, 200)}…` : msg;
+                console.error('file quiz after-submit pipeline:', msg);
+                if (!learningError) learningError = msg.length > 220 ? `${msg.slice(0, 200)}…` : msg;
+                if (!followUpError) followUpError = msg.length > 220 ? `${msg.slice(0, 200)}…` : msg;
             }
         }
 
@@ -525,6 +604,8 @@ export async function submitFileQuiz(req, res, next) {
                 quizPhase: 'main',
                 score: { percentage, correctCount, totalCount: total },
                 detailedResults,
+                fileLearningContent: fileLearningForClient,
+                learningError,
                 followUpQuiz,
                 followUpError
             }

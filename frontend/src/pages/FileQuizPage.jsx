@@ -4,6 +4,7 @@ import { API_BASE_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
 import Navigation from '../components/Navigation';
 import QuestionCard from '../components/QuestionCard';
+import ContentSection from '../components/ContentSection';
 import './AssessmentPage.css';
 import './FileQuizPage.css';
 
@@ -26,6 +27,7 @@ export default function FileQuizPage() {
   const [results, setResults] = useState(null);
   const [followUpResults, setFollowUpResults] = useState(null);
   const [storedFollowUp, setStoredFollowUp] = useState(null);
+  const [fileLearning, setFileLearning] = useState(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -52,6 +54,7 @@ export default function FileQuizPage() {
     setCurrentQuestionIndex(0);
     setResults(null);
     setFollowUpResults(null);
+    setFileLearning(null);
     setRound('main');
 
     try {
@@ -72,9 +75,12 @@ export default function FileQuizPage() {
         setQuestions(data.data.questions);
         setFileName(data.data.fileName);
         setRoundDescription(data.data.description || '');
-        setStoredFollowUp(data.data.followUpQuiz && data.data.followUpQuiz.questions?.length
-          ? data.data.followUpQuiz
-          : null);
+        setStoredFollowUp(
+          data.data.followUpQuiz && data.data.followUpQuiz.questions?.length ? data.data.followUpQuiz : null
+        );
+        setFileLearning(
+          data.data.fileLearningContent?.sections?.length ? data.data.fileLearningContent : null
+        );
         setPhase('taking');
         return;
       }
@@ -142,6 +148,18 @@ export default function FileQuizPage() {
     setPhase('taking');
   }
 
+  function goToLearning() {
+    if (results?.fileLearningContent?.sections?.length) {
+      setFileLearning(results.fileLearningContent);
+    }
+    setPhase('learning');
+  }
+
+  function backFromLearning() {
+    if (results) setPhase('results');
+    else setPhase('taking');
+  }
+
   function handleAnswer(questionId, selectedOptionIndex) {
     setAnswers((prev) => ({
       ...prev,
@@ -184,6 +202,11 @@ export default function FileQuizPage() {
       } else {
         setStoredFollowUp(null);
       }
+      if (data.data.fileLearningContent?.sections?.length) {
+        setFileLearning(data.data.fileLearningContent);
+      } else {
+        setFileLearning(null);
+      }
       setPhase('results');
     } catch (e) {
       alert(e instanceof Error ? e.message : String(e));
@@ -195,10 +218,16 @@ export default function FileQuizPage() {
   const currentQ = questions[currentQuestionIndex];
   const answeredCount = questions.filter((q) => answers[q.id] != null).length;
   const isMain = round === 'main';
+  const learningBundle = fileLearning;
+  const canShowLearningBanner =
+    phase === 'taking' && isMain && (learningBundle?.sections?.length > 0 || false);
   const canShowFollowUpBanner =
     phase === 'taking' && isMain && storedFollowUp?.questions?.length > 0;
+  const hasLearningAfterMain =
+    results && (results.fileLearningContent?.sections?.length > 0 || false);
   const hasFollowUpAfterMain =
     results && (results.followUpQuiz?.questions?.length > 0 || false);
+  const followUpToUse = results?.followUpQuiz || storedFollowUp;
 
   return (
     <div className="page-wrapper file-quiz-page">
@@ -209,6 +238,21 @@ export default function FileQuizPage() {
           <Link to="/admin" className="file-quiz-back">
             ← Späť na zoznam súborov
           </Link>
+          {phase === 'learning' && (
+            <>
+              <h1>Učebné materiály</h1>
+              {fileName && <p className="test-description">{fileName}</p>}
+              <p className="test-description">
+                AI výklad k témam, v ktorých hlavný test vychytal chyby — oplatí sa prejsť pred doplňujúcim
+                kolom.
+              </p>
+              <button type="button" className="file-quiz-back file-quiz-back-button" onClick={backFromLearning}>
+                ← {results ? 'Späť na výsledky' : 'Späť na test'}
+              </button>
+            </>
+          )}
+          {phase !== 'learning' && (
+            <>
           <h1>{isMain ? 'Test z vlastného súboru' : 'Doplňujúci test'}</h1>
           {fileName && <p className="test-description">{fileName}</p>}
           {phase === 'taking' && questions.length > 0 && (
@@ -229,13 +273,71 @@ export default function FileQuizPage() {
               </div>
             </>
           )}
+            </>
+          )}
         </div>
+
+        {phase === 'learning' && learningBundle?.sections?.length > 0 && (
+          <div className="file-quiz-learning-body">
+            {learningBundle.sections.map((s) => (
+              <ContentSection
+                key={`${s.order ?? ''}-${(s.heading || '').slice(0, 24)}`}
+                section={s}
+              />
+            ))}
+            <div className="results-actions file-quiz-learning-actions">
+              {followUpToUse?.questions?.length > 0 ? (
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => startFollowUp(followUpToUse)}
+                >
+                  Pokračovať na doplňujúci test ({followUpToUse.questionCount} otázok)
+                </button>
+              ) : (
+                <p className="file-quiz-learning-hint">
+                  Doplňujúci test nie je k dispozícii (nepodarilo sa vygenerovať alebo boli všetky odpovede
+                  správne).
+                </p>
+              )}
+              <Link to="/admin" className="btn btn-secondary">
+                Späť na zoznam súborov
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {phase === 'learning' && (!learningBundle?.sections || learningBundle.sections.length === 0) && (
+          <div className="file-quiz-panel error">
+            <p>Učebné materiály sa nepodarilo zobraziť. Skús znova načítať stránku.</p>
+            <button type="button" className="btn btn-primary" onClick={backFromLearning}>
+              Späť
+            </button>
+          </div>
+        )}
+
+        {canShowLearningBanner && (
+          <div className="file-quiz-learning-banner file-quiz-panel">
+            <p>
+              Sú k dispozícii <strong>učebné materiály</strong> (AI) k tvojim chybám v poslednom vyhodnotení
+              — odporúčame ich prejsť pred doplňujúcim testom.
+            </p>
+            <button type="button" className="btn btn-primary" onClick={() => goToLearning()}>
+              Otvoriť učebné materiály
+            </button>
+          </div>
+        )}
 
         {canShowFollowUpBanner && (
           <div className="file-quiz-followup-banner file-quiz-panel">
             <p>
-              Máš pripravené <strong>doplňujúce otázky</strong> z oblastí, ktoré v hlavnom teste neboli
-              zvládnuté.
+              {canShowLearningBanner
+                ? 'Keď prejdeš materiály, môžeš otvoriť '
+                : 'Máš pripravené '}
+              <strong>doplňujúce otázky</strong>
+              {canShowLearningBanner
+                ? ' z oblastí, ktoré ešte treba upevniť.'
+                : ' z oblastí, ktoré v hlavnom teste neboli zvládnuté.'}
             </p>
             <button
               type="button"
@@ -314,7 +416,7 @@ export default function FileQuizPage() {
                 >
                   {submitting
                     ? isMain
-                      ? 'Vyhodnocujem a generujem doplňujúce otázky...'
+                      ? 'Generujem učebné materiály a doplňujúci test...'
                       : 'Odosielam...'
                     : isMain
                     ? 'Vyhodnotiť test'
@@ -352,13 +454,31 @@ export default function FileQuizPage() {
               </div>
             </div>
 
+            {results.learningError && (
+              <p className="file-quiz-followup-warn" role="alert">
+                Učebné materiály sa nepodarilo vygenerovať: {results.learningError}
+              </p>
+            )}
+
             {results.followUpError && (
               <p className="file-quiz-followup-warn" role="alert">
                 Doplňujúce otázky sa nepodarilo vygenerovať: {results.followUpError}
               </p>
             )}
 
-            {hasFollowUpAfterMain && (
+            {hasLearningAfterMain && (
+              <div className="file-quiz-learning-cta file-quiz-panel">
+                <p>
+                  Podľa chýb je k dispozícii <strong>krátky výklad z dokumentu</strong> (AI) — vhodné zvládnuť
+                  pred doplňujúcim testom.
+                </p>
+                <button type="button" className="btn btn-primary" onClick={() => goToLearning()}>
+                  Pokračovať na učebné materiály
+                </button>
+              </div>
+            )}
+
+            {hasFollowUpAfterMain && !hasLearningAfterMain && (
               <div className="file-quiz-followup-cta file-quiz-panel">
                 <p>
                   Podľa chýb z hlavného kola je pripravený <strong>doplňujúci test</strong> (
