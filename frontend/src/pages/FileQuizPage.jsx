@@ -299,38 +299,6 @@ export default function FileQuizPage() {
           </div>
         )}
 
-        {canShowNextStepBanner && (
-          <div className="file-quiz-next-step file-quiz-panel">
-            {nextStepPrefersLearning ? (
-              <>
-                <p>
-                  Máš pripravené <strong>učebné materiály</strong> (AI) k chybám z posledného vyhodnotenia — odporúčame
-                  ich prejsť pred doplňujúcim testom{storedFollowUp?.questions?.length
-                    ? ` (${storedFollowUp.questionCount} otázok).`
-                    : '.'}
-                </p>
-                <button type="button" className="btn btn-primary file-quiz-cta-sole" onClick={() => goToLearning()}>
-                  Otvoriť učebné materiály
-                </button>
-              </>
-            ) : (
-              <>
-                <p>
-                  Máš pripravené <strong>doplňujúce otázky</strong> k oblastiam, ktoré v hlavnom teste ešte treba
-                  upevniť.
-                </p>
-                <button
-                  type="button"
-                  className="btn btn-primary file-quiz-cta-sole"
-                  onClick={() => startFollowUp(storedFollowUp)}
-                >
-                  Začať doplňujúci test ({storedFollowUp.questionCount} otázok)
-                </button>
-              </>
-            )}
-          </div>
-        )}
-
         {phase === 'loading' && (
           <div className="loading file-quiz-center">Načítavam...</div>
         )}
