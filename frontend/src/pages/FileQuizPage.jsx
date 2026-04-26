@@ -8,6 +8,12 @@ import ContentSection from '../components/ContentSection';
 import './AssessmentPage.css';
 import './FileQuizPage.css';
 
+/** Názov súboru v hlavičke (bez .pdf a pod. prípon). */
+function fileDisplayName(name) {
+  if (!name) return '';
+  return String(name).replace(/\.pdf$/i, '');
+}
+
 export default function FileQuizPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -18,7 +24,6 @@ export default function FileQuizPage() {
   const [error, setError] = useState(null);
   const [generating, setGenerating] = useState(false);
   const [fileName, setFileName] = useState('');
-  const [roundDescription, setRoundDescription] = useState('');
   const [round, setRound] = useState('main');
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -74,7 +79,6 @@ export default function FileQuizPage() {
       if (data.success) {
         setQuestions(data.data.questions);
         setFileName(data.data.fileName);
-        setRoundDescription(data.data.description || '');
         setStoredFollowUp(
           data.data.followUpQuiz && data.data.followUpQuiz.questions?.length ? data.data.followUpQuiz : null
         );
@@ -141,7 +145,6 @@ export default function FileQuizPage() {
   function startFollowUp(fu) {
     if (!fu?.questions?.length) return;
     setQuestions(fu.questions);
-    setRoundDescription(fu.description || '');
     setRound('followUp');
     setAnswers({});
     setCurrentQuestionIndex(0);
@@ -246,13 +249,10 @@ export default function FileQuizPage() {
           )}
           {phase !== 'learning' && (
             <>
-          <h1>{isMain ? 'Test z vlastného súboru' : 'Doplňujúci test'}</h1>
-          {fileName && <p className="test-description">{fileName}</p>}
+          <h1>{isMain ? 'Test z dokumentu' : 'Doplňujúci test'}</h1>
+          {fileName && <p className="test-description">{fileDisplayName(fileName)}</p>}
           {phase === 'taking' && questions.length > 0 && (
             <>
-              {roundDescription && (
-                <p className="test-description file-quiz-desc-inline">{roundDescription}</p>
-              )}
               <div className="progress-info">
                 Otázka {currentQuestionIndex + 1} z {questions.length}
               </div>
@@ -390,7 +390,8 @@ export default function FileQuizPage() {
         {phase === 'results' && results && (
           <div className="results-container">
             <div className="results-header">
-              <h1>Výsledok (hlavný test)</h1>
+              <h1>Výsledok</h1>
+              {fileName && <p className="test-description">{fileDisplayName(fileName)}</p>}
               <div className="score-display">
                 <div className="score-circle">
                   <span className="score-number">{results.score.percentage}%</span>
@@ -472,7 +473,8 @@ export default function FileQuizPage() {
         {phase === 'followUpResults' && followUpResults && (
           <div className="results-container">
             <div className="results-header">
-              <h1>Výsledok (doplňujúci test)</h1>
+              <h1>Výsledok doplňujúceho testu</h1>
+              {fileName && <p className="test-description">{fileDisplayName(fileName)}</p>}
               <div className="score-display">
                 <div className="score-circle">
                   <span className="score-number">{followUpResults.score.percentage}%</span>
