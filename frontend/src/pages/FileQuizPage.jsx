@@ -391,7 +391,6 @@ export default function FileQuizPage() {
           <div className="results-container">
             <div className="results-header">
               <h1>Výsledok</h1>
-              {fileName && <p className="test-description">{fileDisplayName(fileName)}</p>}
               <div className="score-display">
                 <div className="score-circle">
                   <span className="score-number">{results.score.percentage}%</span>
@@ -412,26 +411,6 @@ export default function FileQuizPage() {
               <p className="file-quiz-followup-warn" role="alert">
                 Doplňujúce otázky sa nepodarilo vygenerovať: {results.followUpError}
               </p>
-            )}
-
-            {hasLearningAfterMain && (
-              <div className="results-actions">
-                <button type="button" className="btn btn-primary btn-large" onClick={() => goToLearning()}>
-                  Pokračovať na učebné materiály →
-                </button>
-              </div>
-            )}
-
-            {hasFollowUpAfterMain && !hasLearningAfterMain && (
-              <div className="results-actions">
-                <button
-                  type="button"
-                  className="btn btn-primary btn-large"
-                  onClick={() => startFollowUp(results.followUpQuiz)}
-                >
-                  Pokračovať na doplňujúci test →
-                </button>
-              </div>
             )}
 
             <div className="detailed-results">
@@ -459,14 +438,25 @@ export default function FileQuizPage() {
               ))}
             </div>
 
-            <div className="file-quiz-results-footer">
-              <Link to="/admin" className="btn btn-primary file-quiz-cta-sole">
-                Späť na zoznam súborov
-              </Link>
-              <button type="button" className="file-quiz-text-link-standalone" onClick={() => loadQuiz()}>
-                Znova vyplniť tento test
-              </button>
-            </div>
+            {hasLearningAfterMain && (
+              <div className="results-actions file-quiz-results-cta-bottom">
+                <button type="button" className="btn btn-primary btn-large" onClick={() => goToLearning()}>
+                  Pokračovať na učebné materiály →
+                </button>
+              </div>
+            )}
+
+            {hasFollowUpAfterMain && !hasLearningAfterMain && (
+              <div className="results-actions file-quiz-results-cta-bottom">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-large"
+                  onClick={() => startFollowUp(results.followUpQuiz)}
+                >
+                  Pokračovať na doplňujúci test →
+                </button>
+              </div>
+            )}
           </div>
         )}
 

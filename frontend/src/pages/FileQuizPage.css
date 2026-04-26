@@ -97,3 +97,8 @@
 .file-quiz-learning-body .content-section {
   margin-bottom: 1.25rem;
 }
+
+/* CTA pod detailnými výsledkami (hlavný test) */
+.file-quiz-results-cta-bottom {
+  margin-top: 1.5rem;
+}
