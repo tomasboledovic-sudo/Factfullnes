@@ -219,13 +219,6 @@ export default function FileQuizPage() {
   const answeredCount = questions.filter((q) => answers[q.id] != null).length;
   const isMain = round === 'main';
   const learningBundle = fileLearning;
-  /** Jeden ďalší krok pri rozpracovanom teste: najprv materiály, inak doplňujúci test. */
-  const canShowNextStepBanner =
-    phase === 'taking' &&
-    isMain &&
-    ((learningBundle?.sections?.length > 0 || false) ||
-      (storedFollowUp?.questions?.length > 0 || false));
-  const nextStepPrefersLearning = (learningBundle?.sections?.length > 0 || false);
   const hasLearningAfterMain =
     results && (results.fileLearningContent?.sections?.length > 0 || false);
   const hasFollowUpAfterMain =
@@ -233,10 +226,10 @@ export default function FileQuizPage() {
   const followUpToUse = results?.followUpQuiz || storedFollowUp;
 
   return (
-    <div className="page-wrapper file-quiz-page">
+    <div className="page-wrapper">
       <Navigation />
 
-      <div className="assessment-container">
+      <div className="assessment-container file-quiz-page">
         <div className="assessment-header">
           <Link to="/admin" className="file-quiz-back">
             ← Späť na zoznam súborov
@@ -245,10 +238,7 @@ export default function FileQuizPage() {
             <>
               <h1>Učebné materiály</h1>
               {fileName && <p className="test-description">{fileName}</p>}
-              <p className="test-description">
-                AI výklad k témam, v ktorých hlavný test vychytal chyby — oplatí sa prejsť pred doplňujúcim
-                kolom.
-              </p>
+              <p className="test-description">Personalizovaný výklad k tvojim odpovediam.</p>
               <button type="button" className="file-quiz-text-back" onClick={backFromLearning}>
                 ← {results ? 'Späť na výsledky' : 'Späť na test'}
               </button>
@@ -264,9 +254,7 @@ export default function FileQuizPage() {
                 <p className="test-description file-quiz-desc-inline">{roundDescription}</p>
               )}
               <div className="progress-info">
-                Otázka {currentQuestionIndex + 1} z {questions.length} · zodpovedané {answeredCount}/
-                {questions.length}
-                {!isMain && ' · podľa chýb z hlavného kola'}
+                Otázka {currentQuestionIndex + 1} z {questions.length}
               </div>
               <div className="progress-bar">
                 <div
@@ -288,25 +276,17 @@ export default function FileQuizPage() {
                 section={s}
               />
             ))}
-            <div className="file-quiz-learning-footer">
-              {followUpToUse?.questions?.length > 0 ? (
+            {followUpToUse?.questions?.length > 0 ? (
+              <div className="results-actions">
                 <button
                   type="button"
-                  className="btn btn-primary file-quiz-cta-sole"
+                  className="btn btn-primary btn-large"
                   onClick={() => startFollowUp(followUpToUse)}
                 >
-                  Pokračovať na doplňujúci test ({followUpToUse.questionCount} otázok)
+                  Pokračovať na doplňujúci test →
                 </button>
-              ) : (
-                <p className="file-quiz-learning-hint">
-                  Doplňujúci test nie je k dispozícii (nepodarilo sa vygenerovať alebo boli všetky odpovede
-                  správne).
-                </p>
-              )}
-              <Link to="/admin" className="file-quiz-text-link-footer">
-                Späť na zoznam súborov
-              </Link>
-            </div>
+              </div>
+            ) : null}
           </div>
         )}
 
@@ -392,53 +372,49 @@ export default function FileQuizPage() {
               onAnswer={(idx) => handleAnswer(currentQ.id, idx)}
             />
 
-            <div className="file-quiz-question-nav">
-              {currentQuestionIndex > 0 && (
-                <button
-                  type="button"
-                  className="file-quiz-text-back file-quiz-nav-back"
-                  onClick={() => setCurrentQuestionIndex((i) => i - 1)}
-                >
-                  ← Predchádzajúca otázka
-                </button>
-              )}
+            <div className="navigation-buttons">
+              <button
+                type="button"
+                onClick={() => setCurrentQuestionIndex((i) => i - 1)}
+                disabled={currentQuestionIndex === 0}
+                className="btn btn-secondary"
+              >
+                ← Späť
+              </button>
               {currentQuestionIndex < questions.length - 1 ? (
                 <button
                   type="button"
-                  className="btn btn-primary file-quiz-cta-sole"
                   onClick={() => setCurrentQuestionIndex((i) => i + 1)}
+                  className="btn btn-primary"
+                  disabled={answers[currentQ.id] == null}
                 >
-                  Ďalšia otázka →
+                  Ďalej →
                 </button>
               ) : (
                 <button
                   type="button"
-                  className="btn btn-primary file-quiz-cta-sole"
+                  className="btn btn-primary"
                   disabled={submitting || answeredCount < questions.length}
                   onClick={handleSubmit}
                 >
                   {submitting
                     ? isMain
-                      ? 'Generujem učebné materiály a doplňujúci test...'
+                      ? 'Odosielam...'
                       : 'Odosielam...'
                     : isMain
-                    ? 'Vyhodnotiť test'
-                    : 'Vyhodnotiť doplňujúci test'}
+                    ? 'Odoslať test'
+                    : 'Odoslať test'}
                 </button>
               )}
             </div>
 
-            {isMain && (
-              <p className="file-quiz-regen">
-                <button
-                  type="button"
-                  className="file-quiz-link-btn"
-                  onClick={handleGenerate}
-                  disabled={generating}
-                >
-                  Vygenerovať nový test (prepíše starý)
-                </button>
-              </p>
+            {submitting && (
+              <div className="submitting-overlay">
+                <div className="submitting-content">
+                  <div className="spinner" />
+                  <p>{isMain ? 'Vyhodnocujem test a pripravujem ďalšie kroky...' : 'Vyhodnocujem test...'}</p>
+                </div>
+              </div>
             )}
           </>
         )}
@@ -469,38 +445,23 @@ export default function FileQuizPage() {
               </p>
             )}
 
-            {(hasLearningAfterMain || (hasFollowUpAfterMain && !hasLearningAfterMain)) && (
-              <div className="file-quiz-next-step file-quiz-panel">
-                {hasLearningAfterMain ? (
-                  <>
-                    <p>
-                      Podľa chýb je k dispozícii <strong>krátky výklad z dokumentu</strong> (AI) — vhodné zvládnuť
-                      pred doplňujúcim testom
-                      {hasFollowUpAfterMain ? ` (${results.followUpQuiz.questionCount} doplňujúcich otázok).` : '.'}
-                    </p>
-                    <button
-                      type="button"
-                      className="btn btn-primary file-quiz-cta-sole"
-                      onClick={() => goToLearning()}
-                    >
-                      Pokračovať na učebné materiály
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      Je pripravený <strong>doplňujúci test</strong> ({results.followUpQuiz.questionCount} otázok) k
-                      oblastiam, ktoré ešte treba upevniť.
-                    </p>
-                    <button
-                      type="button"
-                      className="btn btn-primary file-quiz-cta-sole"
-                      onClick={() => startFollowUp(results.followUpQuiz)}
-                    >
-                      Pokračovať na doplňujúci test
-                    </button>
-                  </>
-                )}
+            {hasLearningAfterMain && (
+              <div className="results-actions">
+                <button type="button" className="btn btn-primary btn-large" onClick={() => goToLearning()}>
+                  Pokračovať na učebné materiály →
+                </button>
+              </div>
+            )}
+
+            {hasFollowUpAfterMain && !hasLearningAfterMain && (
+              <div className="results-actions">
+                <button
+                  type="button"
+                  className="btn btn-primary btn-large"
+                  onClick={() => startFollowUp(results.followUpQuiz)}
+                >
+                  Pokračovať na doplňujúci test →
+                </button>
               </div>
             )}
 
@@ -579,13 +540,10 @@ export default function FileQuizPage() {
               ))}
             </div>
 
-            <div className="file-quiz-results-footer">
-              <Link to="/admin" className="btn btn-primary file-quiz-cta-sole">
+            <div className="results-actions">
+              <Link to="/admin" className="btn btn-primary btn-large">
                 Späť na zoznam súborov
               </Link>
-              <button type="button" className="file-quiz-text-link-standalone" onClick={() => loadQuiz()}>
-                Späť na hlavný test
-              </button>
             </div>
           </div>
         )}
