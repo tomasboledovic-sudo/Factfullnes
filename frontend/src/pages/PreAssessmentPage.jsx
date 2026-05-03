@@ -5,6 +5,9 @@ import Navigation from '../components/Navigation';
 import QuestionCard from '../components/QuestionCard';
 import './AssessmentPage.css';
 
+/** Minimálna dĺžka UI „generovania“ po odoslaní vstupného testu (ms). */
+const MIN_GENERATION_DISPLAY_MS = 15_000;
+
 function PreAssessmentPage() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -22,6 +25,22 @@ function PreAssessmentPage() {
   const [startTime] = useState(Date.now());
   
   const pollingRef = useRef(null);
+  const generationPhaseStartRef = useRef(null);
+  const generationFinishTimeoutRef = useRef(null);
+
+  const scheduleGenerationReady = (finalMessage = 'Učebné materiály sú pripravené!') => {
+    if (generationFinishTimeoutRef.current) {
+      clearTimeout(generationFinishTimeoutRef.current);
+    }
+    const started = generationPhaseStartRef.current ?? Date.now();
+    const elapsed = Date.now() - started;
+    const waitMore = Math.max(0, MIN_GENERATION_DISPLAY_MS - elapsed);
+    generationFinishTimeoutRef.current = window.setTimeout(() => {
+      generationFinishTimeoutRef.current = null;
+      setContentReady(true);
+      setGeneratingMessage(finalMessage);
+    }, waitMore);
+  };
 
   useEffect(() => {
     fetchQuestions();
@@ -30,6 +49,9 @@ function PreAssessmentPage() {
     return () => {
       if (pollingRef.current) {
         clearInterval(pollingRef.current);
+      }
+      if (generationFinishTimeoutRef.current) {
+        clearTimeout(generationFinishTimeoutRef.current);
       }
     };
   }, [sessionId]);
@@ -63,6 +85,7 @@ function PreAssessmentPage() {
 
   // Polling pre stav generovania
   const startPolling = () => {
+    generationPhaseStartRef.current = Date.now();
     let attempts = 0;
     const maxAttempts = 60; // Max 2 minúty (60 * 2s)
     
@@ -99,8 +122,8 @@ function PreAssessmentPage() {
       // Timeout po 2 minútach
       if (attempts >= maxAttempts) {
         clearInterval(pollingRef.current);
-        setContentReady(true); // Aj tak povoliť pokračovanie
-        setGeneratingMessage('Generovanie trvá dlhšie. Môžete pokračovať.');
+        pollingRef.current = null;
+        scheduleGenerationReady('Generovanie trvá dlhšie. Môžete pokračovať.');
       }
     }, 2000);
   };
@@ -183,12 +206,20 @@ function PreAssessmentPage() {
     if (pollingRef.current) {
       clearInterval(pollingRef.current);
     }
+    if (generationFinishTimeoutRef.current) {
+      clearTimeout(generationFinishTimeoutRef.current);
+      generationFinishTimeoutRef.current = null;
+    }
     navigate(`/session/${sessionId}/learning`);
   };
 
   const handlePerfectGoHome = () => {
     if (pollingRef.current) {
       clearInterval(pollingRef.current);
+    }
+    if (generationFinishTimeoutRef.current) {
+      clearTimeout(generationFinishTimeoutRef.current);
+      generationFinishTimeoutRef.current = null;
     }
     localStorage.removeItem('currentSessionId');
     localStorage.removeItem('sessionStartTime');
