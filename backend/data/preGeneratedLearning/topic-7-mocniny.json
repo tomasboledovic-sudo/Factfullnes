@@ -60,7 +60,7 @@
         "explainsWeakness": "4×4×4."
       },
       {
-        "question": "10 na nultá (pre 10) je:",
+        "question": "Koľko je desiatka umocnená na nulu — teda 10⁰?",
         "options": [
           "0",
           "1",
@@ -68,10 +68,10 @@
           "100"
         ],
         "correctOption": "1",
-        "explainsWeakness": "Definícia a≠0."
+        "explainsWeakness": "Pre a ≠ 0 platí a⁰ = 1."
       },
       {
-        "question": "2 na mínus druhá je:",
+        "question": "Koľko je dva umocnené na mínus druhú — teda 2⁻²?",
         "options": [
           "−4",
           "1/4",
@@ -79,7 +79,7 @@
           "0,5"
         ],
         "correctOption": "1/4",
-        "explainsWeakness": "Prevrátená hodnota."
+        "explainsWeakness": "2⁻² = 1 / 2² = 1/4."
       },
       {
         "question": "Čo je väčšie: 3 na štvrtú alebo 4 na tretiu?",
@@ -90,7 +90,7 @@
           "nedá sa"
         ],
         "correctOption": "3 na štvrtú (81)",
-        "explainsWeakness": "81 > 64."
+        "explainsWeakness": "3⁴ = 81, 4³ = 64; väčšie je 81."
       },
       {
         "question": "Odmocnina z 36 je:",
