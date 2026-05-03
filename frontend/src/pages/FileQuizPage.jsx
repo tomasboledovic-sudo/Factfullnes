@@ -120,7 +120,7 @@ export default function FileQuizPage() {
       const res = await fetch(`${API_BASE_URL}/files/${id}/quiz/generate`, {
         method: 'POST',
         headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
-        body: JSON.stringify({ questionCount: 6 })
+        body: JSON.stringify({ questionCount: 8 })
       });
       const text = await res.text();
       let data;
@@ -316,7 +316,7 @@ export default function FileQuizPage() {
           <div className="file-quiz-panel">
             <h2>Vytvoriť test z dokumentu</h2>
             <p>
-              AI (Gemini) vytvorí 6 otázok s výberom odpovede z textu tvojho súboru — rovnaký štýl ako pri
+              AI (Gemini) vytvorí 8 otázok s výberom odpovede z textu tvojho súboru — rovnaký štýl ako pri
               testoch k témam v kurze. Funguje to len z extrahovateľného textu (PDF/TXT a pod.); čisté obrázky
               v PDF bez textu nestačia.
             </p>

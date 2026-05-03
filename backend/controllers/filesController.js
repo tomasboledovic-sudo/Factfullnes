@@ -272,7 +272,7 @@ export async function summarizeFile(req, res, next) {
 
 /**
  * POST /api/files/:id/quiz/generate
- * Telo (voliteľné): { "questionCount": 4–10 }, predvolené 6 (menej tokenov na Gemini free tier)
+ * Telo (voliteľné): { "questionCount": 4–10 }, predvolené 8
  */
 export async function generateFileQuiz(req, res, next) {
     try {
@@ -280,7 +280,7 @@ export async function generateFileQuiz(req, res, next) {
         if (!file) return;
 
         let questionCount = parseInt(req.body?.questionCount, 10);
-        if (Number.isNaN(questionCount)) questionCount = 6;
+        if (Number.isNaN(questionCount)) questionCount = 8;
 
         const { text, isImage } = await extractDocumentText(file);
         if (isImage) {
