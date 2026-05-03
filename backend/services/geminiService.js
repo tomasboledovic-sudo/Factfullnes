@@ -1056,6 +1056,18 @@ export async function generateFinalTest(topicData, learningContent, originalTest
         };
     }
 
+    /** Katalógové témy s topic-N.json — záverečný test je v súbore, Gemini sa nesmie použiť. */
+    if (usesOnlyPreGeneratedLearning(topicData)) {
+        const bundle = buildPreGeneratedLearningBundle(topicData, originalTestResults);
+        if (bundle?.finalTest?.questions?.length > 0) {
+            console.log(`Záverečný test (predpripravený, bez AI): ${topicData.title}`);
+            return sanitizeFinalTestForSession(bundle.finalTest, topicData.title, learningContent?.sections);
+        }
+        console.warn(`Predpripravený záverečný test sa nepodarilo zostaviť — lokálny fallback: ${topicData.title}`);
+        const fb = generateFallbackTest(topicData, originalTestResults);
+        return sanitizeFinalTestForSession(fb, topicData.title, learningContent?.sections);
+    }
+
     if (!allowGemini) {
         console.log(`Záverečný test bez Gemini API (obmedzenie na správcu): ${topicData.title}`);
         const fb = generateFallbackTest(topicData, originalTestResults);

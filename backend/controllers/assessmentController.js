@@ -2,6 +2,7 @@ import { getTopicById, getQuestionsByTopicId } from '../utils/supabaseData.js';
 import { generateLearningContent, generateFinalTest, sanitizeFinalTestForSession } from '../services/geminiService.js';
 import { getSessionById, patchSession } from '../utils/sessionRepository.js';
 import { sessionMayUseLearningGemini } from '../utils/learningGeminiAccess.js';
+import { usesOnlyPreGeneratedLearning } from '../utils/preGeneratedLearning.js';
 
 async function fetchSession(sessionId) {
     return getSessionById(sessionId);
@@ -151,14 +152,17 @@ export async function startTestGeneration(req, res, next) {
 
         const topic = await getTopicById(session.topic_id);
         const preAnswers = session.pre_test_answers || [];
+        const topicQuestionsForOrder = await getQuestionsByTopicId(session.topic_id);
         const originalTestResults = {
             score: session.pre_test_score,
             totalQuestions: preAnswers.length,
             correctAnswers: preAnswers.filter(a => a.wasCorrect).length,
-            detailedAnswers: preAnswers
+            detailedAnswers: preAnswers,
+            questionIdsInOrder: (topicQuestionsForOrder || []).map((q) => q.id)
         };
 
-        const allowGemini = await sessionMayUseLearningGemini(session);
+        const topicUsesPreGenOnly = usesOnlyPreGeneratedLearning(topic);
+        const allowGemini = !topicUsesPreGenOnly && (await sessionMayUseLearningGemini(session));
         const finalTest = await generateFinalTest(topic, session.generated_content, originalTestResults, {
             allowGemini
         });
@@ -262,8 +266,8 @@ export async function getPreTest(req, res, next) {
 
 /**
  * POST /api/sessions/:sessionId/regenerate-content
- * Znovu vygeneruje učebné materiály z AI podľa uloženého vstupného testu.
- * Záverečný test sa zmaže, aby sa dal znova vytvoriť z nového textu.
+ * Znovu zostaví učebné materiály podľa uloženého vstupného testu (predpripravené súbory alebo AI podľa témy).
+ * Záverečný test sa zmaže, aby sa dal znova vytvoriť po načítaní stránky učenia.
  */
 export async function regenerateLearning(req, res, next) {
     try {
@@ -307,9 +311,16 @@ export async function regenerateLearning(req, res, next) {
             questionIdsInOrder: (topicQuestions || []).map((q) => q.id)
         };
 
-        const allowGemini = await sessionMayUseLearningGemini(session);
+        const topicUsesPreGenOnly = usesOnlyPreGeneratedLearning(topic);
+        const allowGemini = !topicUsesPreGenOnly && (await sessionMayUseLearningGemini(session));
         console.log(
-            `${allowGemini ? 'Obnovujem učebné materiály (AI)' : 'Obnovujem učebné materiály (bez Gemini API)'} pre session: ${sessionId}`
+            `${
+                topicUsesPreGenOnly
+                    ? 'Obnovujem predpripravené materiály (bez AI)'
+                    : allowGemini
+                      ? 'Obnovujem učebné materiály (AI)'
+                      : 'Obnovujem učebné materiály (bez Gemini API)'
+            } pre session: ${sessionId}`
         );
         const generatedContent = await generateLearningContent(topic, testResults, { allowGemini });
 

@@ -18,7 +18,10 @@ export function isLearningGeminiRestricted() {
     return false;
 }
 
-/** Môže táto relácia volať Gemini pri generovaní učebných materiálov / záverečného testu? */
+/**
+ * Môže táto relácia volať Gemini pri generovaní učebných materiálov / záverečného testu?
+ * Katalógové témy s backend/data/preGeneratedLearning/topic-*.json Gemini nepotrebujú — tam sa AI nepoužije bez ohľadu na túto funkciu.
+ */
 export async function sessionMayUseLearningGemini(session) {
     if (!isLearningGeminiRestricted()) {
         return true;
