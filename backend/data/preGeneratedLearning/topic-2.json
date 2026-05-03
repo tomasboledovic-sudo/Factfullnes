@@ -1,0 +1,141 @@
+{
+  "topicId": 2,
+  "byQuestionId": {
+    "q1-pre-topic2": {
+      "heading": "Kedy platí Pytagorova veta",
+      "content": "**Pytagorova veta platí len pre pravouhlý trojuholník** — teda taký, v ktorom je jeden uhol presne **90°**. Pri rovnoramennom alebo rovnostrannom trojuholníku nemusí byť pravý uhol, preto tam tento vzťah **nemôžeš** používať automaticky. Pri „ľubovoľnom“ trojuholníku použi iné vzťahy (kosínusová veta, súčet uhlov…).\n\n**Skontroluj si:** najprv označ pravý uhol v obrázku alebo v zadaní; ak ho nemáš, Pytagoras nie je správna cesta."
+    },
+    "q2-pre-topic2": {
+      "heading": "Vzorec a² + b² = c²",
+      "content": "Pri **pravouhlom trojuholníku** označ **preponu** (stranu **proti** pravému uhlu) ako **c** a **odvesny** ako **a** a **b**. Potom platí **a² + b² = c²**. Toto **nie je** a + b = c ani a² − b² = c² všeobecne — sú to iné vzťahy.\n\n**Pamätaj:** druhé mocniny sčítavaš len ak máš správne priradené strany k uhlu 90°."
+    },
+    "q3-pre-topic2": {
+      "heading": "Čo je prepona",
+      "content": "**Prepona** je **najdlhšia strana** pravouhlého trojuholníka — leží **naproti** pravému uhlu. Strany pri pravom uhle sú **odvesny**, nie prepona.\n\n**Tip:** ak nevieš, ktorá strana je c, nájdi pravý uhol — strana oproti nemu je vždy prepona."
+    },
+    "q4-pre-topic2": {
+      "heading": "Čo sú odvesny",
+      "content": "**Odvesny** sú **dve strany**, ktoré tvoria **pravý uhol** — teda ležia vedľa neho. V bežnom pravouhlom trojuholníku sú **obe kratšie** ako prepona.\n\n**Nezmýľ si:** najdlhšia strana nie je odvesna; to je prepona."
+    },
+    "q5-pre-topic2": {
+      "heading": "Pytagorejské trojuholníky",
+      "content": "**Pytagorejské trojuholníky** sú pravouhlé trojuholníky, ktorých **dĺžky strán sú celé čísla** a spĺňajú **a² + b² = c²** (napr. 3–4–5). Nie sú to „hociktoré“ trojuholníky bez pravého uhla.\n\n**Prečo to pomáha:** pri úlohách s celými číslami často stačí skúsiť známe trojice alebo rozklad na mocniny."
+    },
+    "q6-pre-topic2": {
+      "heading": "Výpočet odvesny",
+      "content": "Ak poznáš **preponu c** a jednu **odvesnu a**, druhú odvesnu nájdeš z **a² + b² = c²** tak, že **b² = c² − a²**, teda **b = √(c² − a²)**. To platí **iba** ak je trojuholník **pravouhlý**.\n\n**Častá chyba:** myslieť si, že vzorec platí len „na preponu“ — v skutočnosti vieš z dvoch strán dopočítať tretiu, ak poznáš pravý uhol."
+    },
+    "q7-pre-topic2": {
+      "heading": "Je trojuholník pravouhlý?",
+      "content": "Ak trojuholník má strany tak, že po označení najdlhšej ako **c** platí **a² + b² = c²**, potom je **pravouhlý** (konverzné tvrdenie). Nemusíš mierať uhly, ak máš spoľahlivé dĺžky.\n\n**Postup:** zoraď strany, najväčšiu ber ako c, over či súčet štvorcov dvoch menších sa rovná c²."
+    },
+    "q8-pre-topic2": {
+      "heading": "Prečo nie „každý“ trojuholník",
+      "content": "Vzťah **a² + b² = c²** vyplýva z geometrie **pravého uhla**. Pri šikmom uhle treba iné vzťahy, preto veta **neplatí všeobecne** pre ľubovoľný trojuholník.\n\n**Intuícia:** len pravý uhol „prepína“ rozklad na súčet dvoch štvorcov odvesien na štvorec prepony."
+    }
+  },
+  "allCorrectSections": [
+    {
+      "heading": "Pytagorova veta — zvládol si vstupný test",
+      "content": "**Pravouhlý trojuholník:** prepona **c** oproti pravému uhlu, odvesny **a**, **b** → **a² + b² = c²**. Z dvoch strán vieš dopočítať tretiu; **Pytagorejské trojuholníky** majú celočíselné strany (napr. 3–4–5).\n\nAk budeš počítať v praxi, vždy najprv over, že ide naozaj o pravý uhol."
+    },
+    {
+      "heading": "Čo ďalej",
+      "content": "Skús si krátku úlohu: nájdi dĺžku prepony pri odvesnách 6 a 8 cm, alebo over, či trojuholník so stranami 5, 12, 13 je pravouhlý.\n\nOpakovanie malými príkladmi udrží vzorec v pamäti lepšie než samotné bifľovanie."
+    }
+  ],
+  "finalTest": {
+    "testFormat": "mc_4",
+    "description": "Záverečný test: Pytagorova veta",
+    "questions": [
+      {
+        "question": "Pre ktorý trojuholník platí vzťah a² + b² = c² vo zmysle Pytagorovej vety?",
+        "options": [
+          "Pre pravouhlý trojuholník",
+          "Pre ľubovoľný trojuholník",
+          "Len pre rovnostranný trojuholník",
+          "Len pre trojuholník bez pravého uhla"
+        ],
+        "correctOption": "Pre pravouhlý trojuholník",
+        "explainsWeakness": "Veta viaže na pravý uhol."
+      },
+      {
+        "question": "Ktoré tvrdenie správne vyjadruje Pytagorovu vetu pri pravouhlom trojuholníku (c je prepona)?",
+        "options": [
+          "a² + b² = c²",
+          "a + b = c",
+          "a² − b² = c²",
+          "a² + b² = 2c²"
+        ],
+        "correctOption": "a² + b² = c²",
+        "explainsWeakness": "Základný vzorec."
+      },
+      {
+        "question": "Ktorá strana pravouhlého trojuholníka je prepona?",
+        "options": [
+          "Strana proti pravému uhlu",
+          "Strana vedľa pravého uhla",
+          "Vždy najkratšia strana",
+          "Súčet dvoch odvesien"
+        ],
+        "correctOption": "Strana proti pravému uhlu",
+        "explainsWeakness": "Prepona je oproti 90°."
+      },
+      {
+        "question": "Čo sú v pravouhlom trojuholníku odvesny?",
+        "options": [
+          "Dve strany, ktoré tvoria pravý uhol",
+          "Strana proti pravému uhlu",
+          "Obvod delený tromi",
+          "Uhol medzi výškami"
+        ],
+        "correctOption": "Dve strany, ktoré tvoria pravý uhol",
+        "explainsWeakness": "Odvesny susedia s pravým uhlom."
+      },
+      {
+        "question": "Čo najlepšie vystihuje Pytagorejský trojuholník?",
+        "options": [
+          "Pravouhlý trojuholník s celými stranami spĺňajúcimi a² + b² = c²",
+          "Trojuholník so všetkými stranami rovnakými",
+          "Trojuholník bez pravého uhla",
+          "Ľubovoľný trojuholník s obvodom 12"
+        ],
+        "correctOption": "Pravouhlý trojuholník s celými stranami spĺňajúcimi a² + b² = c²",
+        "explainsWeakness": "Celočíselné pravouhlé riešenia."
+      },
+      {
+        "question": "Je pravda, že z prepony c a odvesny a vieš v pravouhlom trojuholníku dopočítať druhú odvesnu b?",
+        "options": [
+          "Áno, b = √(c² − a²)",
+          "Nie, vždy len preponu",
+          "Áno, ale len pri rovnostrannom trojuholníku",
+          "Nie, Pytagoras neumožňuje odmocňovanie"
+        ],
+        "correctOption": "Áno, b = √(c² − a²)",
+        "explainsWeakness": "Preskupenie a² + b² = c²."
+      },
+      {
+        "question": "Strany trojuholníka sú 6, 8 a 10. Je trojuholník pravouhlý?",
+        "options": [
+          "Áno, lebo 6² + 8² = 10²",
+          "Nie, lebo strany nie sú rovnaké",
+          "Áno, každý trojuholník s celými stranami je pravouhlý",
+          "Nie, treba vždy merať uhly"
+        ],
+        "correctOption": "Áno, lebo 6² + 8² = 10²",
+        "explainsWeakness": "Konverzia Pytagorovej vety."
+      },
+      {
+        "question": "Prečo Pytagorova veta neplatí pre ľubovoľný trojuholník?",
+        "options": [
+          "Lebo vzťah a² + b² = c² je odvodený pre pravý uhol",
+          "Lebo pre každý trojuholník platí a + b = c",
+          "Lebo všetky trojuholníky sú rovnostranné",
+          "Lebo prepona neexistuje"
+        ],
+        "correctOption": "Lebo vzťah a² + b² = c² je odvodený pre pravý uhol",
+        "explainsWeakness": "Väzba na pravý uhol."
+      }
+    ]
+  }
+}

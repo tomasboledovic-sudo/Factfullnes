@@ -7,6 +7,7 @@ const PRE_GEN_DIR = join(__dirname, '../data/preGeneratedLearning');
 
 /** Súbor JSON pre každú tému s predgenerovaným obsahom (učenie + voliteľný záverečný test). */
 export const TOPIC_FILE_NAMES = {
+    2: 'topic-2.json',
     3: 'topic-3.json',
     5: 'topic-5.json',
     7: 'topic-7-mocniny.json',
