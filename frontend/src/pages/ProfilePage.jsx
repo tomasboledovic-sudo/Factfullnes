@@ -5,6 +5,15 @@ import { API_BASE_URL } from '../config';
 import Navigation from '../components/Navigation';
 import './ProfilePage.css';
 
+/** Demo admin: iba vzhľad na fronte, bez reálnych agregovaných dát. */
+const DEMO_ADMIN_EMAIL = 'tomas.boledovic@gmail.com';
+const DEMO_ADMIN_FILLED_FIRST_TESTS = 268;
+const DEMO_ADMIN_COMPLETED_COURSES = 265;
+
+function isDemoAdminEmail(email) {
+  return typeof email === 'string' && email.trim().toLowerCase() === DEMO_ADMIN_EMAIL;
+}
+
 function formatFileSize(bytes) {
   if (bytes == null) return '';
   if (bytes < 1024) return `${bytes} B`;
@@ -17,7 +26,7 @@ function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { user, token, logout, getAuthHeaders } = useAuth();
+  const { user, token, logout, getAuthHeaders, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,8 +34,14 @@ function ProfilePage() {
       navigate('/login');
       return;
     }
+    if (authLoading) return;
+    if (isDemoAdminEmail(user?.email)) {
+      setLoading(false);
+      setError(null);
+      return;
+    }
     fetchProfile();
-  }, [token]);
+  }, [token, user?.email, authLoading]);
 
   async function fetchProfile() {
     try {
@@ -80,6 +95,61 @@ function ProfilePage() {
   const stats = profileData?.stats;
   const uploadedFiles = profileData?.uploadedFiles || [];
   const completedForStats = testHistory.filter((t) => t.completed);
+  const demoAdmin = isDemoAdminEmail(user?.email);
+
+  if (!token) {
+    return null;
+  }
+
+  if (authLoading) {
+    return (
+      <div className="profile-page">
+        <Navigation />
+        <div className="profile-container">
+          <div className="profile-loading">
+            <div className="spinner"></div>
+            <p>Načítavam…</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (demoAdmin) {
+    return (
+      <div className="profile-page">
+        <Navigation />
+        <div className="profile-container">
+          <div className="profile-header-section">
+            <div className="profile-avatar">A</div>
+            <div className="profile-info">
+              <h1>admin</h1>
+            </div>
+            <button type="button" className="logout-btn" onClick={handleLogout}>
+              Odhlásiť sa
+            </button>
+          </div>
+
+          <div className="profile-admin-demo">
+            <div className="profile-admin-demo-line">
+              <strong>Počet vyplnených testov</strong>
+              <p>
+                Počet všetkých prvých testov vyplnených všetkými používateľmi:{' '}
+                <span className="profile-admin-demo-number">{DEMO_ADMIN_FILLED_FIRST_TESTS}</span>
+              </p>
+            </div>
+            <div className="profile-admin-demo-line">
+              <strong>Počet dokončených kurzov</strong>
+              <p>
+                Počet dokončených kurzov všetkých používateľov:{' '}
+                <span className="profile-admin-demo-number">{DEMO_ADMIN_COMPLETED_COURSES}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-page">
