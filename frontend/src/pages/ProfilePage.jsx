@@ -7,8 +7,9 @@ import './ProfilePage.css';
 
 /** Demo admin: iba vzhľad na fronte, bez reálnych agregovaných dát. */
 const DEMO_ADMIN_EMAIL = 'tomas.boledovic@gmail.com';
-const DEMO_ADMIN_FILLED_FIRST_TESTS = 268;
-const DEMO_ADMIN_COMPLETED_COURSES = 265;
+/** Demo čísla — iba zobrazenie (predtým „všetky pokusy“ / „dokončené“). */
+const DEMO_ADMIN_VYPLNENYCH_TESTOV = 265;
+const DEMO_ADMIN_DOKONCENYCH_KURZOV = 268;
 
 function isDemoAdminEmail(email) {
   return typeof email === 'string' && email.trim().toLowerCase() === DEMO_ADMIN_EMAIL;
@@ -130,20 +131,14 @@ function ProfilePage() {
             </button>
           </div>
 
-          <div className="profile-admin-demo">
-            <div className="profile-admin-demo-line">
-              <strong>Počet vyplnených testov</strong>
-              <p>
-                Počet všetkých prvých testov vyplnených všetkými používateľmi:{' '}
-                <span className="profile-admin-demo-number">{DEMO_ADMIN_FILLED_FIRST_TESTS}</span>
-              </p>
+          <div className="stats-row profile-admin-demo-stats">
+            <div className="stat-card">
+              <span className="stat-number">{DEMO_ADMIN_VYPLNENYCH_TESTOV}</span>
+              <span className="stat-label">Vyplnených testov</span>
             </div>
-            <div className="profile-admin-demo-line">
-              <strong>Počet dokončených kurzov</strong>
-              <p>
-                Počet dokončených kurzov všetkých používateľov:{' '}
-                <span className="profile-admin-demo-number">{DEMO_ADMIN_COMPLETED_COURSES}</span>
-              </p>
+            <div className="stat-card">
+              <span className="stat-number">{DEMO_ADMIN_DOKONCENYCH_KURZOV}</span>
+              <span className="stat-label">Dokončených kurzov</span>
             </div>
           </div>
         </div>

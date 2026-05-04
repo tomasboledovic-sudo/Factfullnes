@@ -473,38 +473,9 @@
   text-align: center;
 }
 
-/* Demo admin profil (statické čísla, bez API) */
-.profile-admin-demo {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.profile-admin-demo-line {
-  background: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
-  color: #cbd5e1;
-  font-size: 0.95rem;
-  line-height: 1.55;
-}
-
-.profile-admin-demo-line strong {
-  display: block;
-  color: #f8fafc;
-  font-size: 1.05rem;
-  margin-bottom: 0.5rem;
-}
-
-.profile-admin-demo-line p {
-  margin: 0;
-}
-
-.profile-admin-demo-number {
-  font-size: 1.65rem;
-  font-weight: 700;
-  color: #a5b4fc;
+/* Demo admin profil — iba doplnenie layoutu pri dvoch kartách */
+.profile-admin-demo-stats {
+  margin-bottom: 0;
 }
 
 @media (max-width: 640px) {
